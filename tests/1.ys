@@ -1,0 +1,3 @@
+irmovl $1,%eax
+irmovl $2,%edx
+addl %edx,%eax
