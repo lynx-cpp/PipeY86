@@ -12,10 +12,13 @@ class InstructionPrivate;
 class InstructionOP;
 
 #include "y86pipeline.h"
+#include "utility.h"
 //typedef std::vector<Instruction> Program;
 enum status {
     AOK,HLT,ADR,INS,BUB
 } ;
+Instruction* findInstructionFromAddr(int address);
+
 
 class InstructionPrivate
 {
@@ -28,7 +31,7 @@ protected:
     int icode,ifun;
     status stat;
     int rA,rB,valC,valA,valB,valE,valM;
-    Program::iterator valP;
+    Instruction* valP;
     
  
 public:
@@ -38,11 +41,11 @@ public:
     //InstructionPrivate(const InstructionPrivate& ip) {  }
     void setPipeline(Y86Pipeline* pipeline) { m_pipeline = pipeline; }
     int addr() { return m_address; }
-    Program::iterator prediction() { return valP; }
+    Instruction* prediction() { return valP; }
     
     virtual ~InstructionPrivate() {}
     
-    virtual void fetchStage() { valP = m_pipeline->findInstructionFromAddr(m_address); valP ++; }
+    virtual void fetchStage();
     virtual void decodeStage() {}
     virtual void executeStage() {}
     virtual void memoryStage() {}
@@ -66,18 +69,18 @@ private:
    
 public:
     friend class InstructionPrivate;
+    friend class Y86Pipeline;
     Instruction(const std::string& instructionCode,int address);
-    Instruction(InstructionPrivate* ip) 
+    Instruction() 
     { 
-        instructionP = ip;
-        if (ip==NULL)
-            instructionP = new InstructionNop(m_address);
-        instructionP->m_instructionCode = "";
+        m_instructionCode = "00";
+        m_address = 0;
+        constructPrivate();
     }
     Instruction(const Instruction& ip) ;
     ~Instruction() { if (instructionP!=NULL) delete instructionP; }
     void setPipeline(Y86Pipeline* pipeline) { instructionP->setPipeline(pipeline); }
-    Program::iterator prediction() { return instructionP->prediction(); }
+    Instruction* prediction() { return instructionP->prediction(); }
     void printCode() { std::cerr << "code : " << m_instructionCode << std::endl; }
     
     void setBubble() { instructionP->stat = BUB; }
@@ -97,7 +100,6 @@ public:
     void memoryStage()  {  if (instructionP->stat==AOK) instructionP->memoryStage(); }
     void writeBackStage() { if (instructionP->stat==AOK) instructionP->writeBackStage(); }
     int addr() { instructionP->addr(); }
-    Program::iterator predict() { return instructionP->prediction(); }
 };
 
 
@@ -128,5 +130,6 @@ public:
     virtual void memoryStage();
     virtual void writeBackStage();
 };
+
 
 #endif // INSTRUCTION_H

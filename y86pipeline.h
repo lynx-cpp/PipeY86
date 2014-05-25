@@ -8,7 +8,8 @@ class Instruction;
 //typedef Instruction* InstrctionPtr;
 //typedef std::vector<Instruction> Program;
 typedef std::vector<Instruction> Program;
-typedef Program::iterator InstructionPtr;
+//typedef Program::iterator InstructionPtr;
+typedef Instruction* InstructionPtr;
 
 
 class Y86Pipeline
@@ -30,7 +31,6 @@ public:
     void execute(InstructionPtr nextPrediction);
     int readRegister(int num) { return m_register[num]; }
     void writeRegister(int num,int value) { m_register[num] = value; }
-    Program::iterator findInstructionFromAddr(int addr);
     
     void setConditionCode(int a,int b,int val);
     bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }

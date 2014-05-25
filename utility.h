@@ -48,4 +48,5 @@ static inline int readHexSmallEndian(const std::string& str,int l,int r)
     }
 }
 
+
 #endif

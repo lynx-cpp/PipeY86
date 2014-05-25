@@ -5,11 +5,22 @@
 #include "y86pipeline.h"
 #include "instruction.h"
 #include "utility.h"
+#define PIPELINE
 
 static int* mem_bak;
 
 void Y86Pipeline::execute(InstructionPtr nextPrediction)
 {
+#ifndef PIPELINE
+    fetchI->fetchStage();
+    fetchI->decodeStage();
+    fetchI->memoryStage();
+    fetchI->executeStage();
+    fetchI->writeBackStage();
+    fetchI = nextPrediction;
+    return ;
+#else
+    
     writeBackI->writeBackStage();
     memoryI->memoryStage();
     executeI->executeStage();
@@ -38,15 +49,15 @@ void Y86Pipeline::execute(InstructionPtr nextPrediction)
     decodeI = fetchI;
     fetchI = nextPrediction;
     
-    if (fetchI==prog.end()){
-        prog.push_back(*nop);
-        fetchI = prog.end() - 1;
+    if (fetchI==NULL){
+        prog.push_back(Instruction());
+        fetchI = (&prog[prog.size() - 1]);
     }
+#endif
 }
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
-    nop = new Instruction((InstructionPrivate*)NULL);
     std::fstream stream;
     stream.open(filename.c_str(),std::fstream::in);
     startAddr = -1;
@@ -98,22 +109,13 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
     }
     
     InstructionPtr it;
-    prog.push_back(*nop); it = prog.end(); it--; writeBackI = it;
-    prog.push_back(*nop); it = prog.end(); it--; memoryI = it;
-    prog.push_back(*nop); it = prog.end(); it--; executeI = it;
-    prog.push_back(*nop); it = prog.end(); it--; decodeI= it;
-    fetchI = prog.begin();
+    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); writeBackI = it;
+    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); memoryI = it;
+    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); executeI = it;
+    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
+    fetchI = (&prog[0]);
     memset(m_register,0,sizeof(m_register));
     std::cerr << "initialization completed." << std::endl;
-}
-
-Program::iterator Y86Pipeline::findInstructionFromAddr(int addr)
-{
-    Program::iterator ret = prog.end();
-    for (Program::iterator i=prog.begin();i!=prog.end();i++)
-        if (i->addr()==addr)
-            ret = i;
-        return ret;
 }
 
 void Y86Pipeline::setConditionCode(int a, int b, int val)
@@ -125,18 +127,24 @@ void Y86Pipeline::setConditionCode(int a, int b, int val)
 
 void Y86Pipeline::run()
 {
+    /*
     for (InstructionPtr i=prog.begin();i!=prog.end();i++){
         i->setPipeline(this);
         i->printCode();
+    }*/
+    int len = prog.size();
+    for (int i=0;i<len;i++){
+        prog[i].setPipeline(this);
+        prog[i].printCode();
     }
     std::cerr<< "starting Y86Pipeline.." << std::endl;
     do{
         InstructionPtr next = fetchI->prediction();
-        if (next==prog.end()){
-            prog.push_back(*nop);
-            next = prog.end();
-            next --;
+        if (next==NULL){
+            prog.push_back(Instruction());
+            next = (&prog[prog.size() - 1]);
         }
+        std::cerr << next->instructionP << std::endl;
         execute(next);
     } while (running());
     for (int i=0;i<8;i++){

@@ -114,7 +114,7 @@ rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0)
 {
     m_address = address;
     stat = BUB;
-    valP = prog.end();
+    valP = NULL;
 }
 
 InstructionIrmovl::InstructionIrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
@@ -160,3 +160,18 @@ void InstructionIrmovl::writeBackStage()
 InstructionIrmovl::~InstructionIrmovl()
 {
 }
+
+void InstructionPrivate::fetchStage()
+{
+    valP = findInstructionFromAddr(m_address); valP ++; 
+}
+
+Instruction* findInstructionFromAddr(int address)
+{
+    int len = prog.size();
+    for (int i=0;i<len;i++)
+        if (prog[i].addr()==address)
+            return (&prog[i]);
+    return NULL;
+}
+
