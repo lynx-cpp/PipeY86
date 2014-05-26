@@ -46,6 +46,8 @@ static inline int readHexSmallEndian(const std::string& str,int l,int r)
         ret *= 256;
         ret += byte2int(str[i - 1],str[i]);
     }
+    //std::cerr << "Read hex : " << ret
+    return ret;
 }
 
 

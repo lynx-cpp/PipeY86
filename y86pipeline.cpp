@@ -9,17 +9,41 @@
 
 static int* mem_bak;
 
-void Y86Pipeline::execute(InstructionPtr nextPrediction)
+/*
+ * Instruction* newNullOp() // create NOP instruction
+ * {
+ *    prog.push_back(Instruction());
+ *    return (&prog[prog.size() - 1]);
+ * }
+ * 
+ * Instruction* getPrediction(InstructionPtr ins) //get new instruction safely
+ * {
+ *    Instruction* next = ins->prediction();
+ *    if (next==NULL) 
+ *        return newNullOp();
+ *    return next;
+ * }
+ */
+
+Instruction* getPrediction(Instruction* ins)
 {
-#ifndef PIPELINE
-    fetchI->fetchStage();
-    fetchI->decodeStage();
-    fetchI->memoryStage();
-    fetchI->executeStage();
-    fetchI->writeBackStage();
+    int idx = ins->prediction();
+    if (idx==-1 || idx>=prog.size()) 
+        return (new Instruction());
+    return (new Instruction(prog[idx]));
+}
+
+void Y86Pipeline::execute()
+{
+    #ifndef PIPELINE
+    fetchI.fetchStage();
+    fetchI.decodeStage();
+    fetchI.memoryStage();
+    fetchI.executeStage();
+    fetchI.writeBackStage();
     fetchI = nextPrediction;
     return ;
-#else
+    #else
     
     writeBackI->writeBackStage();
     memoryI->memoryStage();
@@ -27,33 +51,34 @@ void Y86Pipeline::execute(InstructionPtr nextPrediction)
     decodeI->decodeStage();
     fetchI->fetchStage();
     
+    InstructionPtr nextPrediction = getPrediction(fetchI);
+    
+    InstructionPtr curPrediction = getPrediction(executeI);
     if (executeI->isOk())
-    if (executeI->prediction()!=decodeI){
-        decodeI->setBubble();
-        fetchI->setBubble();
-        nextPrediction = executeI->prediction();
-    }
-    
+        if (curPrediction!=decodeI){
+            decodeI->setBubble();
+            fetchI->setBubble();
+            nextPrediction = curPrediction;
+        }
+        
+    curPrediction  = getPrediction(memoryI);
     if (memoryI->isOk())
-    if (memoryI->prediction()!=executeI){
-        fetchI->setBubble();
-        decodeI->setBubble();
-        executeI->setBubble();
-        nextPrediction = memoryI->prediction();
-    }
-    //prediction may change.
-    
+        if (curPrediction!=executeI){
+            fetchI->setBubble();
+            decodeI->setBubble();
+            executeI->setBubble();
+            nextPrediction = curPrediction;
+        }
+        //prediction may change.
+        
+    delete writeBackI;
     writeBackI = memoryI;
     memoryI = executeI;
     executeI = decodeI;
     decodeI = fetchI;
     fetchI = nextPrediction;
     
-    if (fetchI==NULL){
-        prog.push_back(Instruction());
-        fetchI = (&prog[prog.size() - 1]);
-    }
-#endif
+    #endif
 }
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
@@ -99,8 +124,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
         s1.erase(s1.end() - 1);
         int curAddr = readHexBigEndian(s1,2,s1.size() - 1);
         
-        Instruction* cur = new Instruction(s2,curAddr);
-        prog.push_back(*cur);
+        prog.push_back(Instruction(s2,curAddr));
         
         for (int i=0;i+1<s2.size();i+=2){
             m_memory[curAddr - startAddr] = byte2int(s2[i],s2[i + 1]);
@@ -108,12 +132,13 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
         }
     }
     
-    InstructionPtr it;
-    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); writeBackI = it;
-    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); memoryI = it;
-    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); executeI = it;
-    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
-    fetchI = (&prog[0]);
+    /*
+     *    InstructionPtr it;
+     *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); writeBackI = it;
+     *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); memoryI = it;
+     *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); executeI = it;
+     *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
+     */
     memset(m_register,0,sizeof(m_register));
     std::cerr << "initialization completed." << std::endl;
 }
@@ -128,24 +153,25 @@ void Y86Pipeline::setConditionCode(int a, int b, int val)
 void Y86Pipeline::run()
 {
     /*
-    for (InstructionPtr i=prog.begin();i!=prog.end();i++){
-        i->setPipeline(this);
-        i->printCode();
-    }*/
+     * for (InstructionPtr i=prog.begin();i!=prog.end();i++){
+     *    i->setPipeline(this);
+     *    i->printCode();
+}*/
     int len = prog.size();
     for (int i=0;i<len;i++){
         prog[i].setPipeline(this);
         prog[i].printCode();
     }
+    writeBackI = new Instruction();
+    memoryI = new Instruction();
+    executeI = new Instruction();
+    decodeI = new Instruction();
+    fetchI = new Instruction(prog[0]);
     std::cerr<< "starting Y86Pipeline.." << std::endl;
     do{
-        InstructionPtr next = fetchI->prediction();
-        if (next==NULL){
-            prog.push_back(Instruction());
-            next = (&prog[prog.size() - 1]);
-        }
-        std::cerr << next->instructionP << std::endl;
-        execute(next);
+        //InstructionPtr next = getPrediction(fetchI);
+        //std::cerr << next->instructionP << std::endl;
+        execute();
     } while (running());
     for (int i=0;i<8;i++){
         if (m_register[i]!=0)
@@ -155,6 +181,9 @@ void Y86Pipeline::run()
 
 bool Y86Pipeline::running()
 {
-    return (fetchI->isOk() || decodeI->isOk() || executeI->isOk() 
-    || memoryI->isOk() || writeBackI->isOk());
+    if (fetchI->normal() || decodeI->normal() || executeI->normal() 
+        || memoryI->normal() || writeBackI->normal())
+        return true;
+    
+    return (fetchI->prediction()!=-1);
 }

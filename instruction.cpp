@@ -90,6 +90,9 @@ void Instruction::constructPrivate()
             instructionP = new InstructionIrmovl(m_instructionCode,m_address);
             break;
         }
+        
+        //add new instruction constructing function here
+        
         instructionP = new InstructionNop(m_address);
     } while (false);
     instructionP->m_instructionCode = m_instructionCode;
@@ -100,6 +103,16 @@ Instruction::Instruction(const Instruction& ip)
     m_instructionCode = ip.m_instructionCode;
     m_address = ip.m_address;
     constructPrivate();
+    instructionP->setPipeline(ip.instructionP->m_pipeline);
+    instructionP->stat = ip.instructionP->stat;
+    instructionP->rA = ip.instructionP->rA;
+    instructionP->rB = ip.instructionP->rB;
+    instructionP->valA = ip.instructionP->valA;
+    instructionP->valB = ip.instructionP->valB;
+    instructionP->valC = ip.instructionP->valC;
+    instructionP->valE = ip.instructionP->valE;
+    instructionP->valM = ip.instructionP->valM;
+    instructionP->valP = ip.instructionP->valP;
 }
 
 Instruction::Instruction(const std::string& instructionCode,int address)
@@ -114,7 +127,7 @@ rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0)
 {
     m_address = address;
     stat = BUB;
-    valP = NULL;
+    valP = -1;
 }
 
 InstructionIrmovl::InstructionIrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
@@ -166,12 +179,16 @@ void InstructionPrivate::fetchStage()
     valP = findInstructionFromAddr(m_address); valP ++; 
 }
 
-Instruction* findInstructionFromAddr(int address)
+int findInstructionFromAddr(int address)
 {
     int len = prog.size();
     for (int i=0;i<len;i++)
         if (prog[i].addr()==address)
-            return (&prog[i]);
-    return NULL;
+            return i;
+    return -1;
 }
 
+bool Instruction::operator!=(const Instruction& B)
+{
+    return m_address!=B.m_address;
+}

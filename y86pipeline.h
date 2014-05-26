@@ -3,19 +3,22 @@
 #include <cstdio>
 #include <vector>
 #include <fstream>
+#include <iostream>
+
 
 class Instruction;
+#include "instruction.h"
 //typedef Instruction* InstrctionPtr;
 //typedef std::vector<Instruction> Program;
 typedef std::vector<Instruction> Program;
 //typedef Program::iterator InstructionPtr;
 typedef Instruction* InstructionPtr;
+//typedef Instruction InstructionPtr;
 
 
 class Y86Pipeline
 {
 private:
-    Instruction* nop;
     InstructionPtr fetchI,decodeI,executeI,memoryI,writeBackI;
     int m_register[10];
     
@@ -28,9 +31,13 @@ public:
     Y86Pipeline(const std::string& filename);
     bool running();
     void run();
-    void execute(InstructionPtr nextPrediction);
+    void execute();
     int readRegister(int num) { return m_register[num]; }
-    void writeRegister(int num,int value) { m_register[num] = value; }
+    void writeRegister(int num,int value) 
+    { 
+        m_register[num] = value; 
+        std::cerr << "writing value " << value << " to R[" << num << "]" << std::endl;
+    }
     
     void setConditionCode(int a,int b,int val);
     bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }

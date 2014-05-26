@@ -11,13 +11,13 @@ class Instruction;
 class InstructionPrivate;
 class InstructionOP;
 
-#include "y86pipeline.h"
+//#include "y86pipeline.h"
 #include "utility.h"
 //typedef std::vector<Instruction> Program;
 enum status {
     AOK,HLT,ADR,INS,BUB
 } ;
-Instruction* findInstructionFromAddr(int address);
+int findInstructionFromAddr(int address);
 
 
 class InstructionPrivate
@@ -31,7 +31,7 @@ protected:
     int icode,ifun;
     status stat;
     int rA,rB,valC,valA,valB,valE,valM;
-    Instruction* valP;
+    int valP;
     
  
 public:
@@ -41,7 +41,7 @@ public:
     //InstructionPrivate(const InstructionPrivate& ip) {  }
     void setPipeline(Y86Pipeline* pipeline) { m_pipeline = pipeline; }
     int addr() { return m_address; }
-    Instruction* prediction() { return valP; }
+    int prediction() const { return valP; }
     
     virtual ~InstructionPrivate() {}
     
@@ -74,19 +74,26 @@ public:
     Instruction() 
     { 
         m_instructionCode = "00";
-        m_address = 0;
+        m_address = -1;
         constructPrivate();
     }
     Instruction(const Instruction& ip) ;
-    ~Instruction() { if (instructionP!=NULL) delete instructionP; }
+    ~Instruction() 
+    { 
+        if (instructionP!=NULL) 
+            delete instructionP; 
+        else
+            std::cerr << "InstructionPrivate Error.." << std::endl;
+    }
     void setPipeline(Y86Pipeline* pipeline) { instructionP->setPipeline(pipeline); }
-    Instruction* prediction() { return instructionP->prediction(); }
+    int prediction() const { return instructionP->prediction(); }
     void printCode() { std::cerr << "code : " << m_instructionCode << std::endl; }
     
     void setBubble() { instructionP->stat = BUB; }
     bool isBubble() { return (instructionP->stat == BUB); }
     void setOk() { instructionP->stat = AOK; }
     bool isOk() { return (instructionP->stat==AOK); }
+    bool normal() { return isOk() && (m_address!=-1); }
     
     void fetchStage() 
     { 
@@ -100,6 +107,7 @@ public:
     void memoryStage()  {  if (instructionP->stat==AOK) instructionP->memoryStage(); }
     void writeBackStage() { if (instructionP->stat==AOK) instructionP->writeBackStage(); }
     int addr() { instructionP->addr(); }
+    bool operator!=(const Instruction& B);
 };
 
 
