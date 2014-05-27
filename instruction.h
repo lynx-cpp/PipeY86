@@ -106,7 +106,7 @@ public:
     void executeStage() {  if (instructionP->stat==AOK) instructionP->executeStage(); }
     void memoryStage()  {  if (instructionP->stat==AOK) instructionP->memoryStage(); }
     void writeBackStage() { if (instructionP->stat==AOK) instructionP->writeBackStage(); }
-    int addr() { instructionP->addr(); }
+    int addr() { return instructionP->addr(); }
     bool operator!=(const Instruction& B);
 };
 
