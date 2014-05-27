@@ -66,7 +66,7 @@ private:
     std::string m_instructionCode;
     int m_address;
     void constructPrivate();
-   
+
 public:
     friend class InstructionPrivate;
     friend class Y86Pipeline;
@@ -88,13 +88,13 @@ public:
     void setPipeline(Y86Pipeline* pipeline) { instructionP->setPipeline(pipeline); }
     int prediction() const { return instructionP->prediction(); }
     void printCode() { std::cerr << "code : " << m_instructionCode << std::endl; }
-    
+
     void setBubble() { instructionP->stat = BUB; }
     bool isBubble() { return (instructionP->stat == BUB); }
     void setOk() { instructionP->stat = AOK; }
     bool isOk() { return (instructionP->stat==AOK); }
     bool normal() { return isOk() && (m_address!=-1); }
-    
+
     void fetchStage() 
     { 
         if (instructionP->stat==BUB) { 
@@ -139,5 +139,16 @@ public:
     virtual void writeBackStage();
 };
 
+class InstructionRrmovl : public InstructionPrivate
+{
+public:
+	InstructionRrmovl(const std::string & m_instructionCode, int address);
+	virtual ~InstructionRrmovl();
+	virtual void fetchStage();
+	virtual void decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
 
 #endif // INSTRUCTION_H

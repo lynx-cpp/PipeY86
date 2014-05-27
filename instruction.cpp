@@ -70,7 +70,7 @@ void InstructionOP::writeBackStage()
 }
 
 void Instruction::constructPrivate()
-{   
+{
     instructionP = NULL;
     if (m_instructionCode.length()<2){
         std::cerr << "instruction code length too short" << std::endl;
@@ -90,6 +90,10 @@ void Instruction::constructPrivate()
             instructionP = new InstructionIrmovl(m_instructionCode,m_address);
             break;
         }
+        if (code==0x20){
+			instructionP = new InstructionRrmovl(m_instructionCode,m_address);
+			break;
+		}
         
         //add new instruction constructing function here
         
@@ -130,9 +134,9 @@ rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0)
     valP = -1;
 }
 
+
 InstructionIrmovl::InstructionIrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
-    
 }
 
 void InstructionIrmovl::decodeStage()
@@ -172,6 +176,49 @@ void InstructionIrmovl::writeBackStage()
 
 InstructionIrmovl::~InstructionIrmovl()
 {
+}
+
+InstructionRrmovl :: InstructionRrmovl(const std::string& m_instructionCode, int address):InstructionPrivate(address)
+{
+}
+
+InstructionRrmovl :: ~ InstructionRrmovl()
+{
+}
+
+void InstructionRrmovl :: fetchStage()
+{
+	InstructionPrivate :: fetchStage();
+	if (m_instructionCode.size()!=4){
+		stat = INS;
+		std :: cerr << "invalid instruction." << std::endl;
+		//invalid instruction ...
+	}
+	rA = hex2num(m_instructionCode[2]);
+	rB = hex2num(m_instructionCode[3]);
+}
+
+void InstructionRrmovl :: decodeStage()
+{
+	InstructionPrivate :: decodeStage();
+	valA = m_pipeline->readRegister(rB);
+}
+
+void InstructionRrmovl :: executeStage()
+{
+	InstructionPrivate :: executeStage();
+	valE = 0 + valA;
+}
+
+void InstructionRrmovl :: memoryStage()
+{
+	InstructionPrivate :: memoryStage();
+}
+
+void InstructionRrmovl :: writeBackStage()
+{
+	InstructionPrivate :: writeBackStage();
+	m_pipeline->writeRegister(rB,valE);
 }
 
 void InstructionPrivate::fetchStage()
