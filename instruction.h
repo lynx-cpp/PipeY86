@@ -11,14 +11,10 @@ class Instruction;
 class InstructionPrivate;
 class InstructionOP;
 
-//#include "y86pipeline.h"
 #include "utility.h"
-//typedef std::vector<Instruction> Program;
 enum status {
     AOK,HLT,ADR,INS,BUB
 } ;
-int findInstructionFromAddr(int address);
-
 
 class InstructionPrivate
 {

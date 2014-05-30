@@ -2,6 +2,7 @@
 #include "instruction.h"
 #include "y86pipeline.h"
 #include "utility.h"
+int findInstructionFromAddr(int address);
 
 InstructionOP::InstructionOP(const std::string& instructionCode, int address):InstructionPrivate(address)
 {
