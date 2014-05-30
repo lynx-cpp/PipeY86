@@ -73,13 +73,13 @@ public:
 class InstructionRrmovl : public InstructionPrivate
 {
 public:
-        InstructionRrmovl(const std::string & m_instructionCode, int address);
-        virtual ~InstructionRrmovl();
-        virtual void fetchStage();
-        virtual void decodeStage();
-        virtual void executeStage();
-        virtual void memoryStage();
-        virtual void writeBackStage();
+    InstructionRrmovl(const std::string & m_instructionCode, int address);
+    virtual ~InstructionRrmovl();
+    virtual void fetchStage();
+    virtual void decodeStage();
+    virtual void executeStage();
+    virtual void memoryStage();
+    virtual void writeBackStage();
 };
 
 #endif

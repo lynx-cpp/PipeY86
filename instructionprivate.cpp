@@ -129,37 +129,37 @@ InstructionRrmovl :: ~ InstructionRrmovl()
 
 void InstructionRrmovl :: fetchStage()
 {
-        InstructionPrivate :: fetchStage();
-        if (m_instructionCode.size()!=4){
-                stat = INS;
-                std :: cerr << "invalid instruction." << std::endl;
-                //invalid instruction ...
-        }
-        rA = hex2num(m_instructionCode[2]);
-        rB = hex2num(m_instructionCode[3]);
+    InstructionPrivate :: fetchStage();
+    if (m_instructionCode.size()!=4){
+        stat = INS;
+        std :: cerr << "invalid instruction." << std::endl;
+        //invalid instruction ...
+    }
+    rA = hex2num(m_instructionCode[2]);
+    rB = hex2num(m_instructionCode[3]);
 }
 
 void InstructionRrmovl :: decodeStage()
 {
-        InstructionPrivate :: decodeStage();
-        valA = m_pipeline->readRegister(rB);
+    InstructionPrivate :: decodeStage();
+    valA = m_pipeline->readRegister(rB);
 }
 
 void InstructionRrmovl :: executeStage()
 {
-        InstructionPrivate :: executeStage();
-        valE = 0 + valA;
+    InstructionPrivate :: executeStage();
+    valE = 0 + valA;
 }
 
 void InstructionRrmovl :: memoryStage()
 {
-        InstructionPrivate :: memoryStage();
+    InstructionPrivate :: memoryStage();
 }
 
 void InstructionRrmovl :: writeBackStage()
 {
-        InstructionPrivate :: writeBackStage();
-        m_pipeline->writeRegister(rB,valE);
+    InstructionPrivate :: writeBackStage();
+    m_pipeline->writeRegister(rB,valE);
 }
 
 void InstructionPrivate::fetchStage()
@@ -173,5 +173,5 @@ int findInstructionFromAddr(int address)
     for (int i=0;i<len;i++)
         if (prog[i].addr()==address)
             return i;
-    return -1;
+        return -1;
 }
