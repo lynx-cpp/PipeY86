@@ -62,7 +62,7 @@ private:
     std::string m_instructionCode;
     int m_address;
     void constructPrivate();
-   
+
 public:
     friend class InstructionPrivate;
     friend class Y86Pipeline;
@@ -118,5 +118,16 @@ public:
     virtual void writeBackStage();
 };
 
+class InstructionRrmovl : public InstructionPrivate
+{
+public:
+	InstructionRrmovl(const std::string & m_instructionCode, int address);
+	virtual ~InstructionRrmovl();
+	virtual void fetchStage();
+	virtual void decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
 
 #endif // INSTRUCTION_H
