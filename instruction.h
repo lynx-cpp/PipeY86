@@ -71,42 +71,25 @@ public:
     friend class InstructionPrivate;
     friend class Y86Pipeline;
     Instruction(const std::string& instructionCode,int address);
-    Instruction() 
-    { 
-        m_instructionCode = "00";
-        m_address = -1;
-        constructPrivate();
-    }
+    Instruction();
     Instruction(const Instruction& ip) ;
-    ~Instruction() 
-    { 
-        if (instructionP!=NULL) 
-            delete instructionP; 
-        else
-            std::cerr << "InstructionPrivate Error.." << std::endl;
-    }
-    void setPipeline(Y86Pipeline* pipeline) { instructionP->setPipeline(pipeline); }
-    int prediction() const { return instructionP->prediction(); }
-    void printCode() { std::cerr << "code : " << m_instructionCode << std::endl; }
+    ~Instruction();
+    void setPipeline(Y86Pipeline* pipeline);
+    int prediction() const;
+    void printCode();
     
-    void setBubble() { instructionP->stat = BUB; }
-    bool isBubble() { return (instructionP->stat == BUB); }
-    void setOk() { instructionP->stat = AOK; }
-    bool isOk() { return (instructionP->stat==AOK); }
-    bool normal() { return isOk() && (m_address!=-1); }
+    void setBubble();
+    bool isBubble();
+    void setOk();
+    bool isOk();
+    bool normal();
     
-    void fetchStage() 
-    { 
-        if (instructionP->stat==BUB) { 
-            instructionP->stat = AOK;
-            instructionP->fetchStage(); 
-        }
-    }
-    void decodeStage()  {  if (instructionP->stat==AOK) instructionP->decodeStage(); }
-    void executeStage() {  if (instructionP->stat==AOK) instructionP->executeStage(); }
-    void memoryStage()  {  if (instructionP->stat==AOK) instructionP->memoryStage(); }
-    void writeBackStage() { if (instructionP->stat==AOK) instructionP->writeBackStage(); }
-    int addr() { return instructionP->addr(); }
+    void fetchStage();
+    void decodeStage();
+    void executeStage();
+    void memoryStage();
+    void writeBackStage();
+    int addr();
     bool operator!=(const Instruction& B);
 };
 

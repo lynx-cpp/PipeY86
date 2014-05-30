@@ -122,6 +122,94 @@ Instruction::Instruction(const std::string& instructionCode,int address)
     constructPrivate();
 }
 
+Instruction::Instruction()
+{ 
+    m_instructionCode = "00";
+    m_address = -1;
+    constructPrivate();
+}
+
+Instruction::~Instruction()
+{ 
+    if (instructionP!=NULL) 
+        delete instructionP; 
+    else
+        std::cerr << "InstructionPrivate Error.." << std::endl;
+}
+
+void Instruction::setPipeline(Y86Pipeline* pipeline)
+{
+    instructionP->setPipeline(pipeline); 
+}
+
+int Instruction::prediction() const
+{
+    return instructionP->prediction(); 
+}
+
+void Instruction::printCode()
+{
+    std::cerr << "code : " << m_instructionCode << std::endl; 
+}
+
+void Instruction::setBubble()
+{
+    instructionP->stat = BUB; 
+}
+
+bool Instruction::isBubble()
+{
+    return (instructionP->stat == BUB); 
+}
+
+void Instruction::setOk()
+{
+    instructionP->stat = AOK;
+}
+
+bool Instruction::isOk()
+{
+    return (instructionP->stat==AOK);
+}
+
+bool Instruction::normal()
+{
+    return isOk() && (m_address!=-1); 
+}
+
+void Instruction::fetchStage()
+{ 
+    if (instructionP->stat==BUB) { 
+        instructionP->stat = AOK;
+        instructionP->fetchStage(); 
+    }
+}
+
+void Instruction::decodeStage()
+{
+    if (instructionP->stat==AOK) instructionP->decodeStage(); 
+}
+
+void Instruction::executeStage()
+{
+    if (instructionP->stat==AOK) instructionP->executeStage(); 
+}
+
+void Instruction::memoryStage()
+{
+    if (instructionP->stat==AOK) instructionP->memoryStage(); 
+}
+
+void Instruction::writeBackStage()
+{
+    if (instructionP->stat==AOK) instructionP->writeBackStage(); 
+}
+
+int Instruction::addr()
+{
+    return instructionP->addr(); 
+}
+
 InstructionPrivate::InstructionPrivate(int address):
 rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0)
 {
