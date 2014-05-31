@@ -44,7 +44,7 @@ void InstructionOP::executeStage()
             ;
     }
     m_pipeline->setConditionCode(valB,valA,valE);
-    writeForwardReg(rA,valE,true);
+    writeForwardReg(rB,valE,true);
 }
 
 void InstructionOP::fetchStage()
@@ -165,7 +165,7 @@ bool InstructionRrmovl :: decodeStage()
 {
     InstructionPrivate :: decodeStage();
     //valA = m_pipeline->readRegister(rB);
-    return readReg(rB,valA);
+    return readReg(rA,valA);
 }
 
 void InstructionRrmovl :: executeStage()
@@ -189,6 +189,10 @@ void InstructionRrmovl :: writeBackStage()
 
 void InstructionPrivate::fetchStage()
 {
+    if (m_address==-1){
+        valP = -1;
+        return ;
+    }
     valP = findInstructionFromAddr(m_address); valP ++; 
 }
 

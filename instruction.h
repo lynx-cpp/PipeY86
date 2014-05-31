@@ -28,7 +28,7 @@ public:
     friend class InstructionPrivate;
     friend class Y86Pipeline;
     Instruction(const std::string& instructionCode,int address);
-    Instruction();
+    Instruction(int address = -1);
     Instruction(const Instruction& ip) ;
     ~Instruction();
     void setPipeline(Y86Pipeline* pipeline);
@@ -42,12 +42,13 @@ public:
     bool normal();
     
     void fetchStage();
-    void decodeStage();
+    bool decodeStage();
     void executeStage();
     void memoryStage();
     void writeBackStage();
     int addr();
     bool operator!=(const Instruction& B);
+    bool eq(Instruction* decodeI);
 };
 
 #endif

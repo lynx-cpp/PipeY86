@@ -24,10 +24,20 @@ static Memory oldMemory;
  * }
  */
 
+void nextStage(InstructionPtr& next,InstructionPtr now)
+{
+    if (now->isBubble()){
+        next = (new Instruction(now->addr()));
+        delete now;
+        return ;
+    }
+    next = now;
+}
+
 Instruction* getPrediction(Instruction* ins)
 {
     int idx = ins->prediction();
-    if (idx==-1 || idx>=prog.size()) 
+    if (idx<0 || idx>=prog.size()) 
         return (new Instruction());
     return (new Instruction(prog[idx]));
 }
@@ -44,39 +54,55 @@ void Y86Pipeline::execute()
     return ;
     #else
     
+    decodeI->setOk();
+    
     writeBackI->writeBackStage();
     memoryI->memoryStage();
     executeI->executeStage();
-    decodeI->decodeStage();
+    bool success = decodeI->decodeStage();
     fetchI->fetchStage();
     
     InstructionPtr nextPrediction = getPrediction(fetchI);
     
     InstructionPtr curPrediction = getPrediction(executeI);
     if (executeI->isOk())
-        if (curPrediction!=decodeI){
+        if (!curPrediction->eq(decodeI)){
             decodeI->setBubble();
             fetchI->setBubble();
+            delete nextPrediction;
             nextPrediction = curPrediction;
         }
         
     curPrediction  = getPrediction(memoryI);
     if (memoryI->isOk())
-        if (curPrediction!=executeI){
+        if (!curPrediction->eq(executeI)){
             fetchI->setBubble();
             decodeI->setBubble();
             executeI->setBubble();
+            delete nextPrediction;
             nextPrediction = curPrediction;
         }
         //prediction may change.
         
+    if (!success)
+        decodeI->setBubble();//forwarding failed , stall
+        
     delete writeBackI;
+    nextStage(writeBackI,memoryI);
+    nextStage(memoryI,executeI);
+    nextStage(executeI,decodeI);
+    nextStage(decodeI,fetchI);
+    //nextStage(fetchI,nextPrediction);
+    if (success)
+        fetchI = nextPrediction;
+    /*
     writeBackI = memoryI;
     memoryI = executeI;
     executeI = decodeI;
     decodeI = fetchI;
-    fetchI = nextPrediction;
+    fetchI = nextPrediction;*/
     
+    //recoverForwarding();
     #endif
 }
 
@@ -116,9 +142,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
      *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
      */
     memset(m_register,0,sizeof(m_register));
-    memset(forwardReg,0,sizeof(forwardReg));
-    for (int i=0;i<10;i++)
-        forwardStat[i] = true;
+    recoverForwarding();
     std::cerr << "initialization completed." << std::endl;
 }
 
@@ -165,4 +189,12 @@ bool Y86Pipeline::running()
         return true;
     
     return (fetchI->prediction()!=-1);
+}
+
+void Y86Pipeline::recoverForwarding()
+{
+    for (int i=0;i<10;i++)
+        forwardReg[i] = m_register[i];
+    for (int i=0;i<10;i++)
+        forwardStat[i] = true;
 }

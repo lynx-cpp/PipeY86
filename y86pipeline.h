@@ -45,6 +45,7 @@ private:
     }
     int readMemory(int address) { return m_memory[address]; }
     void writeMemory(int address,int value) { m_memory[address] = value; }
+    void recoverForwarding();
     
 public:
     friend class InstructionPrivate;

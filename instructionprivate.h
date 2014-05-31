@@ -32,7 +32,7 @@ public:
     virtual ~InstructionPrivate() {}
     
     virtual void fetchStage();
-    virtual bool decodeStage() {}
+    virtual bool decodeStage() { return true; }
     virtual void executeStage() {}
     virtual void memoryStage() {}
     virtual void writeBackStage() {}

@@ -61,10 +61,10 @@ Instruction::Instruction(const std::string& instructionCode,int address)
     constructPrivate();
 }
 
-Instruction::Instruction()
+Instruction::Instruction(int address)
 { 
     m_instructionCode = "00";
-    m_address = -1;
+    m_address = address;
     constructPrivate();
 }
 
@@ -124,9 +124,10 @@ void Instruction::fetchStage()
     }
 }
 
-void Instruction::decodeStage()
+bool Instruction::decodeStage()
 {
-    if (instructionP->stat==AOK) instructionP->decodeStage(); 
+    if (instructionP->stat==AOK) return instructionP->decodeStage(); 
+    return true;
 }
 
 void Instruction::executeStage()
@@ -152,4 +153,11 @@ int Instruction::addr()
 bool Instruction::operator!=(const Instruction& B)
 {
     return m_address!=B.m_address;
+}
+
+bool Instruction::eq(Instruction* decodeI)
+{
+    if (addr()==-1)
+        return true;
+    return addr()==decodeI->addr();
 }
