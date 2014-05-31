@@ -2,72 +2,7 @@
 #include "instruction.h"
 #include "y86pipeline.h"
 #include "utility.h"
-
-InstructionOP::InstructionOP(const std::string& instructionCode, int address):InstructionPrivate(address)
-{
-    type = other;
-    if (ifun==0) type = addl;
-    if (ifun==1) type = subl;
-    if (ifun==2) type = andl;
-    if (ifun==3) type = xorl;
-}
-
-InstructionOP::~InstructionOP()
-{
-
-}
-
-void InstructionOP::decodeStage()
-{
-    InstructionPrivate::decodeStage();
-    valA = m_pipeline->readRegister(rA);
-    valB = m_pipeline->readRegister(rB);
-}
-
-void InstructionOP::executeStage()
-{
-    InstructionPrivate::executeStage();
-    switch (type){
-        case (addl):
-            valE = valB + valA;
-            break;
-        case (subl):
-            valE = valB - valA;
-            break;
-        case (andl):
-            valE = valB & valA;
-            break;
-        case (xorl):
-            valE = valB ^ valA;
-            break;
-        default:
-            ;
-    }
-    m_pipeline->setConditionCode(valB,valA,valE);
-}
-
-void InstructionOP::fetchStage()
-{
-    InstructionPrivate::fetchStage();
-    if (m_instructionCode.size()<4){
-        stat = INS;
-        std::cerr << "invalid instruction."  << std::endl;
-        //invalid instruction ...
-    }
-    rA = hex2num(m_instructionCode[2]);
-    rB = hex2num(m_instructionCode[3]);
-}
-
-void InstructionOP::memoryStage()
-{
-    InstructionPrivate::memoryStage();
-}
-
-void InstructionOP::writeBackStage()
-{
-    InstructionPrivate::writeBackStage();
-    m_pipeline->writeRegister(rB,valE);
-}
+#include "instructionprivate.h"
 
 void Instruction::constructPrivate()
 {
@@ -91,13 +26,10 @@ void Instruction::constructPrivate()
             break;
         }
         if (code==0x20){
-			instructionP = new InstructionRrmovl(m_instructionCode,m_address);
-			break;
-		}
-        if (code==0x40){
-			instructionP = new InstructionRmmovl(m_instructionCode,m_address);
-			break;
-		}
+            instructionP = new InstructionRrmovl(m_instructionCode,m_address);
+            break;
+        }
+        
         //add new instruction constructing function here
         
         instructionP = new InstructionNop(m_address);
@@ -129,68 +61,59 @@ Instruction::Instruction(const std::string& instructionCode,int address)
     constructPrivate();
 }
 
-InstructionPrivate::InstructionPrivate(int address):
-rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0)
-{
-    m_address = address;
-    stat = BUB;
-    valP = -1;
+Instruction::Instruction()
+{ 
+    m_instructionCode = "00";
+    m_address = -1;
+    constructPrivate();
 }
 
-
-InstructionIrmovl::InstructionIrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
-{
+Instruction::~Instruction()
+{ 
+    if (instructionP!=NULL) 
+        delete instructionP; 
+    else
+        std::cerr << "InstructionPrivate Error.." << std::endl;
 }
 
-void InstructionIrmovl::decodeStage()
+void Instruction::setPipeline(Y86Pipeline* pipeline)
 {
-    InstructionPrivate::decodeStage();
+    instructionP->setPipeline(pipeline); 
 }
 
-void InstructionIrmovl::executeStage()
+int Instruction::prediction() const
 {
-    InstructionPrivate::executeStage();
-    valE = 0 + valC;
+    return instructionP->prediction(); 
 }
 
-void InstructionIrmovl::fetchStage()
+void Instruction::printCode()
 {
-    InstructionPrivate::fetchStage();
-    if (m_instructionCode.size()<12){
-        stat = INS;
-        std::cerr << "invalid instruction."  << std::endl;
-        //invalid instruction ...
-    }
-    rA = hex2num(m_instructionCode[2]);
-    rB = hex2num(m_instructionCode[3]);
-    valC = readHexSmallEndian(m_instructionCode,4,11);
+    std::cerr << "code : " << m_instructionCode << std::endl; 
 }
 
-void InstructionIrmovl::memoryStage()
+void Instruction::setBubble()
 {
-    InstructionPrivate::memoryStage();
+    instructionP->stat = BUB; 
 }
 
-void InstructionIrmovl::writeBackStage()
+bool Instruction::isBubble()
 {
-    InstructionPrivate::writeBackStage();
-    m_pipeline->writeRegister(rB,valE);
+    return (instructionP->stat == BUB); 
 }
 
-InstructionIrmovl::~InstructionIrmovl()
+void Instruction::setOk()
 {
+    instructionP->stat = AOK;
 }
 
-InstructionRrmovl :: InstructionRrmovl(const std::string& m_instructionCode, int address):InstructionPrivate(address)
+bool Instruction::isOk()
 {
+    return (instructionP->stat==AOK);
 }
 
-InstructionRrmovl :: ~ InstructionRrmovl()
+bool Instruction::normal()
 {
-}
-
-void InstructionRrmovl :: fetchStage()
-{
+<<<<<<< HEAD
 	InstructionPrivate :: fetchStage();
 	if (m_instructionCode.size()<4){
 		stat = INS;
@@ -199,31 +122,35 @@ void InstructionRrmovl :: fetchStage()
 	}
 	rA = hex2num(m_instructionCode[2]);
 	rB = hex2num(m_instructionCode[3]);
+=======
+    return isOk() && (m_address!=-1); 
+>>>>>>> ab0d0ad4c60095bd3c7d1711ea190f0b93043da4
 }
 
-void InstructionRrmovl :: decodeStage()
+void Instruction::fetchStage()
+{ 
+    if (instructionP->stat==BUB) { 
+        instructionP->stat = AOK;
+        instructionP->fetchStage(); 
+    }
+}
+
+void Instruction::decodeStage()
 {
-	InstructionPrivate :: decodeStage();
-	valA = m_pipeline->readRegister(rB);
+    if (instructionP->stat==AOK) instructionP->decodeStage(); 
 }
 
-void InstructionRrmovl :: executeStage()
+void Instruction::executeStage()
 {
-	InstructionPrivate :: executeStage();
-	valE = 0 + valA;
+    if (instructionP->stat==AOK) instructionP->executeStage(); 
 }
 
-void InstructionRrmovl :: memoryStage()
+void Instruction::memoryStage()
 {
-	InstructionPrivate :: memoryStage();
+    if (instructionP->stat==AOK) instructionP->memoryStage(); 
 }
 
-void InstructionRrmovl :: writeBackStage()
-{
-	InstructionPrivate :: writeBackStage();
-	m_pipeline->writeRegister(rB,valE);
-}
-
+<<<<<<< HEAD
 InstructionRmmovl :: InstructionRmmovl(const std:string& m_instructionCode, int address):InstructionPrivate(address)
 {
 }
@@ -265,17 +192,16 @@ void InstructionRmmovl :: memoryStage()
 }
 
 void InstructionPrivate::fetchStage()
+=======
+void Instruction::writeBackStage()
+>>>>>>> ab0d0ad4c60095bd3c7d1711ea190f0b93043da4
 {
-    valP = findInstructionFromAddr(m_address); valP ++; 
+    if (instructionP->stat==AOK) instructionP->writeBackStage(); 
 }
 
-int findInstructionFromAddr(int address)
+int Instruction::addr()
 {
-    int len = prog.size();
-    for (int i=0;i<len;i++)
-        if (prog[i].addr()==address)
-            return i;
-    return -1;
+    return instructionP->addr(); 
 }
 
 bool Instruction::operator!=(const Instruction& B)

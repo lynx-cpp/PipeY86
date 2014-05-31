@@ -7,8 +7,7 @@
 #include "utility.h"
 #define PIPELINE
 
-static int* mem_bak;
-
+static Memory oldMemory;
 /*
  * Instruction* newNullOp() // create NOP instruction
  * {
@@ -85,34 +84,10 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
     std::fstream stream;
     stream.open(filename.c_str(),std::fstream::in);
-    startAddr = -1;
-    endAddr = startAddr;
-    while (!stream.eof()){
-        std::string s1,s2;
-        readAddrAndValue(stream,s1,s2);
-        if (s1=="|" || s1=="")
-            continue;
-        
-        s1.erase(s1.end() - 1);
-        int curAddr = readHexBigEndian(s1,2,s1.size() - 1);
-        
-        if (startAddr==-1)
-            startAddr = curAddr;
-        endAddr = curAddr;
-        //std::cout << s1 << " {} " << s2 << std::endl;
-    }
     endAddr += 8;
-    //std::cout<< startAddr << " " << endAddr << std::endl;
-    m_memory = new char[endAddr - startAddr];
-    //mem_bak = static_cast<int*>(std::malloc(endAddr - startAddr));
-    //memcpy(mem_bak,m_memory,sizeof(m_memory));
     
     prog.clear();
-    
-    //stream.seekg(0,stream.beg);
-    //stream.seekp(stream.beg);
-    stream.close();
-    stream.open(filename.c_str(),std::fstream::in);
+    m_memory.clear();
     while (!stream.eof()){
         std::string s1,s2;
         readAddrAndValue(stream,s1,s2);
@@ -127,10 +102,11 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
         prog.push_back(Instruction(s2,curAddr));
         
         for (int i=0;i+1<s2.size();i+=2){
-            m_memory[curAddr - startAddr] = byte2int(s2[i],s2[i + 1]);
+            m_memory[curAddr] = byte2int(s2[i],s2[i + 1]);
             curAddr ++;
         }
     }
+    oldMemory = m_memory;
     
     /*
      *    InstructionPtr it;
@@ -140,6 +116,9 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
      *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
      */
     memset(m_register,0,sizeof(m_register));
+    memset(forwardReg,0,sizeof(forwardReg));
+    for (int i=0;i<10;i++)
+        forwardStat[i] = true;
     std::cerr << "initialization completed." << std::endl;
 }
 
@@ -175,7 +154,7 @@ void Y86Pipeline::run()
     } while (running());
     for (int i=0;i<8;i++){
         if (m_register[i]!=0)
-            std::cout << i << " " << m_register[i] << std::endl;
+            std::cout << "Value of Register " << i << " changed from 0 to " << m_register[i] << std::endl;
     }
 }
 

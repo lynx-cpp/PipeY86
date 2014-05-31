@@ -4,17 +4,13 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-
+#include <map>
 
 class Instruction;
 #include "instruction.h"
-//typedef Instruction* InstrctionPtr;
-//typedef std::vector<Instruction> Program;
 typedef std::vector<Instruction> Program;
-//typedef Program::iterator InstructionPtr;
 typedef Instruction* InstructionPtr;
-//typedef Instruction InstructionPtr;
-
+typedef std::map<int,int> Memory;
 
 class Y86Pipeline
 {
@@ -22,22 +18,41 @@ private:
     InstructionPtr fetchI,decodeI,executeI,memoryI,writeBackI;
     int m_register[10];
     
-    char* m_memory;
+    int forwardReg[10];
+    bool forwardStat[10];
+    
+    Memory m_memory;
     int startAddr,endAddr;
     
     bool ZeroFlag,OverflowFlag,SignFlag;
     
-public:
-    Y86Pipeline(const std::string& filename);
-    bool running();
-    void run();
-    void execute();
-    int readRegister(int num) { return m_register[num]; }
+    void writeForwarding(int num,int value,bool stat)
+    {
+        forwardReg[num] = value;
+        forwardStat[num] = stat;
+    }
+    bool readForwarding(int num,int& dest)
+    {
+        if (!forwardStat[num])
+            return false;
+        dest = forwardReg[num];
+        return true;
+    }
     void writeRegister(int num,int value) 
     { 
         m_register[num] = value; 
         std::cerr << "writing value " << value << " to R[" << num << "]" << std::endl;
     }
+    int readMemory(int address) { return m_memory[address]; }
+    void writeMemory(int address,int value) { m_memory[address] = value; }
+    
+public:
+    friend class InstructionPrivate;
+    Y86Pipeline(const std::string& filename);
+    bool running();
+    void run();
+    void execute();
+    //int readRegister(int num) { return m_register[num]; }
     
     void setConditionCode(int a,int b,int val);
     bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }
