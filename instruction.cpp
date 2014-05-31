@@ -113,18 +113,7 @@ bool Instruction::isOk()
 
 bool Instruction::normal()
 {
-<<<<<<< HEAD
-	InstructionPrivate :: fetchStage();
-	if (m_instructionCode.size()<4){
-		stat = INS;
-		std :: cerr << "invalid instruction." << std::endl;
-		//invalid instruction ...
-	}
-	rA = hex2num(m_instructionCode[2]);
-	rB = hex2num(m_instructionCode[3]);
-=======
-    return isOk() && (m_address!=-1); 
->>>>>>> ab0d0ad4c60095bd3c7d1711ea190f0b93043da4
+   return isOk() && (m_address!=-1); 
 }
 
 void Instruction::fetchStage()
@@ -150,51 +139,7 @@ void Instruction::memoryStage()
     if (instructionP->stat==AOK) instructionP->memoryStage(); 
 }
 
-<<<<<<< HEAD
-InstructionRmmovl :: InstructionRmmovl(const std:string& m_instructionCode, int address):InstructionPrivate(address)
-{
-}
-
-InstructionRmmovl :: ~InstructionRmmovl()
-{
-}
-
-void InstructionRmmovl :: fetchStage()
-{
-	InstructionPrivate :: fetchStage();
-	if (m_instructionCode.size()<12){
-		stat = INS;
-		std :: cerr << "invalid instruction." << std :: endl;
-		//invalid instruction
-	}
-	rA=hex2num(m_instructionCode[2]);
-	rB=hex2num(m_instructionCode[3]);
-	valC = readHexSmallEndian(m_instructionCode,4,11);
-}
-
-void InstructionRmmovl :: decodeStage()
-{
-	InstructionPrivate :: decodeStage();
-	valA = m_pipeline->readRegister(rA);
-	valB = m_pipeline->readRegister(rB);
-}
-
-void InstructionRmmovl :: executeStage()
-{
-	InstructionPrivate :: executeStage();
-	valE = valB + valC;
-}
-
-void InstructionRmmovl :: memoryStage()
-{
-	InstructionPrivate:: memoryStage();
-	m_pipeline ->
-}
-
-void InstructionPrivate::fetchStage()
-=======
 void Instruction::writeBackStage()
->>>>>>> ab0d0ad4c60095bd3c7d1711ea190f0b93043da4
 {
     if (instructionP->stat==AOK) instructionP->writeBackStage(); 
 }
