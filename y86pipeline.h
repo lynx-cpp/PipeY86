@@ -22,7 +22,7 @@ private:
     bool forwardStat[10];
     
     Memory m_memory;
-    int startAddr,endAddr;
+    int orgStackAddr;
     
     bool ZeroFlag,OverflowFlag,SignFlag;
     

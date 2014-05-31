@@ -5,6 +5,8 @@
 #include "y86pipeline.h"
 #include "instruction.h"
 #include "utility.h"
+#define ESP 4
+#define EBP 5
 #define PIPELINE
 
 static Memory oldMemory;
@@ -110,10 +112,10 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
     std::fstream stream;
     stream.open(filename.c_str(),std::fstream::in);
-    endAddr += 8;
     
     prog.clear();
     m_memory.clear();
+    orgStackAddr = 0;
     while (!stream.eof()){
         std::string s1,s2;
         readAddrAndValue(stream,s1,s2);
@@ -124,6 +126,8 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
         
         s1.erase(s1.end() - 1);
         int curAddr = readHexBigEndian(s1,2,s1.size() - 1);
+        if (curAddr>orgStackAddr)
+            orgStackAddr = curAddr;
         
         prog.push_back(Instruction(s2,curAddr));
         
@@ -142,6 +146,8 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
      *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
      */
     memset(m_register,0,sizeof(m_register));
+    m_register[ESP] = orgStackAddr + 1;
+    m_register[EBP] = orgStackAddr;
     recoverForwarding();
     std::cerr << "initialization completed." << std::endl;
 }
