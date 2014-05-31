@@ -15,6 +15,10 @@ protected:
     int rA,rB,valC,valA,valB,valE,valM;
     int valP;
     
+    bool readReg(int num,int& dest);
+    void writeRealReg(int num,int value);
+    void writeForwardReg(int num,int value,bool flag);
+    
  
 public:
     friend class Instruction;
@@ -28,7 +32,7 @@ public:
     virtual ~InstructionPrivate() {}
     
     virtual void fetchStage();
-    virtual void decodeStage() {}
+    virtual bool decodeStage() {}
     virtual void executeStage() {}
     virtual void memoryStage() {}
     virtual void writeBackStage() {}
@@ -52,7 +56,7 @@ public:
     InstructionOP(const std::string& instructionCode,int address);
     virtual ~InstructionOP();
     virtual void fetchStage();
-    virtual void decodeStage();
+    virtual bool decodeStage();
     virtual void executeStage();
     virtual void memoryStage();
     virtual void writeBackStage();
@@ -64,7 +68,7 @@ public:
     InstructionIrmovl(const std::string& m_instructionCode,int address);
     virtual ~InstructionIrmovl();
     virtual void fetchStage();
-    virtual void decodeStage();
+    virtual bool decodeStage();
     virtual void executeStage();
     virtual void memoryStage();
     virtual void writeBackStage();
@@ -76,7 +80,7 @@ public:
     InstructionRrmovl(const std::string & m_instructionCode, int address);
     virtual ~InstructionRrmovl();
     virtual void fetchStage();
-    virtual void decodeStage();
+    virtual bool decodeStage();
     virtual void executeStage();
     virtual void memoryStage();
     virtual void writeBackStage();

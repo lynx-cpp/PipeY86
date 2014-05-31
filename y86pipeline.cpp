@@ -7,6 +7,7 @@
 #include "utility.h"
 #define PIPELINE
 
+static Memory oldMemory;
 /*
  * Instruction* newNullOp() // create NOP instruction
  * {
@@ -105,6 +106,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
             curAddr ++;
         }
     }
+    oldMemory = m_memory;
     
     /*
      *    InstructionPtr it;
@@ -114,6 +116,9 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
      *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
      */
     memset(m_register,0,sizeof(m_register));
+    memset(forwardReg,0,sizeof(forwardReg));
+    for (int i=0;i<10;i++)
+        forwardStat[i] = true;
     std::cerr << "initialization completed." << std::endl;
 }
 
@@ -149,7 +154,7 @@ void Y86Pipeline::run()
     } while (running());
     for (int i=0;i<8;i++){
         if (m_register[i]!=0)
-            std::cout << i << " " << m_register[i] << std::endl;
+            std::cout << "Value of Register " << i << " changed from 0 to " << m_register[i] << std::endl;
     }
 }
 

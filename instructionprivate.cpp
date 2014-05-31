@@ -16,11 +16,12 @@ InstructionOP::~InstructionOP()
 
 }
 
-void InstructionOP::decodeStage()
+bool InstructionOP::decodeStage()
 {
     InstructionPrivate::decodeStage();
-    valA = m_pipeline->readRegister(rA);
-    valB = m_pipeline->readRegister(rB);
+    //valA = m_pipeline->readRegister(rA);
+    //valB = m_pipeline->readRegister(rB);
+    return (readReg(rA,valA) && readReg(rB,valB));
 }
 
 void InstructionOP::executeStage()
@@ -43,6 +44,7 @@ void InstructionOP::executeStage()
             ;
     }
     m_pipeline->setConditionCode(valB,valA,valE);
+    writeForwardReg(rA,valE,true);
 }
 
 void InstructionOP::fetchStage()
@@ -65,7 +67,8 @@ void InstructionOP::memoryStage()
 void InstructionOP::writeBackStage()
 {
     InstructionPrivate::writeBackStage();
-    m_pipeline->writeRegister(rB,valE);
+    //m_pipeline->writeRegister(rB,valE);
+    writeRealReg(rB,valE);
 }
 
 InstructionPrivate::InstructionPrivate(int address):
@@ -76,11 +79,28 @@ rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0)
     valP = -1;
 }
 
+bool InstructionPrivate::readReg(int num, int& dest)
+{
+    return m_pipeline->readForwarding(num,dest);
+}
+
+void InstructionPrivate::writeForwardReg(int num, int value, bool flag)
+{
+    m_pipeline->writeForwarding(num,value,flag);
+}
+
+void InstructionPrivate::writeRealReg(int num, int value)
+{
+    m_pipeline->writeForwarding(num,value,true);
+    m_pipeline->writeRegister(num,value);
+}
+
+
 InstructionIrmovl::InstructionIrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
 }
 
-void InstructionIrmovl::decodeStage()
+bool InstructionIrmovl::decodeStage()
 {
     InstructionPrivate::decodeStage();
 }
@@ -89,6 +109,7 @@ void InstructionIrmovl::executeStage()
 {
     InstructionPrivate::executeStage();
     valE = 0 + valC;
+    writeForwardReg(rB,valE,true);
 }
 
 void InstructionIrmovl::fetchStage()
@@ -112,7 +133,8 @@ void InstructionIrmovl::memoryStage()
 void InstructionIrmovl::writeBackStage()
 {
     InstructionPrivate::writeBackStage();
-    m_pipeline->writeRegister(rB,valE);
+    //m_pipeline->writeRegister(rB,valE);
+    writeRealReg(rB,valE);
 }
 
 InstructionIrmovl::~InstructionIrmovl()
@@ -139,16 +161,18 @@ void InstructionRrmovl :: fetchStage()
     rB = hex2num(m_instructionCode[3]);
 }
 
-void InstructionRrmovl :: decodeStage()
+bool InstructionRrmovl :: decodeStage()
 {
     InstructionPrivate :: decodeStage();
-    valA = m_pipeline->readRegister(rB);
+    //valA = m_pipeline->readRegister(rB);
+    return readReg(rB,valA);
 }
 
 void InstructionRrmovl :: executeStage()
 {
     InstructionPrivate :: executeStage();
     valE = 0 + valA;
+    writeForwardReg(rB,valE,true);
 }
 
 void InstructionRrmovl :: memoryStage()
@@ -159,7 +183,8 @@ void InstructionRrmovl :: memoryStage()
 void InstructionRrmovl :: writeBackStage()
 {
     InstructionPrivate :: writeBackStage();
-    m_pipeline->writeRegister(rB,valE);
+    //m_pipeline->writeRegister(rB,valE);
+    writeRealReg(rB,valE);
 }
 
 void InstructionPrivate::fetchStage()

@@ -26,9 +26,9 @@ void Instruction::constructPrivate()
             break;
         }
         if (code==0x20){
-			instructionP = new InstructionRrmovl(m_instructionCode,m_address);
-			break;
-		}
+            instructionP = new InstructionRrmovl(m_instructionCode,m_address);
+            break;
+        }
         
         //add new instruction constructing function here
         

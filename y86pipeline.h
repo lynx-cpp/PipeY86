@@ -18,17 +18,26 @@ private:
     InstructionPtr fetchI,decodeI,executeI,memoryI,writeBackI;
     int m_register[10];
     
+    int forwardReg[10];
+    bool forwardStat[10];
+    
     Memory m_memory;
     int startAddr,endAddr;
     
     bool ZeroFlag,OverflowFlag,SignFlag;
     
-public:
-    Y86Pipeline(const std::string& filename);
-    bool running();
-    void run();
-    void execute();
-    int readRegister(int num) { return m_register[num]; }
+    void writeForwarding(int num,int value,bool stat)
+    {
+        forwardReg[num] = value;
+        forwardStat[num] = stat;
+    }
+    bool readForwarding(int num,int& dest)
+    {
+        if (!forwardStat[num])
+            return false;
+        dest = forwardReg[num];
+        return true;
+    }
     void writeRegister(int num,int value) 
     { 
         m_register[num] = value; 
@@ -36,6 +45,14 @@ public:
     }
     int readMemory(int address) { return m_memory[address]; }
     void writeMemory(int address,int value) { m_memory[address] = value; }
+    
+public:
+    friend class InstructionPrivate;
+    Y86Pipeline(const std::string& filename);
+    bool running();
+    void run();
+    void execute();
+    //int readRegister(int num) { return m_register[num]; }
     
     void setConditionCode(int a,int b,int val);
     bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }
