@@ -94,7 +94,10 @@ void Instruction::constructPrivate()
 			instructionP = new InstructionRrmovl(m_instructionCode,m_address);
 			break;
 		}
-        
+        if (code==0x40){
+			instructionP = new InstructionRmmovl(m_instructionCode,m_address);
+			break;
+		}
         //add new instruction constructing function here
         
         instructionP = new InstructionNop(m_address);
@@ -189,7 +192,7 @@ InstructionRrmovl :: ~ InstructionRrmovl()
 void InstructionRrmovl :: fetchStage()
 {
 	InstructionPrivate :: fetchStage();
-	if (m_instructionCode.size()!=4){
+	if (m_instructionCode.size()<4){
 		stat = INS;
 		std :: cerr << "invalid instruction." << std::endl;
 		//invalid instruction ...
@@ -219,6 +222,46 @@ void InstructionRrmovl :: writeBackStage()
 {
 	InstructionPrivate :: writeBackStage();
 	m_pipeline->writeRegister(rB,valE);
+}
+
+InstructionRmmovl :: InstructionRmmovl(const std:string& m_instructionCode, int address):InstructionPrivate(address)
+{
+}
+
+InstructionRmmovl :: ~InstructionRmmovl()
+{
+}
+
+void InstructionRmmovl :: fetchStage()
+{
+	InstructionPrivate :: fetchStage();
+	if (m_instructionCode.size()<12){
+		stat = INS;
+		std :: cerr << "invalid instruction." << std :: endl;
+		//invalid instruction
+	}
+	rA=hex2num(m_instructionCode[2]);
+	rB=hex2num(m_instructionCode[3]);
+	valC = readHexSmallEndian(m_instructionCode,4,11);
+}
+
+void InstructionRmmovl :: decodeStage()
+{
+	InstructionPrivate :: decodeStage();
+	valA = m_pipeline->readRegister(rA);
+	valB = m_pipeline->readRegister(rB);
+}
+
+void InstructionRmmovl :: executeStage()
+{
+	InstructionPrivate :: executeStage();
+	valE = valB + valC;
+}
+
+void InstructionRmmovl :: memoryStage()
+{
+	InstructionPrivate:: memoryStage();
+	m_pipeline ->
 }
 
 void InstructionPrivate::fetchStage()
