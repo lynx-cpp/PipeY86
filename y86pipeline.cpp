@@ -146,7 +146,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
      *    prog.push_back(Instruction()); it = (&prog[prog.size()-1]); decodeI= it;
      */
     memset(m_register,0,sizeof(m_register));
-    m_register[ESP] = orgStackAddr + 1;
+    m_register[ESP] = orgStackAddr + 4;
     m_register[EBP] = orgStackAddr;
     recoverForwarding();
     std::cerr << "initialization completed." << std::endl;
@@ -203,4 +203,19 @@ void Y86Pipeline::recoverForwarding()
         forwardReg[i] = m_register[i];
     for (int i=0;i<10;i++)
         forwardStat[i] = true;
+}
+
+int Y86Pipeline::read32BitMemory(int address)
+{
+    int ans = 0;
+    for (int i=address + 3;i>=address;i--)
+        ans = ans*0x100 + m_memory[i];
+}
+
+void Y86Pipeline::write32BitMemory(int address, int value)
+{
+    for (int i=address + 3;i>=address;i--){
+        m_memory[i] = value % 0x100;
+        value /= 0x100;
+    }
 }

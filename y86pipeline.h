@@ -45,7 +45,7 @@ private:
     }
     int readMemory(int address) { return m_memory[address]; }
     void writeMemory(int address,int value) { m_memory[address] = value; }
-    void recoverForwarding();
+   void recoverForwarding();
     
 public:
     friend class InstructionPrivate;
@@ -55,6 +55,8 @@ public:
     void execute();
     //int readRegister(int num) { return m_register[num]; }
     
+    int read32BitMemory(int address) ;
+    void write32BitMemory(int address,int value);
     void setConditionCode(int a,int b,int val);
     bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }
     bool jl() { return SignFlag ^ OverflowFlag; }
