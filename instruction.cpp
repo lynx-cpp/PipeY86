@@ -54,7 +54,7 @@ Instruction::Instruction(const Instruction& ip)
     instructionP->valP = ip.instructionP->valP;
 }
 
-Instruction::Instruction(const std::string& instructionCode,int address)
+Instruction::Instruction(const std::string& instructionCode, const std::string& comment, int address):m_comment(comment)
 {
     m_instructionCode = instructionCode;
     m_address = address;

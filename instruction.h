@@ -20,14 +20,14 @@ class Instruction
 {
 private:
     InstructionPrivate* instructionP;
-    std::string m_instructionCode;
+    std::string m_instructionCode,m_comment;
     int m_address;
     void constructPrivate();
 
 public:
     friend class InstructionPrivate;
     friend class Y86Pipeline;
-    Instruction(const std::string& instructionCode,int address);
+    Instruction(const std::string& instructionCode,const std::string& comment,int address);
     Instruction(int address = -1);
     Instruction(const Instruction& ip) ;
     ~Instruction();

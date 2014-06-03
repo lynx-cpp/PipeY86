@@ -30,13 +30,13 @@ static inline int readHexBigEndian(const std::string& str,int l,int r)
     return ret;
 }
 
-static inline void readAddrAndValue(std::fstream& stream,std::string& s1,std::string& s2)
+static inline void readTripleStr(std::fstream& stream,std::string& s1,std::string& s2,std::string& s3)
 {
     std::string line;
     std::getline(stream,line);
     std::stringstream ss;
     ss.clear(); ss.str(line);
-    ss >> s1 >> s2;
+    ss >> s1 >> s2 >> s3;
 }
 
 static inline int readHexSmallEndian(const std::string& str,int l,int r)

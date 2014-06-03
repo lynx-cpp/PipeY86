@@ -117,8 +117,8 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
     m_memory.clear();
     orgStackAddr = 0;
     while (!stream.eof()){
-        std::string s1,s2;
-        readAddrAndValue(stream,s1,s2);
+        std::string s1,s2,s3;
+        readTripleStr(stream,s1,s2,s3);
         if (s1=="|" || s1=="")
             continue;
         if (s2=="" || s2=="|")            
@@ -129,7 +129,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
         if (curAddr>orgStackAddr)
             orgStackAddr = curAddr;
         
-        prog.push_back(Instruction(s2,curAddr));
+        prog.push_back(Instruction(s2,s3,curAddr));
         
         for (int i=0;i+1<s2.size();i+=2){
             m_memory[curAddr] = byte2int(s2[i],s2[i + 1]);
