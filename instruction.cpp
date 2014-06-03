@@ -66,6 +66,7 @@ Instruction::Instruction(int address)
     m_instructionCode = "00";
     m_address = address;
     constructPrivate();
+    m_instructionCode = "";
 }
 
 Instruction::~Instruction()
