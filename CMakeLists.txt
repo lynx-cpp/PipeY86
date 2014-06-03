@@ -1,5 +1,5 @@
 project(pipey86)
 
-add_executable(pipey86 y86pipeline.cpp instruction.cpp instructionprivate.cpp main.cpp)
+add_executable(pipecmd y86pipeline.cpp instruction.cpp instructionprivate.cpp pipecmd.cpp)
 
-install(TARGETS pipey86 RUNTIME DESTINATION bin)
+#install(TARGETS pipey86 RUNTIME DESTINATION bin)

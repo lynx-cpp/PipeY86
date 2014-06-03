@@ -149,6 +149,13 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
     m_register[ESP] = orgStackAddr + 4;
     m_register[EBP] = orgStackAddr;
     recoverForwarding();
+    setProgToThis();
+   writeBackI = new Instruction();
+    memoryI = new Instruction();
+    executeI = new Instruction();
+    decodeI = new Instruction();
+    fetchI = new Instruction(prog[0]);
+    
     std::cerr << "initialization completed." << std::endl;
 }
 
@@ -161,25 +168,9 @@ void Y86Pipeline::setConditionCode(int a, int b, int val)
 
 void Y86Pipeline::run()
 {
-    /*
-     * for (InstructionPtr i=prog.begin();i!=prog.end();i++){
-     *    i->setPipeline(this);
-     *    i->printCode();
-}*/
-    int len = prog.size();
-    for (int i=0;i<len;i++){
-        prog[i].setPipeline(this);
-        prog[i].printCode();
-    }
-    writeBackI = new Instruction();
-    memoryI = new Instruction();
-    executeI = new Instruction();
-    decodeI = new Instruction();
-    fetchI = new Instruction(prog[0]);
-    std::cerr<< "starting Y86Pipeline.." << std::endl;
+    setProgToThis();
+   std::cerr<< "starting Y86Pipeline.." << std::endl;
     do{
-        //InstructionPtr next = getPrediction(fetchI);
-        //std::cerr << next->instructionP << std::endl;
         execute();
     } while (running());
     for (int i=0;i<8;i++){
@@ -218,4 +209,34 @@ void Y86Pipeline::write32BitMemory(int address, int value)
         m_memory[i] = value % 0x100;
         value /= 0x100;
     }
+}
+Y86Pipeline::~Y86Pipeline()
+{
+    delete fetchI; delete decodeI; delete executeI; delete memoryI; delete writeBackI;
+}
+
+void Y86Pipeline::setProgToThis()
+{   
+    for (int i=0;i<prog.size();i++){
+        prog[i].setPipeline(this);
+        //prog[i].printCode();
+    }
+}
+
+Y86Pipeline::Y86Pipeline(const Y86Pipeline& org):
+m_memory(org.m_memory),
+orgStackAddr(org.orgStackAddr),
+ZeroFlag(org.ZeroFlag),
+OverflowFlag(org.OverflowFlag),
+SignFlag(org.SignFlag)
+{
+    fetchI = new Instruction(*org.fetchI);
+    decodeI = new Instruction(*org.decodeI);
+    executeI = new Instruction(*org.executeI);
+    memoryI = new Instruction(*org.memoryI);
+    writeBackI = new Instruction(*org.writeBackI);
+    
+    memcpy(m_register,org.m_register,sizeof(m_register));
+    memcpy(forwardReg,org.forwardReg,sizeof(forwardReg));
+    memcpy(forwardStat,org.forwardStat,sizeof(forwardStat));
 }

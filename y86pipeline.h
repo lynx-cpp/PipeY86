@@ -50,6 +50,9 @@ private:
 public:
     friend class InstructionPrivate;
     Y86Pipeline(const std::string& filename);
+    Y86Pipeline(const Y86Pipeline& org);
+    ~Y86Pipeline();
+    void setProgToThis();
     bool running();
     void run();
     void execute();
