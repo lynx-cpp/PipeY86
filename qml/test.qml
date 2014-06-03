@@ -10,16 +10,14 @@ Item {
         ListElement {
             Address: "0x00"
             Data: "00"
-            Stage:""
+            Stage: "F"
             Code: "NOP"
-            color: "red"
         }
         ListElement {
             Address: "0x01"
             Data: "10"
-            Stage:""
+            Stage: "D"
             Code: "HALT"
-            color: "blue"
         }
         id: insModel
     }
@@ -35,11 +33,17 @@ Item {
         rowDelegate: Component {
             Rectangle {
                 width: parent.width
-                color:  if (styleData.row == 0)
-                    "lightgreen"
+                property string type: insModel.get(styleData.row).Stage
+                color: if (styleData.row==undefined)
+                    "lightgrey"
+                else if (type=="F") 
+                "lightgreen"
+                else if (type=="D")
+                    "yellow"
                  else
-                     "lightgrey"
+                     "blue"
             }
+                //color: insModel.get(styleData.row).color
         }
         model: insModel
     }
