@@ -221,7 +221,7 @@ static inline int get_register(std :: string word){
 	return 8;
 }
 
-static inline bool is_not_number(std :: string &s){
+static inline bool is_not_number(std :: string s){
 	remove_interpunction(s);
 	if (s.size() > 2 && s[1] == 'x')
 	{
@@ -261,7 +261,7 @@ static inline void split(std :: string inputstring, std :: vector<std :: string>
 	}
 }
 
-static inline bool is_not_valid_symbol(std :: string &s)
+static inline bool is_not_valid_symbol(std :: string s)
 {
 	return false;
 	if (s == "init") return true;
