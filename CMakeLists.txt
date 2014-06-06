@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.8.0)
 project(pipey86)
 #find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Qml REQUIRED)
