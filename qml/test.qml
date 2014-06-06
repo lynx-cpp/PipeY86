@@ -12,6 +12,7 @@ Item {
     }
     
     ListModel {
+        id: insModel
         ListElement {
             Address: "0x00"
             Data: "00"
@@ -24,7 +25,18 @@ Item {
             Stage: "D"
             Code: "HALT"
         }
-        id: insModel
+    }
+    
+    function removeStageLabel(idx){
+        insModel.setProperty(idx,"Stage","");
+    }
+    
+    function setStageLabel(idx,label){
+        insModel.setProperty(idx,"Stage",label);
+    }
+    
+    function addElement(addr,data,stage,code){
+        insModel.append({"Address":addr,"Data":data,"Stage":stage,"Code":code});
     }
     
     Item {
@@ -52,7 +64,7 @@ Item {
                         else if (type=="D")
                             "yellow"
                             else
-                                "blue"
+                                "lightblue"
                 }
                 //color: insModel.get(styleData.row).color
             }

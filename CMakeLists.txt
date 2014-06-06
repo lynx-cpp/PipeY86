@@ -15,7 +15,7 @@ set(PIPELINE_SRCS y86pipeline.cpp instruction.cpp instructionprivate.cpp)
 set(S2O_SRCS s2o/main.cpp)
 
 add_executable(pipecmd ${PIPELINE_SRCS} pipecmd.cpp)
-add_executable(s2o ${S2O_SRCS})
+#add_executable(s2o ${S2O_SRCS})
 
 QT5_ADD_RESOURCES (RESOURCES resources.qrc)
 add_executable(pipey86 ${PIPELINE_SRCS} main.cpp ${RESOURCES})
