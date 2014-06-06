@@ -2,6 +2,8 @@
 #define CHECK_H
 #include "tools.h"
 #include <map>
+#include <utility>
+#include <string>
 
 /*
  *

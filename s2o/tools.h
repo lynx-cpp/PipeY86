@@ -23,7 +23,7 @@ static inline char get_halfbyte(T x,int k){
 }
 
 static inline std :: string int2hex_big(int x, int k = 2){
-	char *bit = new (char[k]);
+	char *bit = new char[k];
 	std :: string result = "";
 	for (int i = 0; i<k; ++i)
 		bit[k-i-1] = get_halfbyte(x,i+1);
@@ -34,7 +34,7 @@ static inline std :: string int2hex_big(int x, int k = 2){
 }
 
 static inline std :: string int2hex_small(int x,int k = 2){
-	char *bit = new (char[k+1]);
+	char *bit = new char[k+1];
 	std :: string result = "";
 	for (int i = 0; i<k; ++i)
 		bit[k-i-1] = get_halfbyte(x,i+1);

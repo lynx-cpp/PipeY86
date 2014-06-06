@@ -5,6 +5,11 @@ import QtQuick.Controls 1.0
 Item {
     width: 800;
     height: 600;
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: "#adbcc1"
+    }
     
     ListModel {
         ListElement {
@@ -22,36 +27,56 @@ Item {
         id: insModel
     }
     
-    TableView {
-        id: insTable
+    Item {
+        id:tableItem
+        width: 455 + tableShadow.radius; height: 500 + tableShadow.radius
         anchors.left: parent.left; anchors.top: parent.top;
-        TableViewColumn{ role: "Address"  ; title: "Address" ; width: 100 }
-        TableViewColumn{ role: "Data" ; title: "Data" ; width: 100}
-        TableViewColumn{ role: "Stage" ; title: "Stage" ; width: 50}
-        TableViewColumn{ role: "Code" ; title: "Code" ; width: 200}
-        width: 455; height: 500
-        rowDelegate: Component {
-            Rectangle {
-                width: parent.width
-                property string type: insModel.get(styleData.row).Stage
-                color: if (styleData.row==undefined)
+        
+        TableView {
+            id: insTable
+            anchors.left: parent.left; anchors.top: parent.top;
+            //anchors.fill: parent
+            TableViewColumn{ role: "Address"  ; title: "Address" ; width: 100 }
+            TableViewColumn{ role: "Data" ; title: "Data" ; width: 100}
+            TableViewColumn{ role: "Stage" ; title: "Stage" ; width: 50}
+            TableViewColumn{ role: "Code" ; title: "Code" ; width: 200}
+            width: 455; height: 500
+            rowDelegate: Component {
+                Rectangle {
+                    width: parent.width
+                    property string type: insModel.get(styleData.row).Stage
+                    color: if (styleData.row==undefined)
                     "lightgrey"
-                else if (type=="F") 
-                "lightgreen"
-                else if (type=="D")
-                    "yellow"
-                 else
-                     "blue"
-            }
+                    else if (type=="F") 
+                        "lightgreen"
+                        else if (type=="D")
+                            "yellow"
+                            else
+                                "blue"
+                }
                 //color: insModel.get(styleData.row).color
+            }
+            model: insModel
         }
-        model: insModel
     }
+    DropShadow {
+        id: tableShadow
+        anchors.fill: source
+        cached: true;
+        horizontalOffset: 3;
+        verticalOffset: 3;
+        radius: 8.0;
+        samples: 16;
+        color: "#80000000";
+        smooth: true;
+        source: tableItem;
+    }
+    
     
     Item {
         id: container;
         //anchors.centerIn: parent;
-        anchors.left: insTable.right; anchors.leftMargin: 5
+        anchors.left: tableItem.right; anchors.leftMargin: 5
         width:  rect.width  + (2 * rectShadow.radius);
         height: rect.height + (2 * rectShadow.radius);
         
@@ -59,7 +84,7 @@ Item {
             id: rect
             width: 100;
             height: 50;
-            color: "lightblue";
+            color: "white";
             radius: 0;
             antialiasing: true;
             anchors.centerIn: parent;

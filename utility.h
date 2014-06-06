@@ -20,7 +20,6 @@ static inline int byte2int(char a,char b)
     return hex2num(a)*16 + hex2num(b);
 }
 
-
 static inline int readHexBigEndian(const std::string& str,int l,int r)
 {
     int ret = 0;
