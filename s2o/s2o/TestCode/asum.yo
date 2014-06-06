@@ -1,0 +1,53 @@
+                      | /* $begin code-yso */
+                      | /* $begin code-ysa */
+                      | # Execution begins at address 0 
+  0x000:              | 	.pos 0 
+  0x000: 308400010000 | init:	irmovl Stack, %esp  	# Set up stack pointer  
+  0x006: 308500010000 | 	irmovl Stack, %ebp  	# Set up base pointer   
+  0x00C: 8024000000   | 	call Main		# Execute main program
+  0x011: 10           | 	halt			# Terminate program 
+                      | 
+                      | # Array of 4 elements
+  0x014:              | 	.align 4 	
+  0x014:0D000000      | array:	.long 0xd
+  0x018:C0000000      | 	.long 0xc0
+  0x01C:000B0000      | 	.long 0xb00
+  0x020:00A00000      | 	.long 0xa000	
+                      | 
+  0x024: A058         | Main:	pushl %ebp 
+  0x026: 2045         | 	rrmovl %esp,%ebp
+  0x028: 308004000000 | 	irmovl $4,%eax	
+  0x02E: A008         | 	pushl %eax		# Push 4
+  0x030: 308214000000 | 	irmovl array,%edx
+  0x036: A028         | 	pushl %edx      	# Push array
+  0x038: 8042000000   | 	call Sum		# Sum(array, 4)
+  0x03D: 2054         | 	rrmovl %ebp,%esp
+  0x03F: B058         | 	popl %ebp
+  0x041: 90           | 	ret 
+                      | 
+                      | /* $begin sum-ys 0 */
+                      | 	# int Sum(int *Start, int Count)
+  0x042: A058         | Sum:	pushl %ebp
+  0x044: 2045         | 	rrmovl %esp,%ebp
+  0x046: 501508000000 | 	mrmovl 8(%ebp),%ecx 	# ecx = Start
+  0x04C: 50250C000000 | 	mrmovl 12(%ebp),%edx	# edx = Count
+  0x052: 6300         | 	xorl %eax,%eax		# sum = 0
+  0x054: 6222         | 	andl   %edx,%edx	# Set condition codes
+  0x056: 7378000000   | 	je     End
+  0x05B: 506100000000 | Loop:	mrmovl (%ecx),%esi	# get *Start
+  0x061: 6060         | 	addl %esi,%eax          # add to sum
+  0x063: 308304000000 | 	irmovl $4,%ebx          # 
+  0x069: 6031         | 	addl %ebx,%ecx          # Start++
+  0x06B: 3083FFFFFFFF | 	irmovl $-1,%ebx	        # 
+  0x071: 6032         | 	addl %ebx,%edx          # Count--
+  0x073: 745B000000   | 	jne    Loop             # Stop when 0
+  0x078: 2054         | End:	rrmovl %ebp,%esp
+  0x07A: B058         | 	popl %ebp
+  0x07C: 90           | 	ret
+                      | /* $end sum-ys 0 */
+                      | 
+                      | # The stack starts here and grows to lower addresses
+  0x100:              | 	.pos 0x100		
+  0x100:              | Stack:	 
+                      | /* $end code-ysa */
+                      | /* $end code-yso */

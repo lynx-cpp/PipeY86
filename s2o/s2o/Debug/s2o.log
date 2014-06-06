@@ -1,0 +1,46 @@
+﻿生成启动时间为 2014/6/3 20:35:46。
+     1>项目“D:\code\s2o\s2o\s2o.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“Debug\s2o.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"D:\library\vlfeat-0.9.17" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>d:\code\s2o\s2o\tools.h(228): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\tools.h(234): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(24): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(33): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(78): warning C4018: “>=”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(86): warning C4018: “>=”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(98): warning C4018: “>=”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(102): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(117): warning C4018: “>=”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(120): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(136): warning C4018: “>=”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(147): warning C4018: “>=”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\check.h(71): warning C4101: “Dest”: 未引用的局部变量
+     1>d:\code\s2o\s2o\check.h(71): warning C4101: “valC”: 未引用的局部变量
+     1>d:\code\s2o\s2o\check.h(71): warning C4101: “rA”: 未引用的局部变量
+     1>d:\code\s2o\s2o\check.h(71): warning C4101: “rB”: 未引用的局部变量
+     1>d:\code\s2o\s2o\build.h(14): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\build.h(25): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\build.h(98): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\code\s2o\s2o\build.h(124): warning C4018: “<”: 有符号/无符号不匹配
+       ManifestResourceCompile:
+         所有输出均为最新。
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\code\s2o\Debug\s2o.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\library\vlfeat-0.9.17\bin\win32" opencv_calib3d244d.lib opencv_contrib244d.lib opencv_core244d.lib opencv_features2d244d.lib opencv_flann244d.lib opencv_gpu244d.lib opencv_highgui244d.lib opencv_imgproc244d.lib opencv_legacy244d.lib opencv_ml244d.lib opencv_nonfree244d.lib opencv_objdetect244d.lib opencv_photo244d.lib opencv_stitching244d.lib opencv_ts244d.lib opencv_video244d.lib opencv_videostab244d.lib opencv_calib3d244.lib opencv_contrib244.lib opencv_core244.lib opencv_features2d244.lib opencv_flann244.lib opencv_gpu244.lib opencv_highgui244.lib opencv_imgproc244.lib opencv_legacy244.lib opencv_ml244.lib opencv_nonfree244.lib opencv_objdetect244.lib opencv_photo244.lib opencv_stitching244.lib opencv_ts244.lib opencv_video244.lib opencv_videostab244.lib "atk-1.0.lib" cairo.lib expat.lib fontconfig.lib freetype.lib gailutil.lib "gdk-win32-2.0.lib" "gdk_pixbuf-2.0.lib" "gio-2.0.lib" "glib-2.0.lib" "gmodule-2.0.lib" "gobject-2.0.lib" "gthread-2.0.lib" "gtk-win32-2.0.lib" intl.lib libpng.lib "pango-1.0.lib" "pangocairo-1.0.lib" "pangoft2-1.0.lib" "pangowin32-1.0.lib" zdll.lib vl.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\s2o.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\code\s2o\Debug\s2o.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\code\s2o\Debug\s2o.lib" /MACHINE:X86 Debug\s2o.exe.embed.manifest.res
+         Debug\main.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\s2o.exe.embed.manifest" /manifest Debug\s2o.exe.intermediate.manifest
+         所有输出均为最新。
+       LinkEmbedManifest:
+         所有输出均为最新。
+         s2o.vcxproj -> D:\code\s2o\Debug\s2o.exe
+       FinalizeBuildStatus:
+         正在删除文件“Debug\s2o.unsuccessfulbuild”。
+         正在对“Debug\s2o.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“D:\code\s2o\s2o\s2o.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:01.15
