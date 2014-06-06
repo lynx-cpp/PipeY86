@@ -177,5 +177,4 @@ static inline std :: ostringstream build(std :: vector<std :: string> Instructio
 	return output;
 }
 
-#undef BUILD_H
 #endif

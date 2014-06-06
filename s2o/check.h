@@ -178,5 +178,4 @@ static inline char check_compile(std :: vector<std :: string> InstructionRegiste
 }
 
 
-#undef CHECK_H
 #endif

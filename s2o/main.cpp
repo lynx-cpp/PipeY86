@@ -44,6 +44,5 @@ int main(int argc, char **argv) {
 	std :: ofstream fout(argv[2]);
 	fout << output.str();
 	fout.close();
-	system("pause");
 	return 0;
 }
