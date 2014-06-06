@@ -2,6 +2,7 @@
 #include "y86pipeline.h"
 
 int findInstructionFromAddr(int address);
+
 InstructionOP::InstructionOP(const std::string& instructionCode, int address):InstructionPrivate(address)
 {
     type = other;
@@ -44,7 +45,7 @@ void InstructionOP::executeStage()
             ;
     }
     m_pipeline->setConditionCode(valB,valA,valE);
-    writeForwardReg(rA,valE,true);
+    writeForwardReg(rB,valE,true);
 }
 
 void InstructionOP::fetchStage()
@@ -152,7 +153,7 @@ InstructionRrmovl :: ~ InstructionRrmovl()
 void InstructionRrmovl :: fetchStage()
 {
     InstructionPrivate :: fetchStage();
-    if (m_instructionCode.size()!=4){
+    if (m_instructionCode.size()<4){
         stat = INS;
         std :: cerr << "invalid instruction." << std::endl;
         //invalid instruction ...
@@ -165,7 +166,7 @@ bool InstructionRrmovl :: decodeStage()
 {
     InstructionPrivate :: decodeStage();
     //valA = m_pipeline->readRegister(rB);
-    return readReg(rB,valA);
+    return readReg(rA,valA);
 }
 
 void InstructionRrmovl :: executeStage()
@@ -189,7 +190,59 @@ void InstructionRrmovl :: writeBackStage()
 
 void InstructionPrivate::fetchStage()
 {
+    if (m_address==-1){
+        valP = -1;
+        return ;
+    }
     valP = findInstructionFromAddr(m_address); valP ++; 
+}
+
+bool InstructionMrmovl::decodeStage()
+{
+    return readReg(rB,valB);
+}
+
+void InstructionMrmovl::executeStage()
+{
+    InstructionPrivate::executeStage();
+    valE = valB + valC;
+    writeForwardReg(rA,valM,false);
+}
+
+void InstructionMrmovl::fetchStage()
+{
+    InstructionPrivate::fetchStage();
+    if (m_instructionCode.size()<12){
+        stat = INS;
+        std :: cerr << "invalid instruction." << std::endl;
+        //invalid instruction ...
+    }
+    rA = hex2num(m_instructionCode[2]);
+    rB = hex2num(m_instructionCode[3]);
+    valC = readHexSmallEndian(m_instructionCode,4,11);
+}
+
+InstructionMrmovl::InstructionMrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
+{
+
+}
+
+void InstructionMrmovl::memoryStage()
+{
+    InstructionPrivate::memoryStage();
+    valM = m_pipeline->read32BitMemory(valE);
+    writeForwardReg(rA,valM,true);
+}
+
+void InstructionMrmovl::writeBackStage()
+{
+    InstructionPrivate::writeBackStage();
+    writeRealReg(rA,valM);
+}
+
+InstructionMrmovl::~InstructionMrmovl()
+{
+
 }
 
 int findInstructionFromAddr(int address)

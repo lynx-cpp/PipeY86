@@ -22,7 +22,7 @@ private:
     bool forwardStat[10];
     
     Memory m_memory;
-    int startAddr,endAddr;
+    int orgStackAddr;
     
     bool ZeroFlag,OverflowFlag,SignFlag;
     
@@ -45,15 +45,21 @@ private:
     }
     int readMemory(int address) { return m_memory[address]; }
     void writeMemory(int address,int value) { m_memory[address] = value; }
+   void recoverForwarding();
     
 public:
     friend class InstructionPrivate;
     Y86Pipeline(const std::string& filename);
+    Y86Pipeline(const Y86Pipeline& org);
+    ~Y86Pipeline();
+    void setProgToThis();
     bool running();
     void run();
     void execute();
     //int readRegister(int num) { return m_register[num]; }
     
+    int read32BitMemory(int address) ;
+    void write32BitMemory(int address,int value);
     void setConditionCode(int a,int b,int val);
     bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }
     bool jl() { return SignFlag ^ OverflowFlag; }
