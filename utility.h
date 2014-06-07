@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <iomanip>
 
 class Instruction;
 typedef std::vector<Instruction> Program;
@@ -48,6 +49,26 @@ static inline int readHexSmallEndian(const std::string& str,int l,int r)
     }
     //std::cerr << "Read hex : " << ret
     return ret;
+}
+
+static inline std::string int2Hex(int hex)
+{
+    std::stringstream ss;
+    ss.clear(); ss.str("");
+    //ss.setf ( std::ios::hex, std::ios::basefield );  // set hex as the basefield
+    //ss.setf ( std::ios::showbase ); 
+    ss << "0x" << std::setfill('0') << std::setw(3) << std::hex << hex;
+    return ss.str();
+}
+
+static inline std::string hex2Data(const std::string& hex)
+{
+    std::stringstream ss;
+    ss.clear(); ss.str("");
+    for (int i=0;i + 1<hex.length();i+=2){
+        ss << hex[i] << hex[i + 1] << " ";
+    }
+    return ss.str();
 }
 
 //hello

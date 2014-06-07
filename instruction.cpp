@@ -162,3 +162,14 @@ bool Instruction::eq(Instruction* decodeI)
         return true;
     return addr()==decodeI->addr();
 }
+
+std::string Instruction::instructionCode()
+{
+    return m_instructionCode;
+}
+
+std::string Instruction::comment()
+{
+    return m_comment;
+}
+
