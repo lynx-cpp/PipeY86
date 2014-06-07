@@ -130,6 +130,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
             orgStackAddr = curAddr;
         
         prog.push_back(Instruction(s2,s3,curAddr));
+        //std::cerr << s3 << std::endl;
         
         for (int i=0;i+1<s2.size();i+=2){
             m_memory[curAddr] = byte2int(s2[i],s2[i + 1]);

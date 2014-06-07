@@ -41,6 +41,7 @@ Instruction::Instruction(const Instruction& ip)
 {
     m_instructionCode = ip.m_instructionCode;
     m_address = ip.m_address;
+    m_comment = ip.m_comment;
     constructPrivate();
     instructionP->setPipeline(ip.instructionP->m_pipeline);
     instructionP->stat = ip.instructionP->stat;

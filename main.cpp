@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
     PipelineLoader* pipeline = new PipelineLoader;
     QThread* pipelineThread = new QThread;
     QObject::connect(pipelineThread,SIGNAL(finished()),pipeline,SLOT(deleteLater()));
+    QObject::connect(root,SIGNAL(test()),pipeline,SLOT(load()));
     pipelineThread->start();
     return app.exec();
 }

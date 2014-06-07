@@ -37,7 +37,14 @@ static inline void readTripleStr(std::fstream& stream,std::string& s1,std::strin
     std::getline(stream,line);
     std::stringstream ss;
     ss.clear(); ss.str(line);
-    ss >> s1 >> s2 >> s3;
+    ss >> s1 >> s2;
+    int pos = line.find("|");
+    if (pos==std::string::npos) 
+        s3 = "";
+    else
+        s3 = line.substr(pos + 2,line.length() - pos - 1);
+    //std::cerr << line << std::endl;
+    //std::cerr << s1 << " "<< s2 << " " << s3 << std::endl;
 }
 
 static inline int readHexSmallEndian(const std::string& str,int l,int r)

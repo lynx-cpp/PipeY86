@@ -4,13 +4,15 @@ import QtQuick.Controls 1.0
 import "module"
 
 Item {
-    width: 800;
-    height: 600;
+    id: main
+    width: 1024;
+    height: 768;
     
     signal start(int latency)
     signal pause()
     signal reset()
     signal startWithoutLatency()
+    signal test()
     
     Rectangle {
         id: background
@@ -48,18 +50,18 @@ Item {
     
     Item {
         id:tableItem
-        width: 455 + tableShadow.radius; height: 500 + tableShadow.radius
+        width: insTable.width + tableShadow.radius; height: insTable.height + tableShadow.radius
         anchors.left: parent.left; anchors.top: parent.top;
         
         TableView {
             id: insTable
             anchors.left: parent.left; anchors.top: parent.top;
             //anchors.fill: parent
-            TableViewColumn{ role: "Address"  ; title: "Address" ; width: 100 }
-            TableViewColumn{ role: "Data" ; title: "Data" ; width: 100}
+            TableViewColumn{ role: "Address"  ; title: "Address" ; width: 80 }
+            TableViewColumn{ role: "Data" ; title: "Data" ; width: 120}
             TableViewColumn{ role: "Stage" ; title: "Stage" ; width: 50}
             TableViewColumn{ role: "Code" ; title: "Code" ; width: 200}
-            width: 455; height: 500
+            width: 455; height: 520
             rowDelegate: Component {
                 Rectangle {
                     width: parent.width
@@ -94,11 +96,12 @@ Item {
     Button {
         anchors.top: tableItem.bottom
         anchors.horizontalCenter: tableItem.horizontalCenter;
-        anchors.topMargin: 3
+        anchors.topMargin: 0
         property int button_width: 100
         property int button_height: 50
         width:  button_width  + (2 * rectShadow.radius);
         height: button_height + (2 * rectShadow.radius);
+        onClicked: main.test()
     }
     
     
