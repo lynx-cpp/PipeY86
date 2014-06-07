@@ -1,10 +1,17 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
+import "module"
 
 Item {
     width: 800;
     height: 600;
+    
+    signal start(int latency)
+    signal pause()
+    signal reset()
+    signal startWithoutLatency()
+    
     Rectangle {
         id: background
         anchors.fill: parent
@@ -82,6 +89,16 @@ Item {
         color: "#80000000";
         smooth: true;
         source: tableItem;
+    }
+    
+    Button {
+        anchors.top: tableItem.bottom
+        anchors.horizontalCenter: tableItem.horizontalCenter;
+        anchors.topMargin: 3
+        property int button_width: 100
+        property int button_height: 50
+        width:  button_width  + (2 * rectShadow.radius);
+        height: button_height + (2 * rectShadow.radius);
     }
     
     

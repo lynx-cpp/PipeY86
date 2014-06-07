@@ -7,13 +7,17 @@
 #include <QVariant>
 #include <QQuickItem>
 #include <QMetaObject>
+#include <QThread>
+#include <QObject>
 
 #include "y86pipeline.h"
 #include "instruction.h"
 #include "utility.h"
+#include "pipelineloader.h"
 
 Program prog;
 Y86Pipeline* pipeline;
+QQuickItem* root;
 
 int main(int argc, char* argv[])
 {
@@ -21,7 +25,7 @@ int main(int argc, char* argv[])
     QQuickWindow::setDefaultAlphaBuffer(true);
     QQuickView view(QUrl("qrc:///qml/test.qml"));
     view.show();
-    QQuickItem* root = view.rootObject();
+    root = view.rootObject();
     QVariant returnValue;
     //QMetaObject::invokeMethod(root,"removeStageLabel",Q_RETURN_ARG(QVariant,returnValue),Q_ARG(QVariant,0));
     //QMetaObject::invokeMethod(root,"setStageLabel",Q_RETURN_ARG(QVariant,returnValue),Q_ARG(QVariant,1),Q_ARG(QVariant,"F"));
@@ -31,5 +35,9 @@ int main(int argc, char* argv[])
                               Q_ARG(QVariant,"60 20"),
                               Q_ARG(QVariant,"M"),
                               Q_ARG(QVariant,"addl %edx,%eax"));
+    PipelineLoader* pipeline = new PipelineLoader;
+    QThread* pipelineThread = new QThread;
+    QObject::connect(pipelineThread,SIGNAL(finished()),pipeline,SLOT(deleteLater()));
+    pipelineThread->start();
     return app.exec();
 }

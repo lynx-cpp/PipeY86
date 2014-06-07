@@ -8,7 +8,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} ${Qt5Qml_EXECUTABLE_COMPILE_FLAGS}")
 
-include_directories(${Qt5Gui_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS})
+include_directories(${Qt5Gui_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS} ${Qt5Quick_INCLUDE_DIRS})
 add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Qml_DEFINITIONS})
 
 set(PIPELINE_SRCS y86pipeline.cpp instruction.cpp instructionprivate.cpp)
@@ -18,10 +18,12 @@ add_executable(pipecmd ${PIPELINE_SRCS} pipecmd.cpp)
 #add_executable(s2o ${S2O_SRCS})
 
 QT5_ADD_RESOURCES (RESOURCES resources.qrc)
-add_executable(pipey86 ${PIPELINE_SRCS} main.cpp ${RESOURCES})
+add_executable(pipey86 ${PIPELINE_SRCS} main.cpp ${RESOURCES} pipelineloader.cpp)
 qt5_use_modules(pipey86 Widgets Qml Gui Quick)
 #target_link_libraries(pipey86 ${Qt5Declarative_LIBRARIES} ${Qt5Widgets_LIBRARIES})
 #add_executable(pipecmd y86pipeline.cpp instruction.cpp instructionprivate.cpp pipecmd.cpp)
 #add_executable(pipey86 y86pipeline.cpp instruction.cpp instructionprivate.cpp )
 
 #install(TARGETS pipey86 RUNTIME DESTINATION bin)
+
+#add_subdirectory(qml/module)
