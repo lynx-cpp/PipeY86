@@ -18,7 +18,6 @@ Item {
     signal pause()
     signal reset()
     signal startWithoutLatency()
-    signal test()
     
     Rectangle {
         id: background
@@ -125,6 +124,17 @@ Item {
         text: "Open"
     }
     
+    Button {
+        id: resetButton
+        anchors.left: openButton.right; anchors.leftMargin: 5
+        button_width: 80
+        button_height: 40 
+        onClicked: reset()
+        font.family: defaultFont.name
+        font.pointSize:20
+        text: "Reset"
+    }
+    
     
     Item {
         id: container;
@@ -136,8 +146,8 @@ Item {
         
         Rectangle {
             id: rect
-            width: 100;
-            height: 50;
+            width: 300;
+            height: 100;
             color: "white";
             radius: 0;
             antialiasing: true;

@@ -43,8 +43,8 @@ void PipelineLoader::loadFile(const QString& filename)
 
 void PipelineLoader::load()
 {
-    qDebug() << "hehe";
-    loadFile("./1.yo");
+    qDebug() << "reset";
+    loadFile(m_filename);
 }
 
 PipelineLoader::~PipelineLoader()
