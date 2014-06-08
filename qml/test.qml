@@ -7,6 +7,10 @@ Item {
     id: main
     width: 1024;
     height: 768;
+    FontLoader {
+        id: defaultFont
+        source: "../default_font.ttf"
+    }
     
     signal start(int latency)
     signal pause()
@@ -97,8 +101,8 @@ Item {
         anchors.top: tableItem.bottom
         anchors.horizontalCenter: tableItem.horizontalCenter;
         anchors.topMargin: 0
-        property int button_width: 100
-        property int button_height: 50
+        //property int button_width: 100
+        //property int button_height: 50
         width:  button_width  + (2 * rectShadow.radius);
         height: button_height + (2 * rectShadow.radius);
         onClicked: main.test()
