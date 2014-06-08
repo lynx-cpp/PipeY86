@@ -12,12 +12,12 @@ public:
     explicit PipelineLoader(QObject* parent = 0);
     ~PipelineLoader();
 public slots:
-    void loadFile(const std::string& filename);
+    void loadFile(const QString& filename);
     void load();
 
 private:
     Y86Pipeline* m_pipeline;
-    std::string m_filename;
+    QString m_filename;
 };
 
 #endif // PIPELINELOADER_H

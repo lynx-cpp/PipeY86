@@ -7,11 +7,17 @@ Item {
     height: button_height + (2 * radius);
     property real radius: 8.0
     property string color: "white"
-    //property string enter_color: "#f3fffe"
     property string enter_color: "#dafffe"
     property int offset: 3
     property int button_width: 100
     property int button_height: 50
+    //property string enter_color: "#f3fffe"
+    property alias text: centerText.text
+    property alias font: centerText.font
+    
+    
+    //property alias buttonWidth: button_width
+    //property alias buttonHeight: button_height
     
     signal clicked()
     
@@ -34,6 +40,11 @@ Item {
             antialiasing: true;
             //anchors.centerIn: parent;
             x: button.radius; y: button.radius
+        }
+        Text {
+            id: centerText
+            anchors.centerIn: rect
+            antialiasing: true
         }
         
         Item {

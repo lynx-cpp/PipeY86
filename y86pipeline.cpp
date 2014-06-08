@@ -111,6 +111,7 @@ void Y86Pipeline::execute()
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
     std::fstream stream;
+    std::cerr << "Opening " << filename << std::endl;
     stream.open(filename.c_str(),std::fstream::in);
     
     prog.clear();

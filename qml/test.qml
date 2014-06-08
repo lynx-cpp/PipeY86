@@ -13,6 +13,7 @@ Item {
         source: "../default_font.ttf"
     }
     
+    signal load(string str)
     signal start(int latency)
     signal pause()
     signal reset()
@@ -98,15 +99,30 @@ Item {
         source: tableItem;
     }
     
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        onAccepted: {
+            console.log("You chose: " + fileDialog.fileUrls)
+            load(fileDialog.fileUrls)
+            Qt.quit()
+        }
+        onRejected: {
+            console.log("Canceled")
+            Qt.quit()
+        }
+        //Component.onCompleted: visible = false
+    }
+    
     Button {
-        anchors.top: tableItem.bottom
-        anchors.horizontalCenter: tableItem.horizontalCenter;
-        anchors.topMargin: 0
-        //property int button_width: 100
-        //property int button_height: 50
-        width:  button_width  + (2 * rectShadow.radius);
-        height: button_height + (2 * rectShadow.radius);
-        onClicked: main.test()
+        id: openButton
+        anchors.left: tableItem.right; anchors.leftMargin: 5
+        button_width: 80
+        button_height: 40 
+        onClicked: fileDialog.open()
+        font.family: defaultFont.name
+        font.pointSize:20
+        text: "Open"
     }
     
     
@@ -114,6 +130,7 @@ Item {
         id: container;
         //anchors.centerIn: parent;
         anchors.left: tableItem.right; anchors.leftMargin: 5
+        anchors.top: openButton.bottom; anchors.topMargin:3
         width:  rect.width  + (2 * rectShadow.radius);
         height: rect.height + (2 * rectShadow.radius);
         
