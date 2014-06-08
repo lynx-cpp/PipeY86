@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.0
 import "module"
 
@@ -62,27 +63,71 @@ Item {
             id: insTable
             anchors.left: parent.left; anchors.top: parent.top;
             //anchors.fill: parent
-            TableViewColumn{ role: "Address"  ; title: "Address" ; width: 80 }
+            TableViewColumn{ role: "Address"  ; title: "Address" ; width: 60 }
             TableViewColumn{ role: "Data" ; title: "Data" ; width: 120}
             TableViewColumn{ role: "Stage" ; title: "Stage" ; width: 50}
-            TableViewColumn{ role: "Code" ; title: "Code" ; width: 200}
+            TableViewColumn{ role: "Code" ; title: "Code" ; width: 220}
             width: 455; height: 520
-            rowDelegate: Component {
-                Rectangle {
-                    width: parent.width
-                    property string type: insModel.get(styleData.row).Stage
-                    color: if (styleData.row==undefined)
-                    "lightgrey"
-                    else if (type=="F") 
-                        "lightgreen"
-                    else if (type=="D")
-                        "yellow"
-                     else if (styleData.alternate)
-                         "lightblue"
-                     else
-                         "lightyellow"
+            headerVisible: true
+            style: TableViewStyle {
+                highlightedTextColor: "grey"
+                rowDelegate: Component {
+                    Rectangle {
+                        width: parent.width
+                        property string type: insModel.get(styleData.row).Stage
+                        color: if (styleData.row==undefined)
+                        "lightgrey"
+                        else if (type=="F") 
+                            "lightgreen"
+                        else if (type=="D")
+                            "yellow"
+                        else if (styleData.alternate)
+                            "lightblue"
+                        else
+                            "lightyellow"
+                    }
+                    //color: insModel.get(styleData.row).color
                 }
-                //color: insModel.get(styleData.row).color
+                itemDelegate: Item {
+                    Text {
+                        font.family: defaultFont.name
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: styleData.textColor
+                        elide: styleData.elideMode
+                        text: styleData.value
+                        //anchors.centerIn: parent
+                    }
+                }
+                headerDelegate : Component {
+                    //source: "../fetch.png" //in examples/quick/controls/tableview/images
+                    //border{left:2;right:2;top:2;bottom:2}
+                            Rectangle {
+                                id: hh
+                                height: 20
+                                color: "lightblue"
+                                anchors.left: parent.left; anchors.top: parent.top
+                                Text {//this is how to add text on top of image, will be "name", "age", "gender"
+                                    color:"#333"
+                                    text: styleData.value
+                                    font.family: defaultFont.name
+                                    font.pointSize: 10
+                                    anchors.left: parent.left
+                                }
+                            }
+                        /*
+                        DropShadow {
+                            id: headerShadow
+                            anchors.fill: source
+                            cached: true;
+                            horizontalOffset: 3;
+                            verticalOffset: 3;
+                            radius: 8.0;
+                            samples: 16;
+                            color: "#80000000";
+                            smooth: true;
+                            source: header;
+                        }*/
+                }
             }
             model: insModel
         }
