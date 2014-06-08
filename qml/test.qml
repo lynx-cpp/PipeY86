@@ -75,10 +75,12 @@ Item {
                     "lightgrey"
                     else if (type=="F") 
                         "lightgreen"
-                        else if (type=="D")
-                            "yellow"
-                            else
-                                "lightblue"
+                    else if (type=="D")
+                        "yellow"
+                     else if (styleData.alternate)
+                         "lightblue"
+                     else
+                         "lightyellow"
                 }
                 //color: insModel.get(styleData.row).color
             }
@@ -146,12 +148,17 @@ Item {
         
         Rectangle {
             id: rect
-            width: 300;
+            width: 500;
             height: 100;
             color: "white";
             radius: 0;
             antialiasing: true;
             anchors.centerIn: parent;
+            
+            Image {
+                source: "../fetch.png"
+                anchors.fill: parent
+            }
         }
     }
     DropShadow {
