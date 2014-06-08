@@ -26,6 +26,13 @@ static Memory oldMemory;
  * }
  */
 
+static inline bool safeDelete(Instruction* ins)
+{
+    if (ins==NULL) return false;
+    delete ins;
+    return true;
+}
+
 void nextStage(InstructionPtr& next,InstructionPtr now)
 {
     if (now->isBubble()){
@@ -110,9 +117,14 @@ void Y86Pipeline::execute()
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
+    writeBackI = memoryI = executeI = decodeI = fetchI = NULL;
     std::fstream stream;
     std::cerr << "Opening " << filename << std::endl;
     stream.open(filename.c_str(),std::fstream::in);
+    if (!stream.is_open()){
+        std::cerr << "Failed opening file " << filename << std::endl;
+        return ;
+    }
     
     prog.clear();
     m_memory.clear();
@@ -214,7 +226,12 @@ void Y86Pipeline::write32BitMemory(int address, int value)
 }
 Y86Pipeline::~Y86Pipeline()
 {
-    delete fetchI; delete decodeI; delete executeI; delete memoryI; delete writeBackI;
+    //delete fetchI; delete decodeI; delete executeI; delete memoryI; delete writeBackI;
+    safeDelete(fetchI); 
+    safeDelete(decodeI); 
+    safeDelete(executeI); 
+    safeDelete(memoryI); 
+    safeDelete(writeBackI);
 }
 
 void Y86Pipeline::setProgToThis()
