@@ -148,7 +148,7 @@ Item {
         
         Rectangle {
             id: rect
-            width: 500;
+            width: 540;
             height: 100;
             color: "white";
             radius: 0;
