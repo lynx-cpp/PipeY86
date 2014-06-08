@@ -174,3 +174,7 @@ std::string Instruction::comment()
     return m_comment;
 }
 
+std::string Instruction::currentOperation()
+{
+    return instructionP->currentOperation;
+}

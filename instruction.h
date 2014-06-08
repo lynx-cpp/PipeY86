@@ -50,6 +50,7 @@ public:
     int addr();
     std::string instructionCode();
     std::string comment();
+    std::string currentOperation();
     
     bool operator!=(const Instruction& B);
     bool eq(Instruction* decodeI);
