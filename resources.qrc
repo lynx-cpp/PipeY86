@@ -3,6 +3,7 @@
         <file>qml/test.qml</file>
         <file>qml/module/button.qml</file>
         <file>qml/module/qmldir</file>
+        <file alias="default_font.ttf">fonts/Raleway-ExtraLight.ttf</file>
     </qresource>
 </RCC>
 
