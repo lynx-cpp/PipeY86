@@ -42,6 +42,10 @@ Item {
         }
     }
     
+    function clearInsTable(){
+        insModel.clear()
+    }
+    
     function removeStageLabel(idx){
         insModel.setProperty(idx,"Stage","");
     }
@@ -67,7 +71,7 @@ Item {
             TableViewColumn{ role: "Data" ; title: "Data" ; width: 120}
             TableViewColumn{ role: "Stage" ; title: "Stage" ; width: 50}
             TableViewColumn{ role: "Code" ; title: "Code" ; width: 220}
-            width: 455; height: 520
+            width: 470; height: 520
             headerVisible: true
             style: TableViewStyle {
                 highlightedTextColor: "grey"
@@ -193,8 +197,8 @@ Item {
         
         Rectangle {
             id: rect
-            width: 540;
-            height: 100;
+            width: 400;
+            height: 80;
             color: "white";
             radius: 0;
             antialiasing: true;

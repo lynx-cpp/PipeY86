@@ -5,10 +5,15 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
+#include <map>
+#include <utility>
 
 class Instruction;
 typedef std::vector<Instruction> Program;
 extern Program prog;
+
+typedef std::map<int,int> Memory;
+typedef std::vector< std::pair<int,int> > MemorySeq;
 
 static inline int hex2num(char ch)
 {
@@ -76,6 +81,23 @@ static inline std::string hex2Data(const std::string& hex)
         ss << hex[i] << hex[i + 1] << " ";
     }
     return ss.str();
+}
+
+static inline void printMemory(Memory& memory,MemorySeq& seq)
+{
+    seq.clear();
+    Memory::iterator current = memory.begin();
+    while (current!=memory.end()){
+        int curAddr = current->first;
+        int curVal = memory[curAddr];
+        curVal = curVal*0xff + memory[curAddr + 1];
+        curVal = curVal*0xff + memory[curAddr + 2];
+        curVal = curVal*0xff + memory[curAddr + 3];
+        seq.push_back(std::make_pair(curAddr,curVal));
+        
+        current = memory.find(curAddr + 3);
+        current ++;
+    }
 }
 
 //hello
