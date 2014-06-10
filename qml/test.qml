@@ -124,7 +124,7 @@ Item {
                     //source: "../fetch.png" //in examples/quick/controls/tableview/images
                     //border{left:2;right:2;top:2;bottom:2}
                     Item {
-                        height: 20 + 2*headerShadow.radius
+                        height: 20 + headerShadow.radius
                         anchors.left: parent.left; anchors.top: parent.top
                         Item {
                             id: insHeaderContainer
