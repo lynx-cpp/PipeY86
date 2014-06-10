@@ -209,6 +209,7 @@ Item {
     
     FileDialog {
         id: fileDialog
+        nameFilters: [ "Y86 Output files (*.yo)", "Y86 ASM files (*.ys)","All files (*)" ]
         title: "Please choose a file"
         onAccepted: {
             console.log("You chose: " + fileDialog.fileUrls)
