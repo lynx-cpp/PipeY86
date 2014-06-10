@@ -263,7 +263,7 @@ Item {
             anchors.centerIn: parent;
             
             Image {
-                source: "../fetch.png"
+                source: "/fetch.png"
                 anchors.fill: parent
             }
         }
