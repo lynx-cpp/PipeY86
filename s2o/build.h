@@ -6,9 +6,8 @@
 extern std :: map<std :: string, int> dict;
 extern std :: map<std :: string, int> check;
 
-static inline std :: ostringstream build(std :: vector<std :: string> InstructionRegister, int &row)
+static inline void build(std :: ostringstream &output, std :: vector<std :: string> InstructionRegister, int &row)
 {
-	std :: ostringstream output;
 	output.str("");
 	int pos = 0;
 	for (row = 0; row < InstructionRegister.size(); ++row)
@@ -174,7 +173,6 @@ static inline std :: ostringstream build(std :: vector<std :: string> Instructio
 			} while (true);
 		}
 	}
-	return output;
 }
 
 #undef BUILD_H
