@@ -11,7 +11,7 @@ Item {
     height: 768;
     FontLoader {
         id: defaultFont
-        source: "../default_font.ttf"
+        source: "/default_font.ttf"
     }
     
     signal load(string str)
