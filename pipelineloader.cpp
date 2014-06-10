@@ -46,7 +46,7 @@ void PipelineLoader::loadFile(const QString& filename)
     if (m_pipeline!=NULL) 
         delete m_pipeline;
     qDebug() << "entered" << " " << filename;
-    clearInsTable();
+    //clearInsTable();
     m_pipeline = new Y86Pipeline(m_filename.section('/',2).toStdString());
     qDebug() << "loaded";
     for (int i=0;i<prog.size();i++){

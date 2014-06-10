@@ -63,13 +63,13 @@ static inline int readHexSmallEndian(const std::string& str,int l,int r)
     return ret;
 }
 
-static inline std::string int2Hex(int hex)
+static inline std::string int2Hex(int hex,int minWidth = 3)
 {
     std::stringstream ss;
     ss.clear(); ss.str("");
     //ss.setf ( std::ios::hex, std::ios::basefield );  // set hex as the basefield
     //ss.setf ( std::ios::showbase ); 
-    ss << "0x" << std::setfill('0') << std::setw(3) << std::hex << hex;
+    ss << "0x" << std::setfill('0') << std::setw(minWidth) << std::hex << hex;
     return ss.str();
 }
 

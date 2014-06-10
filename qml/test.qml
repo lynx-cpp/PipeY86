@@ -80,7 +80,7 @@ Item {
                         width: parent.width
                         property string type: insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
-                        "lightgrey"
+                            "lightgrey"
                         else if (type=="F") 
                             "lightgreen"
                         else if (type=="D")
@@ -149,6 +149,64 @@ Item {
         source: tableItem;
     }
     
+    ListModel {
+        id: memoryModel
+    }
+    
+    Item {
+        id: memItem
+        width: memView.width + memShadow.radius; height: memView.height + memShadow.radius
+        anchors.left: parent.left; anchors.top: tableItem.bottom;
+        
+        TableView {
+            id: memView
+            anchors.left: parent.left; anchors.top: parent.top;
+            TableViewColumn{ role: "Address"  ; title: "Address" ; width: 150}
+            TableViewColumn{ role: "Value"  ; title: "Value" ; width: 310}
+            width: 470; height: 200;
+            style: TableViewStyle {
+                itemDelegate: Item {
+                    Text {
+                        font.family: defaultFont.name
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: styleData.textColor
+                        elide: styleData.elideMode
+                        text: styleData.value
+                        //anchors.centerIn: parent
+                    }
+                }
+                headerDelegate : Component {
+                    Rectangle {
+                        id: hh
+                        height: 20
+                        color: "lightblue"
+                        anchors.left: parent.left; anchors.top: parent.top
+                        Text {//this is how to add text on top of image, will be "name", "age", "gender"
+                            color:"#333"
+                            text: styleData.value
+                            font.family: defaultFont.name
+                            font.pointSize: 10
+                            anchors.left: parent.left
+                        }
+                    }
+                }
+                    
+            }
+        }
+    }
+    DropShadow {
+        id: memShadow
+        anchors.fill: source
+        cached: true;
+        horizontalOffset: 3;
+        verticalOffset: 3;
+        radius: 8.0;
+        samples: 16;
+        color: "#80000000";
+        smooth: true;
+        source: memItem;
+    }
+    
     FileDialog {
         id: fileDialog
         title: "Please choose a file"
@@ -171,7 +229,7 @@ Item {
         button_height: 40 
         onClicked: fileDialog.open()
         font.family: defaultFont.name
-        font.pointSize:20
+        font.pointSize:18
         text: "Open"
     }
     
@@ -182,7 +240,7 @@ Item {
         button_height: 40 
         onClicked: reset()
         font.family: defaultFont.name
-        font.pointSize:20
+        font.pointSize:18
         text: "Reset"
     }
     
@@ -197,7 +255,7 @@ Item {
         
         Rectangle {
             id: rect
-            width: 400;
+            width: 460;
             height: 80;
             color: "white";
             radius: 0;
