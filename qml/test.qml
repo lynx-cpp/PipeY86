@@ -86,10 +86,10 @@ Item {
                             "lightgreen"
                             else if (type=="D")
                                 "yellow"
-                                else if (styleData.alternate)
-                                    "lightblue"
-                                    else
-                                        "lightyellow"
+                            else if (styleData.alternate)
+                                "lightblue"
+                            else
+                                "lightyellow"
                     }
                     //color: insModel.get(styleData.row).color
                 }
