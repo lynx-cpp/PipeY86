@@ -31,7 +31,7 @@ Item {
             width: button.button_width;
             height: button.button_height;
             color: button.color
-            property string dest_color: color;
+            property color dest_color: color;
             gradient: Gradient{
                 GradientStop { position: 0.7; color: rect.color}
                 GradientStop { position: 0.0; color: rect.dest_color}
