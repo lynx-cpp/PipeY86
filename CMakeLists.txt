@@ -24,6 +24,6 @@ qt5_use_modules(pipey86 Widgets Qml Gui Quick)
 #add_executable(pipecmd y86pipeline.cpp instruction.cpp instructionprivate.cpp pipecmd.cpp)
 #add_executable(pipey86 y86pipeline.cpp instruction.cpp instructionprivate.cpp )
 
-#install(TARGETS pipey86 RUNTIME DESTINATION bin)
+install(TARGETS pipey86 RUNTIME DESTINATION bin )
 
 #add_subdirectory(qml/module)

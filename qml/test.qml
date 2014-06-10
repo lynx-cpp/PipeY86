@@ -60,12 +60,13 @@ Item {
     
     Item {
         id:tableItem
-        width: insTable.width + tableShadow.radius; height: insTable.height + tableShadow.radius
+        width: insTable.width + 2*tableShadow.radius; height: insTable.height + 2*tableShadow.radius
         anchors.left: parent.left; anchors.top: parent.top;
         
         TableView {
             id: insTable
             anchors.left: parent.left; anchors.top: parent.top;
+            anchors.centerIn: parent
             //anchors.fill: parent
             TableViewColumn{ role: "Address"  ; title: "Address" ; width: 60 }
             TableViewColumn{ role: "Data" ; title: "Data" ; width: 120}
@@ -80,15 +81,15 @@ Item {
                         width: parent.width
                         property string type: insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
-                            "lightgrey"
+                        "lightgrey"
                         else if (type=="F") 
                             "lightgreen"
-                        else if (type=="D")
-                            "yellow"
-                        else if (styleData.alternate)
-                            "lightblue"
-                        else
-                            "lightyellow"
+                            else if (type=="D")
+                                "yellow"
+                                else if (styleData.alternate)
+                                    "lightblue"
+                                    else
+                                        "lightyellow"
                     }
                     //color: insModel.get(styleData.row).color
                 }
@@ -105,32 +106,32 @@ Item {
                 headerDelegate : Component {
                     //source: "../fetch.png" //in examples/quick/controls/tableview/images
                     //border{left:2;right:2;top:2;bottom:2}
-                            Rectangle {
-                                id: hh
-                                height: 20
-                                color: "lightblue"
-                                anchors.left: parent.left; anchors.top: parent.top
-                                Text {//this is how to add text on top of image, will be "name", "age", "gender"
-                                    color:"#333"
-                                    text: styleData.value
-                                    font.family: defaultFont.name
-                                    font.pointSize: 10
-                                    anchors.left: parent.left
-                                }
-                            }
-                        /*
-                        DropShadow {
-                            id: headerShadow
-                            anchors.fill: source
-                            cached: true;
-                            horizontalOffset: 3;
-                            verticalOffset: 3;
-                            radius: 8.0;
-                            samples: 16;
-                            color: "#80000000";
-                            smooth: true;
-                            source: header;
-                        }*/
+                    Rectangle {
+                        id: hh
+                        height: 20
+                        color: "lightblue"
+                        anchors.left: parent.left; anchors.top: parent.top
+                        Text {//this is how to add text on top of image, will be "name", "age", "gender"
+                            color:"#333"
+                            text: styleData.value
+                            font.family: defaultFont.name
+                            font.pointSize: 10
+                            anchors.left: parent.left
+                        }
+                    }
+                    /*
+                     *                    DropShadow {
+                     *                        id: headerShadow
+                     *                        anchors.fill: source
+                     *                        cached: true;
+                     *                        horizontalOffset: 3;
+                     *                        verticalOffset: 3;
+                     *                        radius: 8.0;
+                     *                        samples: 16;
+                     *                        color: "#80000000";
+                     *                        smooth: true;
+                     *                        source: header;
+                }*/
                 }
             }
             model: insModel
@@ -155,15 +156,16 @@ Item {
     
     Item {
         id: memItem
-        width: memView.width + memShadow.radius; height: memView.height + memShadow.radius
+        width: memView.width + 2*memShadow.radius; height: memView.height + 2*memShadow.radius
         anchors.left: parent.left; anchors.top: tableItem.bottom;
         
         TableView {
             id: memView
-            anchors.left: parent.left; anchors.top: parent.top;
+            //anchors.left: parent.left; anchors.top: parent.top;
+            anchors.centerIn: parent
             TableViewColumn{ role: "Address"  ; title: "Address" ; width: 150}
             TableViewColumn{ role: "Value"  ; title: "Value" ; width: 310}
-            width: 470; height: 200;
+            width: 470; height: 220;
             style: TableViewStyle {
                 itemDelegate: Item {
                     Text {
@@ -190,7 +192,7 @@ Item {
                         }
                     }
                 }
-                    
+                
             }
         }
     }
@@ -245,18 +247,55 @@ Item {
         text: "Reset"
     }
     
-    
-    Item {
-        id: container;
-        //anchors.centerIn: parent;
+    StageIndicator {
+        id: decodeIndicator
         anchors.left: tableItem.right; anchors.leftMargin: 5
         anchors.top: openButton.bottom; anchors.topMargin:3
+        color: "yellow"
+        fontColor: "grey"
+        text: "D"
+    }
+    
+    StageIndicator {
+        id: executeIndicator
+        anchors.left: decodeIndicator.left
+        anchors.top: decodeIndicator.bottom; 
+        color: "lightgreen"
+        fontColor: "grey"
+        text: "E"
+    }
+
+    StageIndicator {
+        id: memoryIndicator
+        anchors.left: executeIndicator.left
+        anchors.top: executeIndicator.bottom; 
+        color: "lightblue"
+        fontColor: "grey"
+        text: "M"
+    }
+
+    StageIndicator {
+        id: writeBackIndicator
+        anchors.left: memoryIndicator.left
+        anchors.top: memoryIndicator.bottom; 
+        color: "brown"
+        fontColor: "grey"
+        text: "W"
+    }
+
+    
+    Item {
+        id: decodeContainer;
+        //anchors.centerIn: parent;
+        anchors.left: decodeIndicator.right; anchors.leftMargin: -10
+        anchors.top: decodeIndicator.top
+        //anchors.top: openButton.bottom; anchors.topMargin:3
         width:  rect.width  + (2 * rectShadow.radius);
         height: rect.height + (2 * rectShadow.radius);
         
         Rectangle {
             id: rect
-            width: 460;
+            width: 430;
             height: 80;
             color: "white";
             radius: 0;
@@ -270,7 +309,7 @@ Item {
         }
     }
     DropShadow {
-        id: rectShadow;
+        id: rectShadow
         anchors.fill: source
         cached: true;
         horizontalOffset: 3;
@@ -279,6 +318,6 @@ Item {
         samples: 16;
         color: "#80000000";
         smooth: true;
-        source: container;
+        source: decodeContainer;
     }
 }
