@@ -293,5 +293,4 @@ static inline void format_output(std :: ostringstream &output, std :: string str
 
 
 
-#undef TOOS_H
 #endif

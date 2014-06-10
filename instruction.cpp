@@ -41,6 +41,7 @@ Instruction::Instruction(const Instruction& ip)
 {
     m_instructionCode = ip.m_instructionCode;
     m_address = ip.m_address;
+    m_comment = ip.m_comment;
     constructPrivate();
     instructionP->setPipeline(ip.instructionP->m_pipeline);
     instructionP->stat = ip.instructionP->stat;
@@ -161,4 +162,19 @@ bool Instruction::eq(Instruction* decodeI)
     if (addr()==-1)
         return true;
     return addr()==decodeI->addr();
+}
+
+std::string Instruction::instructionCode()
+{
+    return m_instructionCode;
+}
+
+std::string Instruction::comment()
+{
+    return m_comment;
+}
+
+std::string Instruction::currentOperation()
+{
+    return instructionP->currentOperation;
 }

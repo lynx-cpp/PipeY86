@@ -8,12 +8,14 @@ protected:
     int m_address;
     //Instruction* m_father;
     Y86Pipeline* m_pipeline;
-    std::string m_instructionCode;
+    std::string m_instructionCode,currentOperation;
     int code;
     int icode,ifun;
     status stat;
     int rA,rB,valC,valA,valB,valE,valM;
     int valP;
+    
+    int srcA,srcB,dstE,dstM;
     
     bool readReg(int num,int& dest);
     void writeRealReg(int num,int value);
@@ -32,10 +34,10 @@ public:
     virtual ~InstructionPrivate() {}
     
     virtual void fetchStage();
-    virtual bool decodeStage() { return true; }
-    virtual void executeStage() {}
-    virtual void memoryStage() {}
-    virtual void writeBackStage() {}
+    virtual bool decodeStage();
+    virtual void executeStage();
+    virtual void memoryStage();
+    virtual void writeBackStage();
 };
 
 class InstructionNop : public InstructionPrivate
@@ -52,6 +54,7 @@ private:
     enum OPType {
         addl,subl,andl,xorl,other
     } type;
+    std::string opString;
 public:
     InstructionOP(const std::string& instructionCode,int address);
     virtual ~InstructionOP();

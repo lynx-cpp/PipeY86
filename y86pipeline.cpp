@@ -5,8 +5,6 @@
 #include "y86pipeline.h"
 #include "instruction.h"
 #include "utility.h"
-#define ESP 4
-#define EBP 5
 #define PIPELINE
 
 static Memory oldMemory;
@@ -25,6 +23,13 @@ static Memory oldMemory;
  *    return next;
  * }
  */
+
+static inline bool safeDelete(Instruction* ins)
+{
+    if (ins==NULL) return false;
+    delete ins;
+    return true;
+}
 
 void nextStage(InstructionPtr& next,InstructionPtr now)
 {
@@ -110,8 +115,14 @@ void Y86Pipeline::execute()
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
+    writeBackI = memoryI = executeI = decodeI = fetchI = NULL;
     std::fstream stream;
+    std::cerr << "Opening " << filename << std::endl;
     stream.open(filename.c_str(),std::fstream::in);
+    if (!stream.is_open()){
+        std::cerr << "Failed opening file " << filename << std::endl;
+        return ;
+    }
     
     prog.clear();
     m_memory.clear();
@@ -130,6 +141,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
             orgStackAddr = curAddr;
         
         prog.push_back(Instruction(s2,s3,curAddr));
+        //std::cerr << s3 << std::endl;
         
         for (int i=0;i+1<s2.size();i+=2){
             m_memory[curAddr] = byte2int(s2[i],s2[i + 1]);
@@ -212,7 +224,12 @@ void Y86Pipeline::write32BitMemory(int address, int value)
 }
 Y86Pipeline::~Y86Pipeline()
 {
-    delete fetchI; delete decodeI; delete executeI; delete memoryI; delete writeBackI;
+    //delete fetchI; delete decodeI; delete executeI; delete memoryI; delete writeBackI;
+    safeDelete(fetchI); 
+    safeDelete(decodeI); 
+    safeDelete(executeI); 
+    safeDelete(memoryI); 
+    safeDelete(writeBackI);
 }
 
 void Y86Pipeline::setProgToThis()

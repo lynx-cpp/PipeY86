@@ -175,5 +175,4 @@ static inline void build(std :: ostringstream &output, std :: vector<std :: stri
 	}
 }
 
-#undef BUILD_H
 #endif

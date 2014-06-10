@@ -12,14 +12,16 @@ typedef std::vector<Instruction> Program;
 typedef Instruction* InstructionPtr;
 typedef std::map<int,int> Memory;
 
+#define MAX_REG_NUM 16
+
 class Y86Pipeline
 {
 private:
     InstructionPtr fetchI,decodeI,executeI,memoryI,writeBackI;
-    int m_register[10];
+    int m_register[MAX_REG_NUM];
     
-    int forwardReg[10];
-    bool forwardStat[10];
+    int forwardReg[MAX_REG_NUM];
+    bool forwardStat[MAX_REG_NUM];
     
     Memory m_memory;
     int orgStackAddr;
