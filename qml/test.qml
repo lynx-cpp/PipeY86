@@ -89,23 +89,23 @@ Item {
                         width: parent.width
                         property string type: insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
-                            backgroundColor
+                        backgroundColor
                         else if (type=="F") 
                             fetchColor
-                        else if (type=="D")
-                            decodeColor
-                        else if (type=="E")
-                            executeColor
-                        else if (type=="M")
-                            memoryColor
-                        else if (type=="W")
-                            writeBackColor
-                        else if (styleData.alternate)
-                            "#e5fff8"
-                        else
-                            "#fdffe5"
-                            
-                           
+                            else if (type=="D")
+                                decodeColor
+                                else if (type=="E")
+                                    executeColor
+                                    else if (type=="M")
+                                        memoryColor
+                                        else if (type=="W")
+                                            writeBackColor
+                                            else if (styleData.alternate)
+                                                "#e5fff8"
+                                                else
+                                                    "#fdffe5"
+                                                    
+                                                    
                     }
                     //color: insModel.get(styleData.row).color
                 }
@@ -118,41 +118,53 @@ Item {
                         text: styleData.value
                         //anchors.centerIn: parent
                     }
-
+                    
                 }
                 headerDelegate : Component {
                     //source: "../fetch.png" //in examples/quick/controls/tableview/images
                     //border{left:2;right:2;top:2;bottom:2}
-                    Rectangle {
-                        id: hh
-                        height: 20
-                        //width: parent.width
-                        color: "lightblue"
+                    Item {
+                        height: 20 + 2*headerShadow.radius
                         anchors.left: parent.left; anchors.top: parent.top
-                        //border.width: 1
-                        //border.color: "white"
-                        
-                        Text {//this is how to add text on top of image, will be "name", "age", "gender"
-                            color:"#333"
-                            text: styleData.value
-                            font.family: defaultFont.name
-                            font.pointSize: 10
-                            anchors.left: parent.left; anchors.leftMargin: 1
+                        Item {
+                            id: insHeaderContainer
+                            anchors.left: parent.left; anchors.top: parent.top
+                            //anchors.centerIn: parent
+                            height: 20
+                            Rectangle {
+                                id: hh
+                                //width: parent.width
+                                color: "lightblue"
+                                anchors.fill: parent
+                                //border.width: 1
+                                //border.color: "white"
+                                
+                                Text {
+                                    color:"#333"
+                                    text: styleData.value
+                                    font.family: defaultFont.name
+                                    font.pointSize: 10
+                                    anchors.left: parent.left; anchors.leftMargin: 1
+                                }
+                            }
                         }
+                        
+                        
+                        DropShadow {
+                            id: headerShadow
+                            anchors.fill: source
+                            cached: true;
+                            horizontalOffset: 3;
+                            verticalOffset: 3;
+                            radius: 8.0;
+                            samples: 16;
+                            color: "#80000000";
+                            smooth: true;
+                            source: insHeaderContainer;
+                        }
+                        
                     }
-                    /*
-                     *                    DropShadow {
-                     *                        id: headerShadow
-                     *                        anchors.fill: source
-                     *                        cached: true;
-                     *                        horizontalOffset: 3;
-                     *                        verticalOffset: 3;
-                     *                        radius: 8.0;
-                     *                        samples: 16;
-                     *                        color: "#80000000";
-                     *                        smooth: true;
-                     *                        source: header;
-                }*/
+                    
                 }
             }
             model: insModel
@@ -286,7 +298,7 @@ Item {
         fontColor: indicatorFontColor
         text: "E"
     }
-
+    
     StageIndicator {
         id: memoryIndicator
         anchors.left: executeIndicator.left
