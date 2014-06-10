@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 	InstructionRegister.erase(InstructionRegister.begin(),InstructionRegister.end());
 	while (!fin.eof()){
 		read_instruction(fin,InstructionRegister);
-		std :: cout << InstructionRegister[InstructionRegister.size()-1] << std :: endl;
+		//std :: cout << InstructionRegister[InstructionRegister.size()-1] << std :: endl;
 	}
 	InstructionRegister.pop_back();
 	fin.close();
@@ -40,7 +40,8 @@ int main(int argc, char **argv) {
 	if (error_code) return error_code;
 	//Check
 	int row = 0;
-	std :: ostringstream output = build(InstructionRegister,row);
+	std :: ostringstream output;
+	build(output,InstructionRegister,row);
 	std :: ofstream fout(argv[2]);
 	fout << output.str();
 	fout.close();
