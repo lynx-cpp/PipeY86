@@ -92,20 +92,18 @@ Item {
                         backgroundColor
                         else if (type=="F") 
                             fetchColor
-                            else if (type=="D")
-                                decodeColor
-                                else if (type=="E")
-                                    executeColor
-                                    else if (type=="M")
-                                        memoryColor
-                                        else if (type=="W")
-                                            writeBackColor
-                                            else if (styleData.alternate)
-                                                "#e5fff8"
-                                                else
-                                                    "#fdffe5"
-                                                    
-                                                    
+                        else if (type=="D")
+                            decodeColor
+                        else if (type=="E")
+                            executeColor
+                        else if (type=="M")
+                            memoryColor
+                        else if (type=="W")
+                            writeBackColor
+                        else if (styleData.alternate)
+                            "#e5fff8"
+                        else
+                            "#fdffe5"
                     }
                     //color: insModel.get(styleData.row).color
                 }
@@ -124,43 +122,25 @@ Item {
                     //source: "../fetch.png" //in examples/quick/controls/tableview/images
                     //border{left:2;right:2;top:2;bottom:2}
                     Item {
-                        height: 20 + headerShadow.radius
+                        height: 20 
                         anchors.left: parent.left; anchors.top: parent.top
-                        Item {
-                            id: insHeaderContainer
-                            anchors.left: parent.left; anchors.top: parent.top
-                            //anchors.centerIn: parent
+                        clip: false
+                        Rectangle {
+                            id: hh
                             height: 20
-                            Rectangle {
-                                id: hh
-                                //width: parent.width
-                                color: "lightblue"
-                                anchors.fill: parent
-                                //border.width: 1
-                                //border.color: "white"
-                                
-                                Text {
-                                    color:"#333"
-                                    text: styleData.value
-                                    font.family: defaultFont.name
-                                    font.pointSize: 10
-                                    anchors.left: parent.left; anchors.leftMargin: 1
-                                }
+                            width: parent.width
+                            color: "lightblue"
+                            anchors.left: parent.left; anchors.top: parent.top
+                            //border.width: 1
+                            //border.color: "white"
+                            
+                            Text {
+                                color:"#333"
+                                text: styleData.value
+                                font.family: defaultFont.name
+                                font.pointSize: 10
+                                anchors.left: parent.left; anchors.leftMargin: 1
                             }
-                        }
-                        
-                        
-                        DropShadow {
-                            id: headerShadow
-                            anchors.fill: source
-                            cached: true;
-                            horizontalOffset: 3;
-                            verticalOffset: 3;
-                            radius: 8.0;
-                            samples: 16;
-                            color: "#80000000";
-                            smooth: true;
-                            source: insHeaderContainer;
                         }
                         
                     }
@@ -307,7 +287,7 @@ Item {
         fontColor: indicatorFontColor
         text: "M"
     }
-
+    
     StageIndicator {
         id: writeBackIndicator
         anchors.left: memoryIndicator.left
@@ -316,7 +296,7 @@ Item {
         fontColor: indicatorFontColor
         text: "W"
     }
-
+    
     
     Item {
         id: decodeContainer;
