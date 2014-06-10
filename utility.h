@@ -7,6 +7,9 @@
 #include <iomanip>
 #include <map>
 #include <utility>
+#define ESP 4
+#define EBP 5
+#define NO_REG 8
 
 class Instruction;
 typedef std::vector<Instruction> Program;

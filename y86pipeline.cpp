@@ -5,8 +5,6 @@
 #include "y86pipeline.h"
 #include "instruction.h"
 #include "utility.h"
-#define ESP 4
-#define EBP 5
 #define PIPELINE
 
 static Memory oldMemory;

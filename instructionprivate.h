@@ -15,6 +15,8 @@ protected:
     int rA,rB,valC,valA,valB,valE,valM;
     int valP;
     
+    int srcA,srcB,dstE,dstM;
+    
     bool readReg(int num,int& dest);
     void writeRealReg(int num,int value);
     void writeForwardReg(int num,int value,bool flag);

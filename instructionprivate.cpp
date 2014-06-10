@@ -5,6 +5,8 @@ int findInstructionFromAddr(int address);
 
 InstructionOP::InstructionOP(const std::string& instructionCode, int address):InstructionPrivate(address)
 {
+    srcA = rA; srcB = rB;
+    dstE = rB;
     type = other; opString = "other";
     if (ifun==0){
         type = addl;
@@ -88,7 +90,7 @@ void InstructionOP::writeBackStage()
 }
 
 InstructionPrivate::InstructionPrivate(int address):
-rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0)
+rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0),srcA(NO_REG),srcB(NO_REG),dstE(NO_REG),dstM(NO_REG)
 {
     m_address = address;
     stat = BUB;
@@ -114,6 +116,7 @@ void InstructionPrivate::writeRealReg(int num, int value)
 
 InstructionIrmovl::InstructionIrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
+    dstE = rB;
 }
 
 bool InstructionIrmovl::decodeStage()
@@ -161,6 +164,8 @@ InstructionIrmovl::~InstructionIrmovl()
 
 InstructionRrmovl :: InstructionRrmovl(const std::string& m_instructionCode, int address):InstructionPrivate(address)
 {
+    srcA = rA;
+    dstE = rB;
 }
 
 InstructionRrmovl :: ~ InstructionRrmovl()
@@ -246,7 +251,8 @@ void InstructionMrmovl::fetchStage()
 
 InstructionMrmovl::InstructionMrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
-
+    srcA = rB;
+    dstM = rA;
 }
 
 void InstructionMrmovl::memoryStage()
