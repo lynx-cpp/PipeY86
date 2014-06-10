@@ -13,6 +13,12 @@ Item {
         id: defaultFont
         source: "/default_font.ttf"
     }
+    property string fetchColor: "#c190ea"
+    property string decodeColor: "#eb938e"
+    property string executeColor: "#f7d75e"
+    property string memoryColor: "#a6d864"
+    property string writeBackColor: "#77bbdb"
+    property string indicatorFontColor: "grey"
     
     signal load(string str)
     signal start(int latency)
@@ -72,24 +78,34 @@ Item {
             TableViewColumn{ role: "Data" ; title: "Data" ; width: 120}
             TableViewColumn{ role: "Stage" ; title: "Stage" ; width: 50}
             TableViewColumn{ role: "Code" ; title: "Code" ; width: 220}
-            width: 470; height: 520
+            width: 469; height: 520
             headerVisible: true
             style: TableViewStyle {
+                backgroundColor: "white"
                 highlightedTextColor: "grey"
                 rowDelegate: Component {
+                    id: rowCom
                     Rectangle {
                         width: parent.width
                         property string type: insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
-                        "lightgrey"
+                            backgroundColor
                         else if (type=="F") 
-                            "lightgreen"
-                            else if (type=="D")
-                                "yellow"
-                            else if (styleData.alternate)
-                                "lightblue"
-                            else
-                                "lightyellow"
+                            fetchColor
+                        else if (type=="D")
+                            decodeColor
+                        else if (type=="E")
+                            executeColor
+                        else if (type=="M")
+                            memoryColor
+                        else if (type=="W")
+                            writeBackColor
+                        else if (styleData.alternate)
+                            "#e5fff8"
+                        else
+                            "#fdffe5"
+                            
+                           
                     }
                     //color: insModel.get(styleData.row).color
                 }
@@ -102,6 +118,7 @@ Item {
                         text: styleData.value
                         //anchors.centerIn: parent
                     }
+
                 }
                 headerDelegate : Component {
                     //source: "../fetch.png" //in examples/quick/controls/tableview/images
@@ -109,14 +126,18 @@ Item {
                     Rectangle {
                         id: hh
                         height: 20
+                        //width: parent.width
                         color: "lightblue"
                         anchors.left: parent.left; anchors.top: parent.top
+                        //border.width: 1
+                        //border.color: "white"
+                        
                         Text {//this is how to add text on top of image, will be "name", "age", "gender"
                             color:"#333"
                             text: styleData.value
                             font.family: defaultFont.name
                             font.pointSize: 10
-                            anchors.left: parent.left
+                            anchors.left: parent.left; anchors.leftMargin: 1
                         }
                     }
                     /*
@@ -165,7 +186,7 @@ Item {
             anchors.centerIn: parent
             TableViewColumn{ role: "Address"  ; title: "Address" ; width: 150}
             TableViewColumn{ role: "Value"  ; title: "Value" ; width: 310}
-            width: 470; height: 220;
+            width: 469; height: 180;
             style: TableViewStyle {
                 itemDelegate: Item {
                     Text {
@@ -189,6 +210,7 @@ Item {
                             font.family: defaultFont.name
                             font.pointSize: 10
                             anchors.left: parent.left
+                            anchors.leftMargin: 1
                         }
                     }
                 }
@@ -251,8 +273,8 @@ Item {
         id: decodeIndicator
         anchors.left: tableItem.right; anchors.leftMargin: 5
         anchors.top: openButton.bottom; anchors.topMargin:3
-        color: "yellow"
-        fontColor: "grey"
+        color: decodeColor
+        fontColor: indicatorFontColor
         text: "D"
     }
     
@@ -260,8 +282,8 @@ Item {
         id: executeIndicator
         anchors.left: decodeIndicator.left
         anchors.top: decodeIndicator.bottom; 
-        color: "lightgreen"
-        fontColor: "grey"
+        color: executeColor
+        fontColor: indicatorFontColor
         text: "E"
     }
 
@@ -269,8 +291,8 @@ Item {
         id: memoryIndicator
         anchors.left: executeIndicator.left
         anchors.top: executeIndicator.bottom; 
-        color: "lightblue"
-        fontColor: "grey"
+        color: memoryColor
+        fontColor: indicatorFontColor
         text: "M"
     }
 
@@ -278,8 +300,8 @@ Item {
         id: writeBackIndicator
         anchors.left: memoryIndicator.left
         anchors.top: memoryIndicator.bottom; 
-        color: "brown"
-        fontColor: "grey"
+        color: writeBackColor
+        fontColor: indicatorFontColor
         text: "W"
     }
 
@@ -287,7 +309,7 @@ Item {
     Item {
         id: decodeContainer;
         //anchors.centerIn: parent;
-        anchors.left: decodeIndicator.right; anchors.leftMargin: -10
+        anchors.left: decodeIndicator.right; anchors.leftMargin: -16
         anchors.top: decodeIndicator.top
         //anchors.top: openButton.bottom; anchors.topMargin:3
         width:  rect.width  + (2 * rectShadow.radius);

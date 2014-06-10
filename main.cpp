@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
                               Q_RETURN_ARG(QVariant,returnValue),
                               Q_ARG(QVariant,"0x02"),
                               Q_ARG(QVariant,"60 20"),
-                              Q_ARG(QVariant,"M"),
+                              Q_ARG(QVariant,"E"),
                               Q_ARG(QVariant,"addl %edx,%eax"));
     PipelineLoader* pipeline = new PipelineLoader;
     QThread* pipelineThread = new QThread;
