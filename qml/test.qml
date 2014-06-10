@@ -334,4 +334,19 @@ Item {
         smooth: true;
         source: decodeContainer;
     }
+    
+    Rectangle {
+        x: 475; y: 8
+        height: 20
+        width: 1
+        color: "lightblue"
+    }
+        
+    Rectangle {
+        x: 458; y: 8
+        height: 20
+        width: 1
+        color: "lightblue"
+    }
+
 }
