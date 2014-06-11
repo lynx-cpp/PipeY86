@@ -1,0 +1,4 @@
+irmovl $1,%eax   #line
+irmovl $2,%edx   #test
+addl %edx,%eax   #sfafds
+rrmovl %eax,%ecx ##123

@@ -1,0 +1,6 @@
+/home/jedi/OS_Lab/Lab3/PipeY86/build/CMakeFiles/pipecmd.dir
+/home/jedi/OS_Lab/Lab3/PipeY86/build/CMakeFiles/pipecmd_automoc.dir
+/home/jedi/OS_Lab/Lab3/PipeY86/build/CMakeFiles/pipey86.dir
+/home/jedi/OS_Lab/Lab3/PipeY86/build/CMakeFiles/pipey86_automoc.dir
+/home/jedi/OS_Lab/Lab3/PipeY86/build/CMakeFiles/s2o.dir
+/home/jedi/OS_Lab/Lab3/PipeY86/build/CMakeFiles/s2o_automoc.dir
