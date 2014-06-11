@@ -21,22 +21,15 @@ void Instruction::constructPrivate()
             instructionP = new InstructionOP(m_instructionCode,m_address);
             break;
         }
-        if (code==0x20){
-            instructionP = new InstructionRrmovl(m_instructionCode,m_address);
-            break;
-        }
         if (code==0x30){
             instructionP = new InstructionIrmovl(m_instructionCode,m_address);
             break;
         }
-        if (code==0x40){
-			instructionP = new InstructionRmmovl(m_instructionCode,m_address);
-			break;
-		}
-		if (code==0x50){
-			instructionP = new InstructionMrmovl(m_instructionCode,m_address);
-			break;
-		}
+        if (code==0x20){
+            instructionP = new InstructionRrmovl(m_instructionCode,m_address);
+            break;
+        }
+        
         //add new instruction constructing function here
         
         instructionP = new InstructionNop(m_address);
