@@ -101,4 +101,16 @@ public:
     virtual void writeBackStage();
 };
 
+class InstructionRmmovl : public InstructionPrivate
+{
+public:
+    InstructionRmmovl(const std::string& m_instructionCode,int address);
+    virtual ~InstructionRmmovl();
+    virtual void fetchStage();
+    virtual bool decodeStage();
+    virtual void executeStage();
+    virtual void memoryStage();
+    virtual void writeBackStage();
+};
+
 #endif
