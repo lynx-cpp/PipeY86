@@ -297,43 +297,11 @@ Item {
         text: "W"
     }
     
-    
-    Item {
-        id: decodeContainer;
-        //anchors.centerIn: parent;
-        anchors.left: decodeIndicator.right; anchors.leftMargin: -16
-        anchors.top: decodeIndicator.top
-        //anchors.top: openButton.bottom; anchors.topMargin:3
-        width:  rect.width  + (2 * rectShadow.radius);
-        height: rect.height + (2 * rectShadow.radius);
-        
-        Rectangle {
-            id: rect
-            width: 430;
-            height: 80;
-            color: "white";
-            radius: 0;
-            antialiasing: true;
-            anchors.centerIn: parent;
-            
-            Image {
-                source: "/fetch.png"
-                anchors.fill: parent
-            }
-        }
-    }
-    DropShadow {
-        id: rectShadow
-        anchors.fill: source
-        cached: true;
-        horizontalOffset: 3;
-        verticalOffset: 3;
-        radius: 8.0;
-        samples: 16;
-        color: "#80000000";
-        smooth: true;
-        source: decodeContainer;
-    }
+DecodeContainer {
+    anchors.left: decodeIndicator.right; anchors.leftMargin: -16
+    anchors.top: decodeIndicator.top
+}    
+
     
     Rectangle {
         x: 475; y: 8
@@ -341,12 +309,12 @@ Item {
         width: 1
         color: "lightblue"
     }
-        
+    
     Rectangle {
         x: 458; y: 8
         height: 20
         width: 1
         color: "lightblue"
     }
-
+    
 }
