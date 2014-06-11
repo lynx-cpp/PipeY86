@@ -8,7 +8,7 @@ import "container"
 
 Item {
     id: main
-    width: 1024;
+    width: 1220;
     height: 768;
     FontLoader {
         id: defaultFont
@@ -298,11 +298,20 @@ Item {
         text: "W"
     }
     
-DecodeContainer {
-    anchors.left: decodeIndicator.right; anchors.leftMargin: -16
-    anchors.top: decodeIndicator.top
-}    
-
+    DecodeContainer {
+        anchors.left: decodeIndicator.right; anchors.leftMargin: -16
+        anchors.top: decodeIndicator.top
+        inner_height: decodeIndicator.inner_height
+        inner_width: 600
+    }    
+    
+    ExecuteContainer {
+        anchors.left: executeIndicator.right; anchors.leftMargin: -16
+        anchors.top: executeIndicator.top
+        inner_height: executeIndicator.inner_height
+        inner_width: 600
+    }
+    
     
     Rectangle {
         x: 475; y: 8

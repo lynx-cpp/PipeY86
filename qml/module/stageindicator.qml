@@ -8,7 +8,8 @@ Item {
     property alias text: indicatorText.text
     property alias color: indicatorRect.color
     property alias fontColor: indicatorText.color
-    
+    property alias inner_width: indicatorRect.width
+    property alias inner_height: indicatorRect.height
     Item{
         id: indicatorItem
         anchors.fill: parent
@@ -21,7 +22,7 @@ Item {
             id: indicatorRect
             color: "yellow"
             anchors.centerIn: parent
-            width: 80; height: 80
+            width: 100; height: 100
             Text{
                 id: indicatorText
                 anchors.centerIn: parent

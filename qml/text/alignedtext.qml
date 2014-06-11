@@ -24,7 +24,7 @@ Item {
     Text {
         id: upper
         font.family: defaultFont.name
-        font.pointSize: 13
+        font.pointSize: 14
         anchors.top: parent.top; anchors.left: parent.left
         text: "upper"
     }
@@ -33,7 +33,7 @@ Item {
         anchors.left: upper.left
         anchors.top: upper.bottom; anchors.topMargin: 5
         font.family: defaultFont.name
-        font.pointSize: 13
+        font.pointSize: 12
         text: "lower"
     }
     

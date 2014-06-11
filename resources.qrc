@@ -7,6 +7,7 @@
         <file>qml/text/qmldir</file>
         <file>qml/container/qmldir</file>
         <file>qml/container/decodecontainer.qml</file>
+        <file>qml/container/executecontainer.qml</file>
         <file>qml/module/qmldir</file>
         <file alias="default_font.ttf">fonts/Raleway-Light.ttf</file>
         <file alias="fetch.png">images/fetch1.png</file>

@@ -15,7 +15,7 @@ Item {
     property int inner_width: 430
     property int inner_height: 80
     Item {
-        id: decodeContainer;
+        id: container;
         //anchors.centerIn: parent;
         //anchors.left: decodeIndicator.right; anchors.leftMargin: -16
         //anchors.top: decodeIndicator.top
@@ -62,27 +62,41 @@ Item {
             }
 
             AlignedText {
-                id: ra_text
-                width: valp_text.width
+                id: vala_text 
+                textA: "valA"
+                textB: valA
                 leftObj: valp_text
-                textA: "rA"
-                textB: rA
             }
 
             AlignedText {
-                id: rb_text
-                width: valp_text.width
-                textA: "rB"
-                textB: rB
-                leftObj: ra_text
+                id: valb_text
+                textA: "valB"
+                textB: valB
+                leftObj: vala_text
             }
 
             AlignedText {
                 id: valc_text
                 textA: "valC"
                 textB: valC
-                leftObj: rb_text
+                leftObj: valb_text
             }
+            
+            AlignedText {
+                id: dste_text
+                textA: "dstE"
+                textB: dstE
+                leftObj: valc_text
+            }
+            
+            AlignedText {
+                id: dstm_text
+                textA: "dstM"
+                textB: dstM
+                leftObj: dste_text
+            }
+
+
         }
     }
     DropShadow {
@@ -95,6 +109,6 @@ Item {
         samples: 16;
         color: "#80000000";
         smooth: true;
-        source: decodeContainer;
+        source: container;
     }
 }
