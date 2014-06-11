@@ -1,3 +1,6 @@
+#include "instructionprivate.h"
+#include "y86pipeline.h"
+
 InstructionOP::InstructionOP(const std::string& instructionCode, int address):InstructionPrivate(address)
 {
     srcA = rA; srcB = rB;
