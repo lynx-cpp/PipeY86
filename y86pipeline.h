@@ -7,6 +7,7 @@
 #include <map>
 
 class Instruction;
+class PipelineLoader;
 #include "instruction.h"
 typedef std::vector<Instruction> Program;
 typedef Instruction* InstructionPtr;
@@ -51,6 +52,7 @@ private:
     
 public:
     friend class InstructionPrivate;
+    friend class PipelineLoader;
     Y86Pipeline(const std::string& filename);
     Y86Pipeline(const Y86Pipeline& org);
     ~Y86Pipeline();

@@ -65,6 +65,34 @@ Item {
         insModel.append({"Address":addr,"Data":data,"Stage":stage,"Code":code});
     }
     
+    function printList(list) {
+        console.log(list[0]);
+        console.log(list[1]);
+    }
+    
+    function getStageObj(str) {
+        switch (str) {
+            case "decode": return decode_container;
+            case "execute": return execute_container;
+            case "memory": return memory_container;
+            case "writeback": return writeback_container;
+        }
+        return undefined;
+    }
+    
+    function writeContainer(containerName,list) {
+        var object = getStageObj(containerName);
+        console.log(list[0]);
+        object.icode    = list[0]; object.ifun      = list[1];
+        object.rA       = list[2]; object.rB        = list[3];
+        object.dstE     = list[4]; object.dstM      = list[5];
+        object.srcA     = list[6]; object.srcB      = list[7];
+        
+        object.valA     = list[8]; object.valB     = list[9];
+        object.valC     = list[10]; object.valP   = list[11];
+        object.valE     = list[12]; object.valM  = list[13];
+    }
+    
     Item {
         id:tableItem
         width: insTable.width + 2*tableShadow.radius; height: insTable.height + 2*tableShadow.radius
@@ -301,6 +329,7 @@ Item {
     property var container_width: 430
     
     DecodeContainer {
+        id: decode_container;
         property var indicator: decodeIndicator
         anchors.left: indicator.right; anchors.leftMargin: -16
         anchors.top: indicator.top
@@ -309,6 +338,7 @@ Item {
     }    
     
     ExecuteContainer {
+        id: execute_container;
         property var indicator: executeIndicator
         anchors.left: indicator.right; anchors.leftMargin: -16
         anchors.top: indicator.top
@@ -317,6 +347,7 @@ Item {
     }
     
     MemoryContainer {
+        id: memory_container
         property var indicator: memoryIndicator
         anchors.left: indicator.right; anchors.leftMargin: -16
         anchors.top: indicator.top
@@ -325,6 +356,7 @@ Item {
     }
     
     WritebackContainer {
+        id: writeback_container;
         property var indicator: writeBackIndicator
         anchors.left: indicator.right; anchors.leftMargin: -16
         anchors.top: indicator.top

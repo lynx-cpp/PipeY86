@@ -10,6 +10,15 @@
 extern QQuickItem* root;
 QVariant returnValue;
 
+static inline void setStageStatus(const QString& status,Instruction* ins)
+{
+    QVariantList list = ins->status();
+    /*Q_FOREACH(QVariant i,list) {
+        qDebug() << i;
+    }*/
+    QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,status),Q_ARG(QVariant,QVariant(list)));
+}
+
 static inline void removeStageLabel(int idx)
 {
     QMetaObject::invokeMethod(root,"removeStageLabel",Qt::QueuedConnection,Q_ARG(QVariant,idx));
@@ -55,6 +64,7 @@ void PipelineLoader::loadFile(const QString& filename)
                    "",
                    prog[i].comment());
     }
+    setStageStatus("decode",m_pipeline->fetchI);
     qDebug() << "writed";
 }
 

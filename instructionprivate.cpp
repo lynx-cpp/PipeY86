@@ -11,7 +11,7 @@ int findInstructionFromAddr(int address)
 }
 
 InstructionPrivate::InstructionPrivate(int address):
-rA(0),rB(0),valC(0),valA(0),valB(0),valE(0),valM(0),srcA(NO_REG),srcB(NO_REG),dstE(NO_REG),dstM(NO_REG)
+rA(NO_REG),rB(NO_REG),valC(0),valA(0),valB(0),valE(0),valM(0),srcA(NO_REG),srcB(NO_REG),dstE(NO_REG),dstM(NO_REG)
 {
     m_address = address;
     stat = BUB;

@@ -185,3 +185,26 @@ std::string Instruction::currentOperation()
 {
     return instructionP->currentOperation;
 }
+
+#ifdef QT_VERSION
+QVariantList Instruction::status() const
+{
+    QVariantList ret;
+    ret.clear();
+    ret.append(instructionP->icode);
+    ret.append(instructionP->ifun);
+    ret.append(instructionP->rA);
+    ret.append(instructionP->rB);
+    ret.append(instructionP->dstE);
+    ret.append(instructionP->dstM);
+    ret.append(instructionP->srcA);
+    ret.append(instructionP->srcB);
+    ret.append(QString::fromStdString(int2Hex(instructionP->valA,8)));
+    ret.append(QString::fromStdString(int2Hex(instructionP->valB,8)));
+    ret.append(QString::fromStdString(int2Hex(instructionP->valC,8)));
+    ret.append(QString::fromStdString(int2Hex(instructionP->addr(),8)));
+    ret.append(QString::fromStdString(int2Hex(instructionP->valE,8)));
+    ret.append(QString::fromStdString(int2Hex(instructionP->valM,8)));
+    return ret;
+}
+#endif //QT_VERSION

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <QVariantList>
 
 
 class Y86Pipeline;
@@ -26,7 +27,6 @@ private:
 
 public:
     friend class InstructionPrivate;
-    friend class Y86Pipeline;
     Instruction(const std::string& instructionCode,const std::string& comment,int address);
     Instruction(int address = -1);
     Instruction(const Instruction& ip) ;
@@ -54,6 +54,8 @@ public:
     
     bool operator!=(const Instruction& B);
     bool eq(Instruction* decodeI);
+    
+    QVariantList status() const;
 };
 
 #endif

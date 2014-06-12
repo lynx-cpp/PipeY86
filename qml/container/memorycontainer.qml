@@ -6,7 +6,7 @@ Item {
     property var icode:"0"; property var ifun:"0";
     property var rA   :"8"; property var rB  :"8";
     property var dstE :"8"; property var dstM:"8";
-    property var srcE :"8"; property var srcM:"8";
+    property var srcA :"8"; property var srcB:"8";
     
     property var valA :"0x00000000"; property var valB:"0x00000000";
     property var valC :"0x00000000"; property var valP:"0x00000000";
@@ -61,11 +61,13 @@ Item {
                 textA: "valA"
                 textB: valA
                 leftObj: ifun_text
+                width: 78
             }
 
             AlignedText {
                 id: vale_text
-                width: vala_text.width*2 + leftInterval
+                //width: vala_text.width*2 + leftInterval
+                width: 78*2 + leftInterval
                 textA: "valE"
                 textB: valE
                 leftObj: vala_text

@@ -9,6 +9,8 @@
 #include <QMetaObject>
 #include <QThread>
 #include <QObject>
+#include <QList>
+#include <QVariant>
 
 #include "y86pipeline.h"
 #include "instruction.h"
