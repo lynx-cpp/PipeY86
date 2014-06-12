@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/test.qml</file>
+        <file>qml/module/button.qml</file>
+        <file>qml/module/stageindicator.qml</file>
+        <file>qml/module/qmldir</file>
+        <file alias="default_font.ttf">fonts/Raleway-Light.ttf</file>
+        <file alias="fetch.png">images/fetch.png</file>
+    </qresource>
+</RCC>
+
