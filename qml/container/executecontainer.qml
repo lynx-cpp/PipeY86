@@ -55,19 +55,12 @@ Item {
                 textB: ifun
                 leftObj : icode_text
             }
-            
-            AlignedText {
-                id: valp_text
-                textA: "valP"
-                textB: valP
-                leftObj: ifun_text
-            }
 
             AlignedText {
                 id: vala_text 
                 textA: "valA"
                 textB: valA
-                leftObj: valp_text
+                leftObj: ifun_text
             }
 
             AlignedText {

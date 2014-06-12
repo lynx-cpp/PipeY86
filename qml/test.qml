@@ -8,7 +8,7 @@ import "container"
 
 Item {
     id: main
-    width: 1220;
+    width: 1024;
     height: 768;
     FontLoader {
         id: defaultFont
@@ -298,18 +298,38 @@ Item {
         text: "W"
     }
     
+    property var container_width: 430
+    
     DecodeContainer {
-        anchors.left: decodeIndicator.right; anchors.leftMargin: -16
-        anchors.top: decodeIndicator.top
-        inner_height: decodeIndicator.inner_height
-        inner_width: 600
+        property var indicator: decodeIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
     }    
     
     ExecuteContainer {
-        anchors.left: executeIndicator.right; anchors.leftMargin: -16
-        anchors.top: executeIndicator.top
-        inner_height: executeIndicator.inner_height
-        inner_width: 600
+        property var indicator: executeIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
+    }
+    
+    MemoryContainer {
+        property var indicator: memoryIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
+    }
+    
+    WritebackContainer {
+        property var indicator: writeBackIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
     }
     
     

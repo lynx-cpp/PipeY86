@@ -12,8 +12,10 @@ Item {
     property var leftObj: undefined
     property int leftInterval: 5
     property int offset: 5
-    width: upper.width>lower.width? upper.width : lower.width
-    height: upper.height + offset + lower.height
+    property int org_width: upper.width>lower.width? upper.width : lower.width
+    property int org_height: upper.height + offset + lower.height
+    width: org_width
+    height: org_height
     
     /*function setLeftObj(obj) {
         upper.anchors.left = obj.right; upper.anchors.leftMargin = 5
@@ -26,7 +28,7 @@ Item {
     Text {
         id: upper
         font.family: defaultFont.name
-        font.pointSize: 14
+        font.pointSize: 12
         anchors.top: parent.top; anchors.left: parent.left
         text: "upper"
     }
@@ -35,7 +37,7 @@ Item {
         anchors.left: upper.left
         anchors.top: upper.bottom; anchors.topMargin: offset
         font.family: defaultFont.name
-        font.pointSize: 12
+        font.pointSize: 10
         text: "lower"
     }
     

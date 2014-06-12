@@ -1,3 +1,4 @@
+
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "../text"
@@ -15,7 +16,7 @@ Item {
     property int inner_width: 430
     property int inner_height: 80
     Item {
-        id: decodeContainer;
+        id: container;
         //anchors.centerIn: parent;
         //anchors.left: decodeIndicator.right; anchors.leftMargin: -16
         //anchors.top: decodeIndicator.top
@@ -50,41 +51,41 @@ Item {
 
             AlignedText {
                 id: ifun_text
-                //width: icode_text.width
+                width: org_width + vale_text.width + leftInterval
                 textA: "ifun"
                 textB: ifun
                 leftObj : icode_text
             }
-
+            
             AlignedText {
-                id: ra_text
-                width: valp_text.width
+                id: vale_text
+                textA: "valE"
+                textB: valE
                 leftObj: ifun_text
-                textA: "rA"
-                textB: rA
             }
 
             AlignedText {
-                id: rb_text
-                width: valp_text.width
-                textA: "rB"
-                textB: rB
-                leftObj: ra_text
+                id: valm_text 
+                textA: "valM"
+                textB: valM
+                leftObj: vale_text
+            }
+
+            AlignedText {
+                id: dste_text
+                textA: "dstE"
+                textB: dstE
+                leftObj: valm_text
             }
             
             AlignedText {
-                id: valc_text
-                textA: "valC"
-                textB: valC
-                leftObj: rb_text
+                id: dstm_text
+                textA: "dstM"
+                textB: dstM
+                leftObj: dste_text
             }
-            
-            AlignedText {
-                id: valp_text
-                textA: "valP"
-                textB: valP
-                leftObj: valc_text
-            }
+
+
         }
     }
     DropShadow {
@@ -97,6 +98,6 @@ Item {
         samples: 16;
         color: "#80000000";
         smooth: true;
-        source: decodeContainer;
+        source: container;
     }
 }

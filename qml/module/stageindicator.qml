@@ -22,7 +22,7 @@ Item {
             id: indicatorRect
             color: "yellow"
             anchors.centerIn: parent
-            width: 100; height: 100
+            width: 80; height: 80
             Text{
                 id: indicatorText
                 anchors.centerIn: parent
