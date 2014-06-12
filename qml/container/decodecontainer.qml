@@ -41,7 +41,9 @@ Item {
             
             AlignedText {
                 id: icode_text
-                x: 12; y: 23
+                //x: 12; y: 23
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left; anchors.leftMargin: 12
                 textA: "icode"
                 textB: icode
             }

@@ -11,7 +11,9 @@ Item {
     property alias textB: lower.text
     property var leftObj: undefined
     property int leftInterval: 5
+    property int offset: 5
     width: upper.width>lower.width? upper.width : lower.width
+    height: upper.height + offset + lower.height
     
     /*function setLeftObj(obj) {
         upper.anchors.left = obj.right; upper.anchors.leftMargin = 5
@@ -31,7 +33,7 @@ Item {
     Text {
         id: lower
         anchors.left: upper.left
-        anchors.top: upper.bottom; anchors.topMargin: 5
+        anchors.top: upper.bottom; anchors.topMargin: offset
         font.family: defaultFont.name
         font.pointSize: 12
         text: "lower"
