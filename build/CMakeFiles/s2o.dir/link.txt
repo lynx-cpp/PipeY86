@@ -1,1 +1,0 @@
-/usr/bin/c++     -fPIE    CMakeFiles/s2o.dir/s2o/main.cpp.o CMakeFiles/s2o.dir/s2o_automoc.cpp.o  -o s2o -rdynamic 
