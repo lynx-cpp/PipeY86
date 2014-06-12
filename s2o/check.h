@@ -18,10 +18,7 @@
  *
  */
 
-extern std :: map<std :: string, int> dict;
-extern std :: map<std :: string, int> check;
-
-static inline char check_compile(std :: vector<std :: string> InstructionRegister, int &row){
+static inline char check_compile(std :: vector<std :: string> InstructionRegister, int &row,std::map<std::string, int> dict,std::map<std::string,int> check){
 	int pos = 0;
 	for (row = 0; row < InstructionRegister.size(); ++row)
 	{

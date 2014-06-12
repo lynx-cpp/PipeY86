@@ -3,14 +3,11 @@
 #include <map>
 #include "tools.h"
 
-extern std :: map<std :: string, int> dict;
-extern std :: map<std :: string, int> check;
-
-static inline void build(std :: ostringstream &output, std :: vector<std :: string> InstructionRegister, int &row)
+static inline void build(std :: ostringstream &output, std :: vector<std :: string> InstructionRegister,std::map<std::string, int> dict,std::map<std::string,int> check)
 {
 	output.str("");
 	int pos = 0;
-	for (row = 0; row < InstructionRegister.size(); ++row)
+	for (int row = 0; row < InstructionRegister.size(); ++row)
 	{
 		std :: vector <std :: string> line;
 		line.erase(line.begin(),line.end());
