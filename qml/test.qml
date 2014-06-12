@@ -341,7 +341,7 @@ Item {
     }
     
     Rectangle {
-        x: 458; y: 8
+        x: 459; y: 8
         height: 20
         width: 1
         color: "lightblue"

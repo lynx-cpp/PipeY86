@@ -21,7 +21,8 @@ typedef std::vector< std::pair<int,int> > MemorySeq;
 static inline int hex2num(char ch)
 {
     if (ch>='0' && ch<='9') return ch - '0';
-    return ch - 'a' + 10;
+    if (ch>='a' && ch<='z') return ch - 'a' + 10;
+    return ch - 'A' + 10;
 }
 
 static inline int byte2int(char a,char b)
