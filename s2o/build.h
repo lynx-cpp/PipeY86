@@ -7,11 +7,13 @@ static inline void build(std :: ostringstream &output, std :: vector<std :: stri
 {
 	output.str("");
 	int pos = 0;
+	bool flag = false;
 	for (int row = 0; row < InstructionRegister.size(); ++row)
 	{
 		std :: vector <std :: string> line;
 		line.erase(line.begin(),line.end());
 		std :: string val = InstructionRegister[row];
+		InstructionRegister[row] = remove_note(InstructionRegister[row],flag);
 		InstructionRegister[row] = normalize(InstructionRegister[row]);
 		split(InstructionRegister[row],line);
 		if (line.size() == 0) {
