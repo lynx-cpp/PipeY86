@@ -4,6 +4,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.0
 import "module"
+import "container"
 
 Item {
     id: main
@@ -89,7 +90,7 @@ Item {
                         width: parent.width
                         property string type: insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
-                            backgroundColor
+                        backgroundColor
                         else if (type=="F") 
                             fetchColor
                         else if (type=="D")
@@ -104,8 +105,6 @@ Item {
                             "#e5fff8"
                         else
                             "#fdffe5"
-                            
-                           
                     }
                     //color: insModel.get(styleData.row).color
                 }
@@ -118,41 +117,35 @@ Item {
                         text: styleData.value
                         //anchors.centerIn: parent
                     }
-
+                    
                 }
                 headerDelegate : Component {
                     //source: "../fetch.png" //in examples/quick/controls/tableview/images
                     //border{left:2;right:2;top:2;bottom:2}
-                    Rectangle {
-                        id: hh
-                        height: 20
-                        //width: parent.width
-                        color: "lightblue"
+                    Item {
+                        height: 20 
                         anchors.left: parent.left; anchors.top: parent.top
-                        //border.width: 1
-                        //border.color: "white"
-                        
-                        Text {//this is how to add text on top of image, will be "name", "age", "gender"
-                            color:"#333"
-                            text: styleData.value
-                            font.family: defaultFont.name
-                            font.pointSize: 10
-                            anchors.left: parent.left; anchors.leftMargin: 1
+                        clip: false
+                        Rectangle {
+                            id: hh
+                            height: 20
+                            width: parent.width
+                            color: "lightblue"
+                            anchors.left: parent.left; anchors.top: parent.top
+                            //border.width: 1
+                            //border.color: "white"
+                            
+                            Text {
+                                color:"#333"
+                                text: styleData.value
+                                font.family: defaultFont.name
+                                font.pointSize: 10
+                                anchors.left: parent.left; anchors.leftMargin: 1
+                            }
                         }
+                        
                     }
-                    /*
-                     *                    DropShadow {
-                     *                        id: headerShadow
-                     *                        anchors.fill: source
-                     *                        cached: true;
-                     *                        horizontalOffset: 3;
-                     *                        verticalOffset: 3;
-                     *                        radius: 8.0;
-                     *                        samples: 16;
-                     *                        color: "#80000000";
-                     *                        smooth: true;
-                     *                        source: header;
-                }*/
+                    
                 }
             }
             model: insModel
@@ -286,7 +279,7 @@ Item {
         fontColor: indicatorFontColor
         text: "E"
     }
-
+    
     StageIndicator {
         id: memoryIndicator
         anchors.left: executeIndicator.left
@@ -295,7 +288,7 @@ Item {
         fontColor: indicatorFontColor
         text: "M"
     }
-
+    
     StageIndicator {
         id: writeBackIndicator
         anchors.left: memoryIndicator.left
@@ -304,42 +297,54 @@ Item {
         fontColor: indicatorFontColor
         text: "W"
     }
-
     
-    Item {
-        id: decodeContainer;
-        //anchors.centerIn: parent;
-        anchors.left: decodeIndicator.right; anchors.leftMargin: -16
-        anchors.top: decodeIndicator.top
-        //anchors.top: openButton.bottom; anchors.topMargin:3
-        width:  rect.width  + (2 * rectShadow.radius);
-        height: rect.height + (2 * rectShadow.radius);
-        
-        Rectangle {
-            id: rect
-            width: 430;
-            height: 80;
-            color: "white";
-            radius: 0;
-            antialiasing: true;
-            anchors.centerIn: parent;
-            
-            Image {
-                source: "/fetch.png"
-                anchors.fill: parent
-            }
-        }
+    property var container_width: 430
+    
+    DecodeContainer {
+        property var indicator: decodeIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
+    }    
+    
+    ExecuteContainer {
+        property var indicator: executeIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
     }
-    DropShadow {
-        id: rectShadow
-        anchors.fill: source
-        cached: true;
-        horizontalOffset: 3;
-        verticalOffset: 3;
-        radius: 8.0;
-        samples: 16;
-        color: "#80000000";
-        smooth: true;
-        source: decodeContainer;
+    
+    MemoryContainer {
+        property var indicator: memoryIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
     }
+    
+    WritebackContainer {
+        property var indicator: writeBackIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: container_width
+    }
+    
+    
+    Rectangle {
+        x: 475; y: 8
+        height: 20
+        width: 1
+        color: "lightblue"
+    }
+    
+    Rectangle {
+        x: 458; y: 8
+        height: 20
+        width: 1
+        color: "lightblue"
+    }
+    
 }
