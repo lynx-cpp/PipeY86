@@ -53,4 +53,3 @@ void InstructionMrmovl::writeBackStage()
     writeRealReg(rA,valM);
     currentOperation = "R[rA] <- valM;";
 }
-

@@ -115,9 +115,39 @@ public:
 
 class InstructionJump : public InstructionPrivate
 {
+private:
+	enum jumpType {
+		jmp,jle,jl,je,jne,jge,jg,other
+	} type;
+	std::string jumpString;
+	bool BCH;
 public:
 	InstructionJump(const std::string& m_instructionCode,int address);
 	virtual ~InstructionJump();
+	virtual void fetchStage();
+	virtual bool decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
+
+class InstructionCall :public InstructionPrivate
+{
+public:
+	InstructionCall(const std::string& m_instructionCode,int address);
+	virtual ~InstructionCall();
+	virtual void fetchStage();
+	virtual bool decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
+
+class InstructionRet : public InstructionPrivate
+{
+public:
+	InstructionRet(const std::string& m_instructionCode,int address);
+	virtual ~InstructionRet();
 	virtual void fetchStage();
 	virtual bool decodeStage();
 	virtual void executeStage();
