@@ -18,6 +18,8 @@ typedef std::map<int,int> Memory;
 class Y86Pipeline
 {
 private:
+    bool m_loaded;
+    
     InstructionPtr fetchI,decodeI,executeI,memoryI,writeBackI;
     int m_register[MAX_REG_NUM];
     
@@ -61,6 +63,8 @@ public:
     void run();
     void execute();
     //int readRegister(int num) { return m_register[num]; }
+    
+    bool loaded() { return m_loaded; }
     
     int read32BitMemory(int address) ;
     void write32BitMemory(int address,int value);

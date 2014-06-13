@@ -23,6 +23,7 @@ Item {
     
     signal load(string str)
     signal start(int latency)
+    signal step()
     signal pause()
     signal reset()
     signal startWithoutLatency()
@@ -295,10 +296,34 @@ Item {
         anchors.left: resetButton.right; anchors.leftMargin: 5
         button_width: 80
         button_height: 40 
-        onClicked: start(200)
+        onClicked: startButtonClicked()
         font.family: defaultFont.name
         font.pointSize:18
-        text: "Start"
+        text: paused ? "Start" : "Pause"
+        
+        property var paused: true;
+    }
+   
+    function startButtonClicked() {
+        if (startButton.paused){
+            main.start(200);
+            startButton.paused = false;
+        }
+        else {
+            main.pause();
+            startButton.paused = true;
+        }
+    }
+        
+    Button {
+        id: stepButton
+        anchors.left: startButton.right; anchors.leftMargin: 5
+        button_width: 80
+        button_height: 40 
+        onClicked: step()
+        font.family: defaultFont.name
+        font.pointSize:18
+        text: "Step"
     }
     
     StageIndicator {

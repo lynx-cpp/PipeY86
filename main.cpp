@@ -42,6 +42,7 @@ int main(int argc, char* argv[])
     QObject::connect(pipelineThread,SIGNAL(finished()),pipeline,SLOT(deleteLater()));
     QObject::connect(root,SIGNAL(reset()),pipeline,SLOT(load()));
     QObject::connect(root,SIGNAL(load(QString)),pipeline,SLOT(loadFile(QString)));
+    QObject::connect(root,SIGNAL(step()),pipeline,SLOT(step()));
     pipeline->moveToThread(pipelineThread);
     pipelineThread->start();
     return app.exec();

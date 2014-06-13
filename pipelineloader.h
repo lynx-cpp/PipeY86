@@ -11,9 +11,11 @@ class PipelineLoader : public QObject
 public:
     explicit PipelineLoader(QObject* parent = 0);
     ~PipelineLoader();
+    void refreshDisplay();
 public slots:
     void loadFile(const QString& filename);
     void load();
+    void step();
 
 private:
     Y86Pipeline* m_pipeline;

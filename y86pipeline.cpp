@@ -115,11 +115,15 @@ void Y86Pipeline::execute()
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
+    m_loaded = false;
     writeBackI = new Instruction();
     memoryI = new Instruction();
     executeI = new Instruction();
     decodeI = new Instruction();
     fetchI = new Instruction();
+    prog.clear();
+    m_memory.clear();
+    orgStackAddr = 0;
     std::fstream stream;
     std::cerr << "Opening " << filename << std::endl;
     stream.open(filename.c_str(),std::fstream::in);
@@ -128,9 +132,6 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
         return ;
     }
     
-    prog.clear();
-    m_memory.clear();
-    orgStackAddr = 0;
     while (!stream.eof()){
         std::string s1,s2,s3;
         readTripleStr(stream,s1,s2,s3);
@@ -170,6 +171,7 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
     delete fetchI;
     fetchI = new Instruction(prog[0]);
     
+    m_loaded = true;
     std::cerr << "initialization completed." << std::endl;
 }
 
@@ -247,7 +249,8 @@ m_memory(org.m_memory),
 orgStackAddr(org.orgStackAddr),
 ZeroFlag(org.ZeroFlag),
 OverflowFlag(org.OverflowFlag),
-SignFlag(org.SignFlag)
+SignFlag(org.SignFlag),
+m_loaded(org.m_loaded)
 {
     fetchI = new Instruction(*org.fetchI);
     decodeI = new Instruction(*org.decodeI);

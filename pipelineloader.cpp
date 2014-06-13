@@ -13,9 +13,9 @@ QVariant returnValue;
 static inline void setStageStatus(const QString& status,Instruction* ins)
 {
     QVariantList list = ins->status();
-    /*Q_FOREACH(QVariant i,list) {
+    Q_FOREACH(QVariant i,list) {
         qDebug() << i;
-    }*/
+    }
     QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,status),Q_ARG(QVariant,QVariant(list)));
 }
 
@@ -64,11 +64,8 @@ void PipelineLoader::loadFile(const QString& filename)
                    "",
                    prog[i].comment());
     }
-    setStageStatus("decode",m_pipeline->decodeI);
-    setStageStatus("execute",m_pipeline->executeI);
-    setStageStatus("memory",m_pipeline->memoryI);
-    setStageStatus("writeback",m_pipeline->writeBackI);
-    qDebug() << "writed";
+    refreshDisplay();
+    qDebug() << "written";
 }
 
 void PipelineLoader::load()
@@ -80,5 +77,24 @@ void PipelineLoader::load()
 PipelineLoader::~PipelineLoader()
 {
     delete m_pipeline;
+}
+
+void PipelineLoader::refreshDisplay()
+{
+    if (m_pipeline==NULL || !m_pipeline->loaded())
+        return ;
+    setStageStatus("decode",m_pipeline->decodeI);
+    setStageStatus("execute",m_pipeline->executeI);
+    setStageStatus("memory",m_pipeline->memoryI);
+    setStageStatus("writeback",m_pipeline->writeBackI);
+}
+
+void PipelineLoader::step()
+{
+    if (m_pipeline==NULL || !m_pipeline->loaded())
+        return ;
+    m_pipeline->setProgToThis();
+    m_pipeline->execute();
+    refreshDisplay();
 }
 
