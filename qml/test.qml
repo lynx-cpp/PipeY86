@@ -117,7 +117,7 @@ Item {
                     id: rowCom
                     Rectangle {
                         width: parent.width
-                        property string type: (insModel.get(styleData.row).Stage==undefined) ? "" : insModel.get(styleData.row).Stage
+                        property string type: (insModel.get(styleData.row)==undefined) ? "" : insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
                             backgroundColor
                         else if (type=="F") 
