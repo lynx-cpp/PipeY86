@@ -2,6 +2,8 @@
 #define INSTRUCTION_PRIVATE_H
 #include "instruction.h"
 
+int findInstructionFromAddr(int address);
+
 class InstructionPrivate
 {
 protected:

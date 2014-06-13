@@ -5,7 +5,7 @@ InstructionCall :: InstructionCall(const std::string& m_instructionCode,int addr
 {
 }
 
-void InstructionCall :: ~InstructionCall()
+InstructionCall :: ~InstructionCall()
 {
 }
 
@@ -39,7 +39,7 @@ void InstructionCall :: memoryStage()
 	InstructionPrivate :: memoryStage();
 	currentOperation = "valE <- valP";
 	m_pipeline->write32BitMemory(valE,valP);
-	writeForwardReg(4,valE);
+	writeForwardReg(4,valE,true);
 }
 
 void InstructionCall :: writeBackStage()

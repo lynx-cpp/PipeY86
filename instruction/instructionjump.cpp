@@ -1,7 +1,7 @@
 #include "instructionprivate.h"
 #include "y86pipeline.h"
 
-InstructionJump :: InstructionJump()
+InstructionJump :: InstructionJump(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
 	switch (ifun)
 	{

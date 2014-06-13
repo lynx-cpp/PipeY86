@@ -104,14 +104,5 @@ static inline void printMemory(Memory& memory,MemorySeq& seq)
     }
 }
 
-int findInstructionFromAddr(int address)
-{
-    int len = prog.size();
-    for (int i=0;i<len;i++)
-        if (prog[i].addr()==address)
-            return i;
-        return -1;
-}
-
 //hello
 #endif

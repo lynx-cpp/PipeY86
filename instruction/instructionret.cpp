@@ -21,7 +21,7 @@ bool InstructionRet :: decodeStage()
 	return (readReg(4,valA) && readReg(4,valB));
 }
 
-void InstructionRet :: execuateStage()
+void InstructionRet :: executeStage()
 {
 	InstructionPrivate :: executeStage();
 	currentOperation = "valE <- valB + 4;";
@@ -33,7 +33,7 @@ void InstructionRet :: memoryStage()
 	InstructionPrivate :: memoryStage();
 	currentOperation = "valM <- M_4[valA]";
 	valM = m_pipeline->read32BitMemory(valA);
-	writeForwardReg(4,valE);
+	writeForwardReg(4,valE,true);
 }
 
 void InstructionRet :: writeBackStage()
