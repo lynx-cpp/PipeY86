@@ -71,7 +71,7 @@ public:
     void setConditionCode(int a,int b,int val);
     bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }
     bool jl() { return SignFlag ^ OverflowFlag; }
-    bool e() { return ZeroFlag; }
+    bool je() { return ZeroFlag; }
     bool jne() { return ~ZeroFlag; }
     bool jge() { return ~(SignFlag ^ OverflowFlag); }
     bool jg() { return ~(SignFlag ^ OverflowFlag) & (~ZeroFlag); }

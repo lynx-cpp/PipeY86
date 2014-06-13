@@ -291,6 +291,29 @@ static inline void format_output(std :: ostringstream &output, std :: string str
 	output << "|" << val << std :: endl;
 }
 
-
+static inline std::string remove_note(std::string str,bool &flag)
+{
+	std::string result = "";
+	int l = str.size();
+	int i = 0;
+	while (i < l)
+	{
+		if (i+1 < l && str[i] == '/' && str[i+1] =='*' && !flag)
+		{
+			flag = true;
+			i+=2;
+			continue;
+		}
+		if (i+1 < l && str[i] == '*' && str[i+1] =='/' && flag)
+		{
+			flag = false;
+			i+=2;
+			continue;
+		}
+		if (!flag) result.push_back(str[i]);
+		++i;
+	}
+	return result;
+}
 
 #endif

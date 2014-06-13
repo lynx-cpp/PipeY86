@@ -20,10 +20,12 @@
 
 static inline char check_compile(std :: vector<std :: string> InstructionRegister, int &row,std::map<std::string, int> dict,std::map<std::string,int> check){
 	int pos = 0;
+	bool flag = false;
 	for (row = 0; row < InstructionRegister.size(); ++row)
 	{
 		std :: vector <std :: string> line;
 		line.erase(line.begin(),line.end());
+		InstructionRegister[row] = remove_note(InstructionRegister[row],flag);
 		InstructionRegister[row] = normalize(InstructionRegister[row]);
 		split(InstructionRegister[row],line);
 		if (line.size() == 0){
