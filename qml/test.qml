@@ -290,6 +290,17 @@ Item {
         text: "Reset"
     }
     
+    Button {
+        id: startButton
+        anchors.left: resetButton.right; anchors.leftMargin: 5
+        button_width: 80
+        button_height: 40 
+        onClicked: start(200)
+        font.family: defaultFont.name
+        font.pointSize:18
+        text: "Start"
+    }
+    
     StageIndicator {
         id: decodeIndicator
         anchors.left: tableItem.right; anchors.leftMargin: 5

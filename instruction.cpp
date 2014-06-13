@@ -189,6 +189,8 @@ std::string Instruction::currentOperation()
 #ifdef QT_VERSION
 QVariantList Instruction::status() const
 {
+    int addr = instructionP->addr(); 
+    if (addr==-1) addr = 0;
     QVariantList ret;
     ret.clear();
     ret.append(instructionP->icode);
@@ -202,7 +204,7 @@ QVariantList Instruction::status() const
     ret.append(QString::fromStdString(int2Hex(instructionP->valA,8)));
     ret.append(QString::fromStdString(int2Hex(instructionP->valB,8)));
     ret.append(QString::fromStdString(int2Hex(instructionP->valC,8)));
-    ret.append(QString::fromStdString(int2Hex(instructionP->addr(),8)));
+    ret.append(QString::fromStdString(int2Hex(addr,8)));
     ret.append(QString::fromStdString(int2Hex(instructionP->valE,8)));
     ret.append(QString::fromStdString(int2Hex(instructionP->valM,8)));
     return ret;

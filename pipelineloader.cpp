@@ -64,7 +64,10 @@ void PipelineLoader::loadFile(const QString& filename)
                    "",
                    prog[i].comment());
     }
-    setStageStatus("decode",m_pipeline->fetchI);
+    setStageStatus("decode",m_pipeline->decodeI);
+    setStageStatus("execute",m_pipeline->executeI);
+    setStageStatus("memory",m_pipeline->memoryI);
+    setStageStatus("writeback",m_pipeline->writeBackI);
     qDebug() << "writed";
 }
 

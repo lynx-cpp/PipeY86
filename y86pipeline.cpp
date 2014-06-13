@@ -115,7 +115,11 @@ void Y86Pipeline::execute()
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
-    writeBackI = memoryI = executeI = decodeI = fetchI = NULL;
+    writeBackI = new Instruction();
+    memoryI = new Instruction();
+    executeI = new Instruction();
+    decodeI = new Instruction();
+    fetchI = new Instruction();
     std::fstream stream;
     std::cerr << "Opening " << filename << std::endl;
     stream.open(filename.c_str(),std::fstream::in);
@@ -162,10 +166,8 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
     m_register[EBP] = orgStackAddr;
     recoverForwarding();
     setProgToThis();
-   writeBackI = new Instruction();
-    memoryI = new Instruction();
-    executeI = new Instruction();
-    decodeI = new Instruction();
+    
+    delete fetchI;
     fetchI = new Instruction(prog[0]);
     
     std::cerr << "initialization completed." << std::endl;

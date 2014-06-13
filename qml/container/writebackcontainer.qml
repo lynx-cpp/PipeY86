@@ -33,12 +33,10 @@ Item {
             antialiasing: true;
             anchors.centerIn: parent;
             
-            /*
             Image {
-                source: "/fetch.png"
+                source: "/writeback.png"
                 anchors.fill: parent
             }
-            */
             
             AlignedText {
                 id: icode_text

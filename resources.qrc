@@ -12,7 +12,10 @@
         <file>qml/container/writebackcontainer.qml</file>
         <file>qml/module/qmldir</file>
         <file alias="default_font.ttf">fonts/Raleway-Light.ttf</file>
-        <file alias="fetch.png">images/fetch1.png</file>
+        <file alias="decode.png">images/decode.png</file>
+        <file alias="execute.png">images/execute.png</file>
+        <file alias="memory.png">images/memory.png</file>
+        <file alias="writeback.png">images/writeback.png</file>
     </qresource>
 </RCC>
 
