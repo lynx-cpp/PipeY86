@@ -11,7 +11,7 @@ Item {
     property alias textB: lower.text
     property var leftObj: undefined
     property int leftInterval: 5
-    property int offset: 5
+    property int offset: 10
     property int org_width: upper.width>lower.width? upper.width : lower.width
     property int org_height: upper.height + offset + lower.height
     width: org_width
