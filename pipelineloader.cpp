@@ -44,6 +44,27 @@ static inline void addElement(const std::string& addr,const std::string& data,co
                               Q_ARG(QVariant,code.c_str()));
 }
 
+static inline void addAllElement()
+{
+     for (int i=0;i<prog.size();i++){
+        addElement(int2Hex(prog[i].addr()),
+                   hex2Data(prog[i].instructionCode()),
+                   "",
+                   prog[i].comment());
+    }
+}
+
+void PipelineLoader::readAllStage()
+{
+    if (m_pipeline==NULL) return ;
+    for (int i=0;i<prog.size();i++){
+        if (prog[i].addr()==m_pipeline->decodeI->addr()) setStageLabel(i,"D");
+        if (prog[i].addr()==m_pipeline->executeI->addr()) setStageLabel(i,"E");
+        if (prog[i].addr()==m_pipeline->memoryI->addr()) setStageLabel(i,"M");
+        if (prog[i].addr()==m_pipeline->writeBackI->addr()) setStageLabel(i,"W");
+    }
+}
+
 PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
 {
     m_pipeline = NULL;
@@ -55,15 +76,11 @@ void PipelineLoader::loadFile(const QString& filename)
     if (m_pipeline!=NULL) 
         delete m_pipeline;
     qDebug() << "entered" << " " << filename;
-    //clearInsTable();
+    clearInsTable();
     m_pipeline = new Y86Pipeline(m_filename.section('/',2).toStdString());
     qDebug() << "loaded";
-    for (int i=0;i<prog.size();i++){
-        addElement(int2Hex(prog[i].addr()),
-                   hex2Data(prog[i].instructionCode()),
-                   "",
-                   prog[i].comment());
-    }
+    addAllElement();
+    readAllStage();
     refreshDisplay();
     qDebug() << "written";
 }
@@ -95,6 +112,9 @@ void PipelineLoader::step()
         return ;
     m_pipeline->setProgToThis();
     m_pipeline->execute();
+    clearInsTable();
+    addAllElement();
+    readAllStage();
     refreshDisplay();
 }
 

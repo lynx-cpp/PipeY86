@@ -12,6 +12,7 @@ public:
     explicit PipelineLoader(QObject* parent = 0);
     ~PipelineLoader();
     void refreshDisplay();
+    void readAllStage();
 public slots:
     void loadFile(const QString& filename);
     void load();
