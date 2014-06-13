@@ -3,6 +3,7 @@
 
 InstructionRrmovl :: InstructionRrmovl(const std::string& m_instructionCode, int address):InstructionPrivate(address)
 {
+    icode = 2; ifun = 0;
     srcA = rA;
     dstE = rB;
 }

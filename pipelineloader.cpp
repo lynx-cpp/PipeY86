@@ -13,9 +13,9 @@ QVariant returnValue;
 static inline void setStageStatus(const QString& status,Instruction* ins)
 {
     QVariantList list = ins->status();
-    Q_FOREACH(QVariant i,list) {
+    /*Q_FOREACH(QVariant i,list) {
         qDebug() << i;
-    }
+    }*/
     QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,status),Q_ARG(QVariant,QVariant(list)));
 }
 

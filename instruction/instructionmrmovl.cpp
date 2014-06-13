@@ -3,6 +3,7 @@
 
 InstructionMrmovl::InstructionMrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
+    icode = 5; ifun = 0;
     srcA = rB;
     dstM = rA;
 }

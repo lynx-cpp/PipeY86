@@ -3,6 +3,8 @@
 
 InstructionOP::InstructionOP(const std::string& instructionCode, int address):InstructionPrivate(address)
 {
+    icode = 6; ifun = hex2num(instructionCode[1]);
+    std::cerr << instructionCode << std::endl;
     srcA = rA; srcB = rB;
     dstE = rB;
     type = other; opString = "other";
