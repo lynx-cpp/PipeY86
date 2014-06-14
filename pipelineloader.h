@@ -2,6 +2,7 @@
 #define PIPELINELOADER_H
 #include <QObject>
 #include <QTimer>
+#include <QTime>
 
 #include "y86pipeline.h"
 
@@ -24,6 +25,8 @@ public slots:
 
 private:
     int interval;
+    int cycle;
+    QTime* time;
     QTimer* m_timer;
     Y86Pipeline* m_pipeline;
     QString m_filename;

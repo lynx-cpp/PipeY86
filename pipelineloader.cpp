@@ -58,11 +58,13 @@ void PipelineLoader::readAllStage()
 {
     if (m_pipeline==NULL) return ;
     for (int i=0;i<prog.size();i++){
-        if (prog[i].addr()==m_pipeline->fetchI->addr()) setStageLabel(i,"F");
-        if (prog[i].addr()==m_pipeline->decodeI->addr()) setStageLabel(i,"D");
-        if (prog[i].addr()==m_pipeline->executeI->addr()) setStageLabel(i,"E");
-        if (prog[i].addr()==m_pipeline->memoryI->addr()) setStageLabel(i,"M");
-        if (prog[i].addr()==m_pipeline->writeBackI->addr()) setStageLabel(i,"W");
+        QString label = "";
+        if (prog[i].addr()==m_pipeline->fetchI->addr()) label = "F";
+        if (prog[i].addr()==m_pipeline->decodeI->addr()) label = "D";
+        if (prog[i].addr()==m_pipeline->executeI->addr()) label = "E";
+        if (prog[i].addr()==m_pipeline->memoryI->addr()) label = "M";
+        if (prog[i].addr()==m_pipeline->writeBackI->addr()) label = "W";
+        setStageLabel(i,label);
     }
 }
 
@@ -71,6 +73,10 @@ PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
     m_pipeline = NULL;
     m_timer = new QTimer(this);
     interval = 200;
+    m_timer->setSingleShot(false);
+    cycle = 0;
+    time = new QTime();
+    connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
 }
 
 void PipelineLoader::loadFile(const QString& filename)
@@ -85,7 +91,9 @@ void PipelineLoader::loadFile(const QString& filename)
     addAllElement();
     readAllStage();
     refreshDisplay();
-    connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
+    //disconnect(m_timer);
+    cycle = 0;
+    time->start();
     qDebug() << "written";
 }
 
@@ -113,29 +121,32 @@ void PipelineLoader::refreshDisplay()
 
 void PipelineLoader::step()
 {
+    int cur = time->elapsed();
+    static int last = time->elapsed();
+    cycle ++;
     if (m_pipeline==NULL || !m_pipeline->loaded())
         return ;
     m_pipeline->setProgToThis();
     m_pipeline->execute();
-    clearInsTable();
-    addAllElement();
+    //clearInsTable();
+    //addAllElement();
     readAllStage();
     refreshDisplay();
+    qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
+    last = cur;
 }
 
 void PipelineLoader::pause()
 {
     m_timer->stop();
-    m_timer->setInterval(interval);
+    //m_timer->setInterval(interval);
 }
 
 void PipelineLoader::start(int latency)
 {
     interval = latency;
     m_timer->setInterval(latency);
-    m_timer->setSingleShot(false);
     if (!m_timer->isActive()){
-        connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
         m_timer->start();
     }
     qDebug() << "start with latency" << m_timer->interval();
