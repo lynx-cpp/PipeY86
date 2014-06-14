@@ -187,7 +187,11 @@ void Y86Pipeline::run()
     setProgToThis();
    std::cerr<< "starting Y86Pipeline.." << std::endl;
     do{
+        std :: cerr << "line start" << std::endl;
         execute();
+		for (std::map<int,int>::iterator it=m_memory.begin(); it!=m_memory.end(); ++it)
+            std :: cout << int2Hex(it->first)	 << " : " << int2Hex(it->second) << std::endl;
+        std :: cerr << "line end" << std::endl;
     } while (running());
     for (int i=0;i<8;i++){
         if (m_register[i]!=0)
