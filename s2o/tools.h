@@ -64,8 +64,12 @@ static inline void remove_interpunction(std :: string &word){
 static inline std :: string normalize(std :: string str){
 	int l = str.size();
 	for (int i = 0; i < l; ++i)
+	{
 		if ('A'<=str[i] && str[i]<='Z')
 			str[i] = str[i] -'A'+'a';
+		if (str[i] == '\t')
+			str[i] = ' ';
+	}
 	// Lower Letter
 	std :: string :: size_type it0 = str.find_first_of('#');
 	if (it0 >= str.size()) it0 = str.size();

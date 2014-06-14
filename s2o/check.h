@@ -18,7 +18,7 @@
  *
  */
 
-static inline char check_compile(std :: vector<std :: string> InstructionRegister, int &row,std::map<std::string, int> dict,std::map<std::string,int> check){
+static inline char check_compile(std :: vector<std :: string> InstructionRegister, int &row,std::map<std::string, int> &dict,std::map<std::string,int> &check){
 	int pos = 0;
 	bool flag = false;
 	for (row = 0; row < InstructionRegister.size(); ++row)
