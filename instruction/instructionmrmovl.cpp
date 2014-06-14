@@ -44,6 +44,7 @@ void InstructionMrmovl::memoryStage()
 {
     InstructionPrivate::memoryStage();
     valM = m_pipeline->read32BitMemory(valE);
+    std :: cerr << "Check " << valM << std::endl;
     writeForwardReg(rA,valM,true);
     currentOperation = "valM <- M_4[valE];";
 }

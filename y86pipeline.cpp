@@ -60,7 +60,7 @@ void Y86Pipeline::execute()
     fetchI = nextPrediction;
     return ;
     #else
-	std :: cerr << " Done 1" << std :: endl;
+	//std :: cerr << " Done 1" << std :: endl;
     decodeI->setOk();
     
     writeBackI->writeBackStage();
@@ -68,7 +68,7 @@ void Y86Pipeline::execute()
     executeI->executeStage();
     bool success = decodeI->decodeStage();
     fetchI->fetchStage();
-    std :: cerr << " Done 2" << std :: endl;
+    //std :: cerr << " Done 2" << std :: endl;
     InstructionPtr nextPrediction = getPrediction(fetchI);
     
     InstructionPtr curPrediction = getPrediction(executeI);
@@ -79,7 +79,7 @@ void Y86Pipeline::execute()
             delete nextPrediction;
             nextPrediction = curPrediction;
         }
-	std :: cerr << " Done 3" << std :: endl;
+	//std :: cerr << " Done 3" << std :: endl;
     curPrediction  = getPrediction(memoryI);
     if (memoryI->isOk())
         if (!curPrediction->eq(executeI)){
@@ -90,10 +90,10 @@ void Y86Pipeline::execute()
             nextPrediction = curPrediction;
         }
         //prediction may change.
-	std :: cerr << " Done 4" << std :: endl;
+	//std :: cerr << " Done 4" << std :: endl;
     if (!success)
         decodeI->setBubble();//forwarding failed , stall
-	std :: cerr << " Done 5" << std :: endl;
+	//std :: cerr << " Done 5" << std :: endl;
         
     delete writeBackI;
     nextStage(writeBackI,memoryI);
@@ -193,6 +193,7 @@ void Y86Pipeline::run()
         execute();
 		for (std::map<int,int>::iterator it=m_memory.begin(); it!=m_memory.end(); ++it)
             std :: cout << int2Hex(it->first)	 << " : " << int2Hex(it->second) << std::endl;
+		std :: cout << std::endl;
         std :: cerr << "line end" << std::endl;
     } while (running());
     for (int i=0;i<8;i++){
@@ -223,11 +224,14 @@ int Y86Pipeline::read32BitMemory(int address)
     int ans = 0;
     for (int i=address + 3;i>=address;i--)
         ans = ans*0x100 + m_memory[i];
+	std :: cerr << "reading " << ans << " from M[" << address << "]" << std::endl;
+	return ans;
 }
 
 void Y86Pipeline::write32BitMemory(int address, int value)
 {
-    for (int i=address + 3;i>=address;i--){
+	std :: cerr << "writting " << value << " to M[" << address << "]" << std::endl;
+    for (int i=address ;i<address+4;i++){
         m_memory[i] = value % 0x100;
         value /= 0x100;
     }
