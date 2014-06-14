@@ -3,3 +3,4 @@ DecodeContainer decodecontainer.qml
 ExecuteContainer executecontainer.qml
 MemoryContainer memorycontainer.qml
 WritebackContainer writebackcontainer.qml
+RegisterContainer registercontainer.qml

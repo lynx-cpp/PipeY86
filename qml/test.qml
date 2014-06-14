@@ -213,7 +213,7 @@ Item {
             anchors.centerIn: parent
             TableViewColumn{ role: "Address"  ; title: "Address" ; width: 150}
             TableViewColumn{ role: "Value"  ; title: "Value" ; width: 310}
-            width: 469; height: 180;
+            width: 469; height: 190;
             style: TableViewStyle {
                 itemDelegate: Item {
                     anchors.leftMargin: 1
@@ -568,6 +568,13 @@ Item {
         inner_width: container_width
     }
     
+    RegisterContainer {
+        id: register_container;
+        anchors.left: writeBackIndicator.left
+        anchors.top: writeBackIndicator.bottom
+        inner_height: 148
+        inner_width: container_width + decodeIndicator.inner_width
+    }
     
     Rectangle {
         x: 475; y: 8

@@ -11,6 +11,7 @@
         <file>qml/container/executecontainer.qml</file>
         <file>qml/container/memorycontainer.qml</file>
         <file>qml/container/writebackcontainer.qml</file>
+        <file>qml/container/registercontainer.qml</file>
         <file>qml/module/qmldir</file>
         <file alias="default_font.ttf">fonts/Raleway-Light.ttf</file>
         <file alias="decode.png">images/decode.png</file>
