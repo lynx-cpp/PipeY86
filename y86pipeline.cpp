@@ -145,7 +145,8 @@ Y86Pipeline::Y86Pipeline(const std::string& filename)
         if (curAddr>orgStackAddr)
             orgStackAddr = curAddr;
         
-        prog.push_back(Instruction(s2,s3,curAddr));
+        if (s2!="")
+            prog.push_back(Instruction(s2,s3,curAddr));
         //std::cerr << s3 << std::endl;
         
         for (int i=0;i+1<s2.size();i+=2){
