@@ -49,7 +49,11 @@ private:
         std::cerr << "writing value " << value << " to R[" << num << "]" << std::endl;
     }
     int readMemory(int address) { return m_memory[address]; }
-    void writeMemory(int address,int value) { m_memory[address] = value; }
+    void writeMemory(int address,int value)
+	{
+		m_memory[address] = value; 
+		std :: cerr << "writing value " << value << " to M[" << address << "]" << std::endl;
+	}
    void recoverForwarding();
     
 public:

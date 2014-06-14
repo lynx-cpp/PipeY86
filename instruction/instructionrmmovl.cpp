@@ -35,19 +35,20 @@ bool InstructionRmmovl :: decodeStage()
 
 void InstructionRmmovl :: executeStage()
 {
-	InstructionRmmovl :: executeStage();
+	InstructionPrivate :: executeStage();
 	currentOperation = "valE <- valB + valC;";
 	valE = valB + valC;
 }
 
 void InstructionRmmovl :: memoryStage()
 {
-	InstructionRmmovl :: memoryStage();
+	InstructionPrivate :: memoryStage();
 	currentOperation = "M_4[valE] <- valA;";
+	std :: cerr << valA << std::endl;
 	m_pipeline->write32BitMemory(valE,valA);
 }
 
 void InstructionRmmovl :: writeBackStage()
 {
-	InstructionRmmovl :: writeBackStage();
+	InstructionPrivate :: writeBackStage();
 }
