@@ -113,6 +113,7 @@ void PipelineLoader::refreshDisplay()
 {
     if (m_pipeline==NULL || !m_pipeline->loaded())
         return ;
+    setStageStatus("fetch",m_pipeline->fetchI);
     setStageStatus("decode",m_pipeline->decodeI);
     setStageStatus("execute",m_pipeline->executeI);
     setStageStatus("memory",m_pipeline->memoryI);

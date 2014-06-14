@@ -6,6 +6,7 @@
         <file>qml/text/alignedtext.qml</file>
         <file>qml/text/qmldir</file>
         <file>qml/container/qmldir</file>
+        <file>qml/container/fetchcontainer.qml</file>
         <file>qml/container/decodecontainer.qml</file>
         <file>qml/container/executecontainer.qml</file>
         <file>qml/container/memorycontainer.qml</file>

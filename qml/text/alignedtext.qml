@@ -9,6 +9,8 @@ Item {
     
     property alias textA: upper.text
     property alias textB: lower.text
+    property alias fontA: upper.font
+    property alias fontB: lower.font
     property var leftObj: undefined
     property int leftInterval: 5
     property int offset: 10

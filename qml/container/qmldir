@@ -1,3 +1,4 @@
+FetchContainer fetchcontainer.qml
 DecodeContainer decodecontainer.qml
 ExecuteContainer executecontainer.qml
 MemoryContainer memorycontainer.qml

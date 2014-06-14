@@ -14,7 +14,8 @@ Item {
         id: defaultFont
         source: "/default_font.ttf"
     }
-    property string fetchColor: "#c190ea"
+    //property string fetchColor: "#c190ea"
+    property string fetchColor: "#d2b4d4"
     property string decodeColor: "#eb938e"
     property string executeColor: "#f7d75e"
     property string memoryColor: "#a6d864"
@@ -74,6 +75,7 @@ Item {
     
     function getStageObj(str) {
         switch (str) {
+            case "fetch": return fetch_container;
             case "decode": return decode_container;
             case "execute": return execute_container;
             case "memory": return memory_container;
@@ -449,9 +451,21 @@ Item {
     }
     
     StageIndicator {
-        id: decodeIndicator
+        id: fetchIndicator
         anchors.left: tableItem.right; anchors.leftMargin: 5
         anchors.top: resetButton.bottom; anchors.topMargin: 5
+        color: fetchColor;
+        fontColor: indicatorFontColor
+        inner_width: 100
+        inner_height: 60
+        font.pointSize: 23
+        text: "Fetch"
+    }
+    
+    StageIndicator {
+        id: decodeIndicator
+        anchors.left: fetchIndicator.left; 
+        anchors.top: fetchIndicator.bottom;
         color: decodeColor
         fontColor: indicatorFontColor
         text: "D"
@@ -485,6 +499,15 @@ Item {
     }
     
     property var container_width: 430
+    
+    FetchContainer {
+        id: fetch_container;
+        property var indicator: fetchIndicator
+        anchors.left: indicator.right; anchors.leftMargin: -16
+        anchors.top: indicator.top
+        inner_height: indicator.inner_height
+        inner_width: 200
+    }
     
     DecodeContainer {
         id: decode_container;
