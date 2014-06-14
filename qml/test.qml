@@ -141,6 +141,7 @@ Item {
                     //color: insModel.get(styleData.row).color
                 }
                 itemDelegate: Item {
+                    anchors.leftMargin: 1
                     Text {
                         font.family: defaultFont.name
                         anchors.verticalCenter: parent.verticalCenter
@@ -214,6 +215,7 @@ Item {
             width: 469; height: 180;
             style: TableViewStyle {
                 itemDelegate: Item {
+                    anchors.leftMargin: 1
                     Text {
                         font.family: defaultFont.name
                         anchors.verticalCenter: parent.verticalCenter
