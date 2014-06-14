@@ -1,6 +1,7 @@
 #ifndef PIPELINELOADER_H
 #define PIPELINELOADER_H
 #include <QObject>
+#include <QTimer>
 
 #include "y86pipeline.h"
 
@@ -17,8 +18,13 @@ public slots:
     void loadFile(const QString& filename);
     void load();
     void step();
+    void start(int latency);
+    void pause();
+    void setLatency(int latency);
 
 private:
+    int interval;
+    QTimer* m_timer;
     Y86Pipeline* m_pipeline;
     QString m_filename;
 };

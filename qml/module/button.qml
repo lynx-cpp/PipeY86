@@ -6,9 +6,12 @@ Item {
     width:  button_width  + (2 * radius);
     height: button_height + (2 * radius);
     property real radius: 8.0
-    property string color: "#e6e4d5"
+    //property string color: "#e6e4d5"
+    //property string color: "#f5e5a7"
+    property string color: "#ebe4c7"
     //property string enter_color: "#dafffe"
-    property string enter_color: "#e0dabf"
+    //property string enter_color: "#e0dabf"
+    property string enter_color: "#ebe4c7"
     property int offset: 3
     property int button_width: 100
     property int button_height: 50

@@ -69,6 +69,8 @@ void PipelineLoader::readAllStage()
 PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
 {
     m_pipeline = NULL;
+    m_timer = new QTimer(this);
+    interval = 200;
 }
 
 void PipelineLoader::loadFile(const QString& filename)
@@ -83,12 +85,14 @@ void PipelineLoader::loadFile(const QString& filename)
     addAllElement();
     readAllStage();
     refreshDisplay();
+    connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
     qDebug() << "written";
 }
 
 void PipelineLoader::load()
 {
     qDebug() << "reset";
+    pause();
     loadFile(m_filename);
 }
 
@@ -117,5 +121,31 @@ void PipelineLoader::step()
     addAllElement();
     readAllStage();
     refreshDisplay();
+}
+
+void PipelineLoader::pause()
+{
+    m_timer->stop();
+    m_timer->setInterval(interval);
+}
+
+void PipelineLoader::start(int latency)
+{
+    interval = latency;
+    m_timer->setInterval(latency);
+    m_timer->setSingleShot(false);
+    if (!m_timer->isActive()){
+        connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
+        m_timer->start();
+    }
+    qDebug() << "start with latency" << m_timer->interval();
+}
+
+void PipelineLoader::setLatency(int latency)
+{
+    interval = latency;
+    m_timer->setInterval(latency);
+    m_timer->setSingleShot(false);
+    qDebug() << "set latency to " << m_timer->interval();
 }
 

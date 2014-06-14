@@ -27,6 +27,7 @@ Item {
     signal pause()
     signal reset()
     signal startWithoutLatency()
+    signal setLatency(int latency)
     
     Rectangle {
         id: background
@@ -66,10 +67,10 @@ Item {
         insModel.append({"Address":addr,"Data":data,"Stage":stage,"Code":code});
     }
     
-    function printList(list) {
+    /*function printList(list) {
         console.log(list[0]);
         console.log(list[1]);
-    }
+    }*/
     
     function getStageObj(str) {
         switch (str) {
@@ -83,7 +84,7 @@ Item {
     
     function writeContainer(containerName,list) {
         var object = getStageObj(containerName);
-        console.log(list[0]);
+        //console.log(list[0]);
         object.icode    = list[0]; object.ifun      = list[1];
         object.rA       = list[2]; object.rB        = list[3];
         object.dstE     = list[4]; object.dstM      = list[5];
@@ -292,43 +293,98 @@ Item {
         text: "Reset"
     }    
     
-    Rectangle{
+    Item {
         id: freqSelector
         anchors.left: openButton.right; //anchors.leftMargin: -5
-        anchors.top: openButton.top; anchors.topMargin: 6
-        anchors.bottom: resetButton.bottom; anchors.bottomMargin: 6
-        color: "white"
-        //button_width: 160
-        //button_height: 40
-        width: 160
-        //font.family: defaultFont.name
-        //font.pointSize:18
-        //text: "5Hz       20Hz"
-        Text {
-            id: f5hz
-            text: "5Hz"
-            anchors.left: parent.left; anchors.leftMargin: 20
-            anchors.top: parent.verticalCenter; anchors.topMargin: 10
-            font.family: defaultFont.name
-            font.pointSize:18
+        anchors.top: openButton.top; anchors.topMargin: 0
+        width: freqSelectorRect.width + 2*selectorShadow.radius
+        height: freqSelectorRect.height + 2*selectorShadow.radius
+        property int freq: 200;
+        Rectangle{
+            id: freqSelectorRect
+            anchors.centerIn: parent
+            //anchors.left: openButton.right; //anchors.leftMargin: -5
+            //anchors.top: openButton.top; anchors.topMargin: 6
+            //anchors.bottom: openButton.bottom; anchors.bottomMargin: -8
+            color: "white"
+            //radius: 5
+            //border.width: 1
+            //border.color: "black"
+            //button_width: 160
+            //button_height: 40
+            width: 160
+            height: 50
+            //font.family: defaultFont.name
+            //font.pointSize:18
+            //text: "5Hz       20Hz"
+            Image {
+                id: circle
+                height: 50
+                width: 50
+                source: "/circle.png"
+                anchors.left: f5hz.left;  anchors.leftMargin: -23
+            }
+            
+            Text {
+                id: f5hz
+                text: "5Hz"
+                anchors.left: parent.left; anchors.leftMargin: 20
+                anchors.verticalCenter: parent.verticalCenter; //anchors.topMargin: 10
+                font.family: defaultFont.name
+                font.pointSize:18
+            }
+            
+            MouseArea {
+                anchors.fill: f5hz
+                onClicked: {
+                    freqSelector.freq = 200;
+                    circle.anchors.left = f5hz.left;  
+                    setLatency(200);
+                }
+            }
+            
+            Text {
+                id: f20hz
+                text: "20Hz"
+                anchors.right: parent.right; anchors.rightMargin: 20
+                anchors.top: f5hz.top
+                font.family: defaultFont.name
+                font.pointSize:18
+            }
+            
+            MouseArea {
+                anchors.fill: f20hz
+                onClicked: {
+                    freqSelector.freq = 50;
+                    circle.anchors.left = f20hz.left;  
+                    setLatency(50);
+                }
+            }
         }
-        
-        Text {
-            text: "20Hz"
-            anchors.right: parent.right; anchors.rightMargin: 20
-            anchors.top: f5hz.top
-            font.family: defaultFont.name
-            font.pointSize:18
-        }
+    }
+    
+    DropShadow {
+        id: selectorShadow
+        anchors.fill: source
+        cached: true;
+        horizontalOffset: 3;
+        verticalOffset: 3;
+        radius: 8.0;
+        samples: 16;
+        color: "#80000000";
+        smooth: true;
+        source: freqSelector;
     }
     
     Button {
         id: startButton
         //anchors.left: resetButton.right; //anchors.leftMargin: -5
-        anchors.horizontalCenter: freqSelector.horizontalCenter
-        anchors.top: openButton.top; //anchors.leftMargin: -5
-        button_width: 80
-        button_height: 40
+        //anchors.horizontalCenter: freqSelector.horizontalCenter
+        anchors.top: freqSelector.bottom; anchors.topMargin: -16
+        //anchors.bottom: resetButton.bottom; anchors.bottomMargin: 8
+        anchors.left: freqSelector.left; 
+        button_width: freqSelectorRect.width
+        button_height: 46
         onClicked: startButtonClicked()
         font.family: defaultFont.name
         font.pointSize:18
@@ -339,7 +395,7 @@ Item {
    
     function startButtonClicked() {
         if (startButton.paused){
-            main.start(200);
+            main.start(freqSelector.freq);
             startButton.paused = false;
         }
         else {
@@ -395,7 +451,7 @@ Item {
     StageIndicator {
         id: decodeIndicator
         anchors.left: tableItem.right; anchors.leftMargin: 5
-        anchors.top: resetButton.bottom; anchors.topMargin:3
+        anchors.top: resetButton.bottom; anchors.topMargin: 5
         color: decodeColor
         fontColor: indicatorFontColor
         text: "D"
