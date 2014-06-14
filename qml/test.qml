@@ -324,19 +324,39 @@ Item {
             //text: "5Hz       20Hz"
             Image {
                 id: circle
-                height: 50
-                width: 50
+                height: 30
+                width: 30
                 source: "/circle.png"
-                anchors.left: f5hz.left;  anchors.leftMargin: -23
+                anchors.left: f5hz.left;  anchors.leftMargin: -13
+                //anchors.bottom: parent.bottom
+                anchors.verticalCenter: parent.verticalCenter; anchors.verticalCenterOffset: 2
+            }
+            
+            Text {
+                id: f1hz
+                text: "1Hz"
+                anchors.left: parent.left; anchors.leftMargin: 13
+                anchors.verticalCenter: parent.verticalCenter; //anchors.topMargin: 10
+                font.family: defaultFont.name
+                font.pointSize:15
+            }
+            MouseArea {
+                anchors.fill: f1hz
+                onClicked: {
+                    freqSelector.freq = 1000;
+                    circle.anchors.left = f1hz.left;  
+                    setLatency(1000);
+                }
             }
             
             Text {
                 id: f5hz
                 text: "5Hz"
-                anchors.left: parent.left; anchors.leftMargin: 20
-                anchors.verticalCenter: parent.verticalCenter; //anchors.topMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.horizontalCenterOffset: -5
+                anchors.top: f1hz.top
                 font.family: defaultFont.name
-                font.pointSize:18
+                font.pointSize:15
             }
             
             MouseArea {
@@ -351,10 +371,10 @@ Item {
             Text {
                 id: f20hz
                 text: "20Hz"
-                anchors.right: parent.right; anchors.rightMargin: 20
+                anchors.right: parent.right; anchors.rightMargin: 10
                 anchors.top: f5hz.top
                 font.family: defaultFont.name
-                font.pointSize:18
+                font.pointSize:15
             }
             
             MouseArea {
