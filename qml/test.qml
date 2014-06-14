@@ -144,6 +144,7 @@ Item {
                     anchors.leftMargin: 1
                     Text {
                         font.family: defaultFont.name
+                        font.pointSize: 10
                         anchors.verticalCenter: parent.verticalCenter
                         color: styleData.textColor
                         elide: styleData.elideMode
