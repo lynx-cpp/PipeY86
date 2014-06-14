@@ -55,7 +55,9 @@ public:
     bool operator!=(const Instruction& B);
     bool eq(Instruction* decodeI);
     
+#ifdef QT_VERSION
     QVariantList status() const;
+#endif
 };
 
 #endif
