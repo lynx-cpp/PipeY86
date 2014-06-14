@@ -60,7 +60,7 @@ void Y86Pipeline::execute()
     fetchI = nextPrediction;
     return ;
     #else
-    
+	std :: cerr << " Done 1" << std :: endl;
     decodeI->setOk();
     
     writeBackI->writeBackStage();
@@ -68,7 +68,7 @@ void Y86Pipeline::execute()
     executeI->executeStage();
     bool success = decodeI->decodeStage();
     fetchI->fetchStage();
-    
+    std :: cerr << " Done 2" << std :: endl;
     InstructionPtr nextPrediction = getPrediction(fetchI);
     
     InstructionPtr curPrediction = getPrediction(executeI);
@@ -79,7 +79,7 @@ void Y86Pipeline::execute()
             delete nextPrediction;
             nextPrediction = curPrediction;
         }
-        
+	std :: cerr << " Done 3" << std :: endl;
     curPrediction  = getPrediction(memoryI);
     if (memoryI->isOk())
         if (!curPrediction->eq(executeI)){
@@ -90,9 +90,10 @@ void Y86Pipeline::execute()
             nextPrediction = curPrediction;
         }
         //prediction may change.
-        
+	std :: cerr << " Done 4" << std :: endl;
     if (!success)
         decodeI->setBubble();//forwarding failed , stall
+	std :: cerr << " Done 5" << std :: endl;
         
     delete writeBackI;
     nextStage(writeBackI,memoryI);
