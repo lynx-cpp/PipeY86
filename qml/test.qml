@@ -273,7 +273,7 @@ Item {
         id: openButton
         anchors.left: tableItem.right; anchors.leftMargin: 5
         button_width: 80
-        button_height: 40 
+        button_height: 40
         onClicked: fileDialog.open()
         font.family: defaultFont.name
         font.pointSize:18
@@ -282,9 +282,10 @@ Item {
     
     Button {
         id: resetButton
-        anchors.left: openButton.right; anchors.leftMargin: 5
+        anchors.left: openButton.left; //anchors.leftMargin: 5
+        anchors.top: openButton.bottom; //anchors.topMargin: -12
         button_width: 80
-        button_height: 40 
+        button_height: 40
         onClicked: reset()
         font.family: defaultFont.name
         font.pointSize:18
@@ -293,9 +294,11 @@ Item {
     
     Button {
         id: startButton
-        anchors.left: resetButton.right; anchors.leftMargin: 5
+        //anchors.left: resetButton.right; //anchors.leftMargin: -5
+        anchors.horizontalCenter: freqSelector.horizontalCenter
+        anchors.top: openButton.top; //anchors.leftMargin: -5
         button_width: 80
-        button_height: 40 
+        button_height: 40
         onClicked: startButtonClicked()
         font.family: defaultFont.name
         font.pointSize:18
@@ -314,12 +317,48 @@ Item {
             startButton.paused = true;
         }
     }
+    
+     Button {
+        id: freqSelector
+        anchors.left: openButton.right; //anchors.leftMargin: -5
+        anchors.top: resetButton.top
+        button_width: 160
+        button_height: 40
+        font.family: defaultFont.name
+        font.pointSize:18
+        text: "5Hz       20Hz"
+    }
+    
+     Button {
+        id: backButton
+        anchors.left: freqSelector.right; //anchors.leftMargin: -5
+        anchors.top: openButton.top
+        button_width: 80
+        button_height: 40
+        //onClicked: 
+        font.family: defaultFont.name
+        font.pointSize:18
+        text: "Back"
+    }
+    
+    Button {
+        id: continueButton
+        anchors.left: backButton.right; //anchors.leftMargin: -5
+        anchors.top: backButton.top
+        button_width: 80
+        button_height: 40
+        //onClicked: 
+        font.family: defaultFont.name
+        font.pointSize:13
+        text: "Continue"
+    }
         
     Button {
         id: stepButton
-        anchors.left: startButton.right; anchors.leftMargin: 5
+        anchors.left: freqSelector.right; //anchors.leftMargin: -5
+        anchors.top: resetButton.top
         button_width: 80
-        button_height: 40 
+        button_height: 40
         onClicked: step()
         font.family: defaultFont.name
         font.pointSize:18
@@ -329,7 +368,7 @@ Item {
     StageIndicator {
         id: decodeIndicator
         anchors.left: tableItem.right; anchors.leftMargin: 5
-        anchors.top: openButton.bottom; anchors.topMargin:3
+        anchors.top: resetButton.bottom; anchors.topMargin:3
         color: decodeColor
         fontColor: indicatorFontColor
         text: "D"
