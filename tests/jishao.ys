@@ -1,0 +1,137 @@
+/* $begin code-yso */
+/* $begin code-ysa */
+# Execution begins at address 0 
+	.pos 0 
+init:	irmovl Stack, %esp  	# Set up stack pointer  
+nop
+nop
+nop
+	irmovl Stack, %ebp  	# Set up base pointer   
+nop
+nop
+nop
+	call Main		# Execute main program
+nop
+nop
+nop
+	halt			# Terminate program 
+nop
+nop
+nop
+
+# Array of 4 elements
+	.align 4 	
+array:	.long 0xd
+	.long 0xc0
+	.long 0xb00
+	.long 0xa000	
+
+Main:	pushl %ebp 
+	rrmovl %esp,%ebp
+nop
+nop
+nop
+	irmovl $4,%eax	
+nop
+nop
+nop
+	pushl %eax		# Push 4
+nop
+nop
+nop
+	irmovl array,%edx
+nop
+nop
+nop
+	pushl %edx      	# Push array
+nop
+nop
+nop
+	call Sum		# Sum(array, 4)
+nop
+nop
+nop
+	rrmovl %ebp,%esp
+nop
+nop
+nop
+	popl %ebp
+nop
+nop
+nop
+	ret 
+nop
+nop
+nop
+
+/* $begin sum-ys 0 */
+	# int Sum(int *Start, int Count)
+Sum:	pushl %ebp
+nop
+nop
+nop
+	rrmovl %esp,%ebp
+nop
+nop
+nop
+	mrmovl 8(%ebp),%ecx 	# ecx = Start
+nop
+nop
+nop
+	mrmovl 12(%ebp),%edx	# edx = Count
+nop
+nop
+nop
+	xorl %eax,%eax		# sum = 0
+nop
+nop
+nop
+	andl   %edx,%edx	# Set condition codes
+nop
+nop
+nop
+	je     End
+nop
+nop
+nop
+Loop:	mrmovl (%ecx),%esi	# get *Start
+	addl %esi,%eax          # add to sum
+nop
+nop
+nop
+	irmovl $4,%ebx          # 
+nop
+nop
+nop
+	addl %ebx,%ecx          # Start++
+nop
+nop
+nop
+	irmovl $-1,%ebx	        # 
+nop
+nop
+nop
+	addl %ebx,%edx          # Count--
+nop
+nop
+nop
+	jne    Loop             # Stop when 0
+nop
+nop
+nop
+End:	rrmovl %ebp,%esp
+	popl %ebp
+nop
+nop
+nop
+	ret
+nop
+nop
+nop
+/* $end sum-ys 0 */
+
+# The stack starts here and grows to lower addresses
+	.pos 0x100		
+Stack:	 
+/* $end code-ysa */
+/* $end code-yso */
