@@ -290,6 +290,36 @@ Item {
         font.family: defaultFont.name
         font.pointSize:18
         text: "Reset"
+    }    
+    
+    Rectangle{
+        id: freqSelector
+        anchors.left: openButton.right; //anchors.leftMargin: -5
+        anchors.top: openButton.top; anchors.topMargin: 6
+        anchors.bottom: resetButton.bottom; anchors.bottomMargin: 6
+        color: "white"
+        //button_width: 160
+        //button_height: 40
+        width: 160
+        //font.family: defaultFont.name
+        //font.pointSize:18
+        //text: "5Hz       20Hz"
+        Text {
+            id: f5hz
+            text: "5Hz"
+            anchors.left: parent.left; anchors.leftMargin: 20
+            anchors.top: parent.verticalCenter; anchors.topMargin: 10
+            font.family: defaultFont.name
+            font.pointSize:18
+        }
+        
+        Text {
+            text: "20Hz"
+            anchors.right: parent.right; anchors.rightMargin: 20
+            anchors.top: f5hz.top
+            font.family: defaultFont.name
+            font.pointSize:18
+        }
     }
     
     Button {
@@ -316,17 +346,6 @@ Item {
             main.pause();
             startButton.paused = true;
         }
-    }
-    
-     Button {
-        id: freqSelector
-        anchors.left: openButton.right; //anchors.leftMargin: -5
-        anchors.top: resetButton.top
-        button_width: 160
-        button_height: 40
-        font.family: defaultFont.name
-        font.pointSize:18
-        text: "5Hz       20Hz"
     }
     
      Button {
