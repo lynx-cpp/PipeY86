@@ -365,6 +365,14 @@ Item {
         text: "Step"
     }
     
+    Action {
+        id: stepAction
+        text: "Step"
+        onTriggered: step()
+        shortcut: "F7"
+        tooltip: "Step into"
+    }
+    
     StageIndicator {
         id: decodeIndicator
         anchors.left: tableItem.right; anchors.leftMargin: 5

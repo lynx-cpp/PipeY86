@@ -58,6 +58,7 @@ void PipelineLoader::readAllStage()
 {
     if (m_pipeline==NULL) return ;
     for (int i=0;i<prog.size();i++){
+        if (prog[i].addr()==m_pipeline->fetchI->addr()) setStageLabel(i,"F");
         if (prog[i].addr()==m_pipeline->decodeI->addr()) setStageLabel(i,"D");
         if (prog[i].addr()==m_pipeline->executeI->addr()) setStageLabel(i,"E");
         if (prog[i].addr()==m_pipeline->memoryI->addr()) setStageLabel(i,"M");
