@@ -24,6 +24,7 @@ public slots:
     void setLatency(int latency);
 
 private:
+    void setRegisterStatus();
     int interval;
     int cycle;
     QTime* time;

@@ -80,6 +80,7 @@ Item {
             case "execute": return execute_container;
             case "memory": return memory_container;
             case "writeback": return writeback_container;
+            case "register": return register_container;
         }
         return undefined;
     }
@@ -87,14 +88,26 @@ Item {
     function writeContainer(containerName,list) {
         var object = getStageObj(containerName);
         //console.log(list[0]);
-        object.icode    = list[0]; object.ifun      = list[1];
-        object.rA       = list[2]; object.rB        = list[3];
-        object.dstE     = list[4]; object.dstM      = list[5];
-        object.srcA     = list[6]; object.srcB      = list[7];
+        if (containerName=="register"){
+            object.eax = list[0]; object.ecx = list[1];
+            object.edx = list[2]; object.ebx = list[3];
+            object.esp = list[4]; object.ebp = list[5];
+            object.esi = list[6]; object.edi = list[7];
+        } else {
+            object.icode    = list[0]; object.ifun      = list[1];
+            object.rA       = list[2]; object.rB        = list[3];
+            object.dstE     = list[4]; object.dstM      = list[5];
+            object.srcA     = list[6]; object.srcB      = list[7];
+            
+            object.valA     = list[8]; object.valB     = list[9];
+            object.valC     = list[10]; object.valP   = list[11];
+            object.valE     = list[12]; object.valM  = list[13];
+        }
         
-        object.valA     = list[8]; object.valB     = list[9];
-        object.valC     = list[10]; object.valP   = list[11];
-        object.valE     = list[12]; object.valM  = list[13];
+        if (containerName=="execute"){
+            register_container.srcA = object.srcA;
+            register_container.srcB = object.srcB;
+        }
     }
     
     Item {

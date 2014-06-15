@@ -19,6 +19,14 @@ static inline void setStageStatus(const QString& status,Instruction* ins)
     QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,status),Q_ARG(QVariant,QVariant(list)));
 }
 
+void PipelineLoader::setRegisterStatus()
+{
+    QVariantList list; list.clear();
+    for (int i=0;i<7;i++)
+        list.append(QString::fromStdString(int2Hex(m_pipeline->m_register[i],8)));
+    QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,"register"),Q_ARG(QVariant,QVariant(list)));
+}
+
 static inline void removeStageLabel(int idx)
 {
     QMetaObject::invokeMethod(root,"removeStageLabel",Qt::QueuedConnection,Q_ARG(QVariant,idx));
@@ -118,6 +126,7 @@ void PipelineLoader::refreshDisplay()
     setStageStatus("execute",m_pipeline->executeI);
     setStageStatus("memory",m_pipeline->memoryI);
     setStageStatus("writeback",m_pipeline->writeBackI);
+    setRegisterStatus();
 }
 
 void PipelineLoader::step()

@@ -7,6 +7,7 @@ Item {
         source: "/default_font.ttf"
     }
     
+    property var color: "black"
     property alias textA: upper.text
     property alias textB: lower.text
     property alias fontA: upper.font
@@ -32,6 +33,7 @@ Item {
         font.family: defaultFont.name
         font.pointSize: 12
         anchors.top: parent.top; anchors.left: parent.left
+        color: parent.color
         text: "upper"
     }
     Text {
@@ -40,6 +42,7 @@ Item {
         anchors.top: upper.bottom; anchors.topMargin: offset
         font.family: defaultFont.name
         font.pointSize: 10
+        color: parent.color
         text: "lower"
     }
     
