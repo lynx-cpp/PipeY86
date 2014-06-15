@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.1
 import "module"
 import "container"
 
@@ -74,6 +74,10 @@ Item {
     
     function addMemoryElement(addr,data){
         memoryModel.append({"Address":addr,"Data":data});
+    }
+    
+    function showStopDialog() {
+        stopDialog.visible = true;
     }
     
     /*function printList(list) {
@@ -279,6 +283,16 @@ Item {
         smooth: true;
         source: memItem;
     }
+    
+    MessageDialog {
+        id: stopDialog 
+        title: "Pipeline stopped."
+        text: "Y86 Pipeline Simulator stopped."
+        onAccepted: {
+            Qt.quit()
+        }
+        //Component.onCompleted: visible = true
+    } 
     
     FileDialog {
         id: fileDialog

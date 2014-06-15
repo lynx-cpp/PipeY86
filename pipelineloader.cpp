@@ -19,28 +19,6 @@ static inline void setStageStatus(const QString& status,Instruction* ins)
     QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,status),Q_ARG(QVariant,QVariant(list)));
 }
 
-void PipelineLoader::setRegisterStatus()
-{
-    QVariantList list; list.clear();
-    for (int i=0;i<8;i++)
-        list.append(QString::fromStdString(int2Hex(m_pipeline->m_register[i],8)));
-    QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,"register"),Q_ARG(QVariant,QVariant(list)));
-}
-
-void PipelineLoader::setMemoryStatus()
-{
-    MemorySeq seq;
-    printMemory(m_pipeline->m_memory,seq);
-    for (int i=0;i<seq.size();i++){
-        std::string addr = int2Hex(seq[i].first,8);
-        std::string data = int2Hex(seq[i].second,8);
-        QMetaObject::invokeMethod(root,"addMemoryElement",
-                                  Qt::QueuedConnection,
-                                  Q_ARG(QVariant,addr.c_str()),
-                                  Q_ARG(QVariant,data.c_str()));
-    }
-}
-
 
 static inline void removeStageLabel(int idx)
 {
@@ -75,6 +53,33 @@ static inline void addAllElement()
                    "",
                    prog[i].comment());
     }
+}
+
+void PipelineLoader::setRegisterStatus()
+{
+    QVariantList list; list.clear();
+    for (int i=0;i<8;i++)
+        list.append(QString::fromStdString(int2Hex(m_pipeline->m_register[i],8)));
+    QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,"register"),Q_ARG(QVariant,QVariant(list)));
+}
+
+void PipelineLoader::setMemoryStatus()
+{
+    MemorySeq seq;
+    printMemory(m_pipeline->m_memory,seq);
+    for (int i=0;i<seq.size();i++){
+        std::string addr = int2Hex(seq[i].first,8);
+        std::string data = int2Hex(seq[i].second,8);
+        QMetaObject::invokeMethod(root,"addMemoryElement",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(QVariant,addr.c_str()),
+                                  Q_ARG(QVariant,data.c_str()));
+    }
+}
+
+void PipelineLoader::showStopDialog()
+{
+    QMetaObject::invokeMethod(root,"showStopDialog",Qt::QueuedConnection);
 }
 
 void PipelineLoader::readAllStage()
@@ -153,7 +158,12 @@ void PipelineLoader::step()
     if (m_pipeline==NULL || !m_pipeline->loaded())
         return ;
     m_pipeline->setProgToThis();
-    m_pipeline->execute();
+   m_pipeline->execute();
+   if (!m_pipeline->running()){
+        showStopDialog();
+        m_timer->stop();
+        return ;
+    }
     //clearInsTable();
     //addAllElement();
     readAllStage();

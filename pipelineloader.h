@@ -26,6 +26,7 @@ public slots:
 private:
     void setRegisterStatus();
     void setMemoryStatus();
+    void showStopDialog();
     int interval;
     int cycle;
     QTime* time;
