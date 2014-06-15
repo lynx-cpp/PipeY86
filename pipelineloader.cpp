@@ -22,10 +22,25 @@ static inline void setStageStatus(const QString& status,Instruction* ins)
 void PipelineLoader::setRegisterStatus()
 {
     QVariantList list; list.clear();
-    for (int i=0;i<7;i++)
+    for (int i=0;i<8;i++)
         list.append(QString::fromStdString(int2Hex(m_pipeline->m_register[i],8)));
     QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,"register"),Q_ARG(QVariant,QVariant(list)));
 }
+
+void PipelineLoader::setMemoryStatus()
+{
+    MemorySeq seq;
+    printMemory(m_pipeline->m_memory,seq);
+    for (int i=0;i<seq.size();i++){
+        std::string addr = int2Hex(seq[i].first,8);
+        std::string data = int2Hex(seq[i].second,8);
+        QMetaObject::invokeMethod(root,"addMemoryElement",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(QVariant,addr.c_str()),
+                                  Q_ARG(QVariant,data.c_str()));
+    }
+}
+
 
 static inline void removeStageLabel(int idx)
 {
@@ -127,6 +142,7 @@ void PipelineLoader::refreshDisplay()
     setStageStatus("memory",m_pipeline->memoryI);
     setStageStatus("writeback",m_pipeline->writeBackI);
     setRegisterStatus();
+    setMemoryStatus();
 }
 
 void PipelineLoader::step()

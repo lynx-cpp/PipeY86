@@ -68,6 +68,14 @@ Item {
         insModel.append({"Address":addr,"Data":data,"Stage":stage,"Code":code});
     }
     
+    function clearMemTable(){
+        memoryModel.clear();
+    }
+    
+    function addMemoryElement(addr,data){
+        memoryModel.append({"Address":addr,"Data":data});
+    }
+    
     /*function printList(list) {
         console.log(list[0]);
         console.log(list[1]);
