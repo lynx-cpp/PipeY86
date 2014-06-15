@@ -5,8 +5,6 @@ InstructionOP::InstructionOP(const std::string& instructionCode, int address):In
 {
     icode = 6; ifun = hex2num(instructionCode[1]);
     //std::cerr << instructionCode << std::endl;
-    srcA = rA; srcB = rB;
-    dstE = rB;
     type = other; opString = "other";
     if (ifun==0){
         type = addl;
@@ -41,6 +39,8 @@ void InstructionOP::fetchStage()
     }
     rA = hex2num(m_instructionCode[2]);
     rB = hex2num(m_instructionCode[3]);
+    srcA = rA; srcB = rB;
+    dstE = rB;
 }
 
 bool InstructionOP::decodeStage()

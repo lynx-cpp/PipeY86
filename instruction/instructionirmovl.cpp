@@ -3,8 +3,6 @@
 
 InstructionIrmovl::InstructionIrmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
-    icode = 3; ifun = 0;
-    dstE = rB;
 }
 
 InstructionIrmovl::~InstructionIrmovl()
@@ -22,6 +20,8 @@ void InstructionIrmovl::fetchStage()
     rA = hex2num(m_instructionCode[2]);
     rB = hex2num(m_instructionCode[3]);
     valC = readHexSmallEndian(m_instructionCode,4,11);
+    icode = 3; ifun = 0;
+    dstE = rB;
 }
 
 bool InstructionIrmovl::decodeStage()

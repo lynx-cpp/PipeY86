@@ -3,9 +3,6 @@
 
 InstructionRmmovl :: InstructionRmmovl(const std::string& m_instructionCode, int address): InstructionPrivate(address)
 {
-    icode = 4; ifun = 0;
-    srcA = rA;
-    dstM = rB;
 }
 
 InstructionRmmovl :: ~InstructionRmmovl()
@@ -24,6 +21,9 @@ void InstructionRmmovl :: fetchStage()
     rA = hex2num(m_instructionCode[2]);
     rB = hex2num(m_instructionCode[3]);
     valC = readHexSmallEndian(m_instructionCode,4,11);
+    icode = 4; ifun = 0;
+    srcA = rA;
+    dstM = rB;
 }
 
 bool InstructionRmmovl :: decodeStage()

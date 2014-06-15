@@ -196,6 +196,14 @@ Item {
                 leftInterval: parent.interval
             }
 
+            
+            Rectangle {
+                color: "#b0b0b0"
+                anchors.verticalCenter: parent.verticalCenter
+                //anchors.top: parent.top
+                anchors.left: eax_text.left; anchors.right: ebx_text.right
+                height: 1
+            }
 
         }
     }

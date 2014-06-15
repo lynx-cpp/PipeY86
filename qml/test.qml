@@ -120,6 +120,7 @@ Item {
         if (containerName=="execute"){
             register_container.srcA = object.srcA;
             register_container.srcB = object.srcB;
+            //console.log(object.srcA,object.srcB);
         }
     }
     
