@@ -72,7 +72,7 @@ Item {
                     anchors.verticalCenterOffset: -3
                     text: "e"
                     font.family: defaultFont.name
-                    font.pointSize: parent.fontSize
+                    font.pointSize: parent.fontSize + 2
                     color: parent.fontColor
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -84,7 +84,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "g"
                     font.family: defaultFont.name
-                    font.pointSize: parent.fontSize
+                    font.pointSize: parent.fontSize + 2
                     color: parent.fontColor
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter

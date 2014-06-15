@@ -247,10 +247,21 @@ Item {
                     Text {
                         font.family: defaultFont.name
                         anchors.verticalCenter: parent.verticalCenter
-                        color: styleData.textColor
+                        color: if (styleData.selected) "grey"
+                        else styleData.textColor
                         elide: styleData.elideMode
                         text: styleData.value
                         //anchors.centerIn: parent
+                    }
+                }
+                rowDelegate: Component {
+                    id: memRow;
+                    Rectangle {
+                        width: parent.width;
+                        color: if (styleData.alternate)
+                            "#e5fff8"
+                        else
+                            "#fdffe5"
                     }
                 }
                 headerDelegate : Component {
