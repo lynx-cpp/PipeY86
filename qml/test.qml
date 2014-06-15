@@ -30,6 +30,8 @@ Item {
     signal back()
     signal startWithoutLatency()
     signal setLatency(int latency)
+    signal setBreakPoint(int row)
+    signal unsetBreakPoint(int row)
     
     Rectangle {
         id: background
@@ -141,9 +143,15 @@ Item {
             TableViewColumn{ role: "Code" ; title: "Code" ; width: 220}
             width: 469; height: 520
             headerVisible: true
+            onDoubleClicked: {
+                if (insModel.get(row).break==true)
+                    insModel.get(row).break = false;
+                else
+                    insModel.get(row).break = true;
+            }
             style: TableViewStyle {
                 backgroundColor: "white"
-                highlightedTextColor: "grey"
+                //highlightedTextColor: "grey"
                 rowDelegate: Component {
                     id: rowCom
                     Rectangle {
@@ -151,6 +159,8 @@ Item {
                         property string type: (insModel.get(styleData.row)==undefined) ? "" : insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
                             backgroundColor
+                        else if (insModel.get(styleData.row).break==true)
+                            "#7f7f7f"
                         else if (type=="F") 
                             fetchColor
                         else if (type=="D")
@@ -174,7 +184,11 @@ Item {
                         font.family: defaultFont.name
                         font.pointSize: 10
                         anchors.verticalCenter: parent.verticalCenter
-                        color: styleData.textColor
+                        color: if (styleData.selected){
+                            if (insModel.get(styleData.row).break==true) "white"
+                                else "grey"
+                        } else
+                            styleData.textColor
                         elide: styleData.elideMode
                         text: styleData.value
                         //anchors.centerIn: parent
