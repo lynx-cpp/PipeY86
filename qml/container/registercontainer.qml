@@ -32,14 +32,16 @@ Item {
             radius: 0;
             antialiasing: true;
             anchors.centerIn: parent;
+            property var interval: 30
             
             AlignedText {
                 id: eax_text
                 //x: 12; y: 23
                 anchors.left: parent.left; anchors.leftMargin: 12
-                anchors.top: parent.top;
+                anchors.top: parent.top; anchors.topMargin: 18
                 textA: "%eax"
                 textB: eax
+                leftInterval: parent.interval
             }
 
             AlignedText {
@@ -47,6 +49,7 @@ Item {
                 textA: "%ecx"
                 textB: ecx
                 leftObj: eax_text
+                leftInterval: parent.interval
             }
             
             AlignedText {
@@ -54,6 +57,7 @@ Item {
                 textA: "%edx"
                 textB: edx 
                 leftObj: ecx_text
+                leftInterval: parent.interval
             }
 
             AlignedText {
@@ -61,14 +65,18 @@ Item {
                 textA: "%ebx"
                 textB: ebx
                 leftObj: edx_text
+                leftInterval: parent.interval
             }
 
             AlignedText {
                 id: esp_text
                 textA: "%esp"
                 textB: esp
-                anchors.top: eax_text.bottom; anchors.left: eax_text.left;
+                //anchors.top: eax_text.bottom; 
+                anchors.bottom: parent.bottom; anchors.bottomMargin: 18
+                anchors.left: eax_text.left;
                 //leftObj: edx_text
+                leftInterval: parent.interval
             }
             
             AlignedText {
@@ -76,6 +84,7 @@ Item {
                 textA: "%ebp"
                 textB: ebp
                 leftObj: esp_text
+                leftInterval: parent.interval
             }
             
             AlignedText {
@@ -83,6 +92,7 @@ Item {
                 textA: "%esi"
                 textB: esi
                 leftObj: ebp_text
+                leftInterval: parent.interval
             }
             
             AlignedText {
@@ -90,6 +100,7 @@ Item {
                 textA: "%edi"
                 textB: edi
                 leftObj: esi_text
+                leftInterval: parent.interval
             }
 
 
