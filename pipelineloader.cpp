@@ -19,6 +19,7 @@ static inline void setStageStatus(const QString& status,Instruction* ins)
     QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,status),Q_ARG(QVariant,QVariant(list)));
 }
 
+
 static inline void removeStageLabel(int idx)
 {
     QMetaObject::invokeMethod(root,"removeStageLabel",Qt::QueuedConnection,Q_ARG(QVariant,idx));
@@ -54,6 +55,35 @@ static inline void addAllElement()
     }
 }
 
+void PipelineLoader::setRegisterStatus()
+{
+    QVariantList list; list.clear();
+    for (int i=0;i<8;i++)
+        list.append(QString::fromStdString(int2Hex(m_pipeline->m_register[i],8)));
+    QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,"register"),Q_ARG(QVariant,QVariant(list)));
+}
+
+void PipelineLoader::setMemoryStatus()
+{
+    QMetaObject::invokeMethod(root,"clearMemTable",Qt::QueuedConnection);
+    MemorySeq seq;
+    printMemory(m_pipeline->m_memory,seq);
+    for (int i=0;i<seq.size();i++){
+        std::string addr = int2Hex(seq[i].first,8);
+        std::string data = int2Hex(seq[i].second,8);
+        //qDebug() << "Memory : " << addr.c_str() << " " << data.c_str();
+        QMetaObject::invokeMethod(root,"addMemoryElement",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(QVariant,addr.c_str()),
+                                  Q_ARG(QVariant,data.c_str()));
+    }
+}
+
+void PipelineLoader::showStopDialog()
+{
+    QMetaObject::invokeMethod(root,"showStopDialog",Qt::QueuedConnection);
+}
+
 void PipelineLoader::readAllStage()
 {
     if (m_pipeline==NULL) return ;
@@ -77,6 +107,7 @@ PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
     cycle = 0;
     time = new QTime();
     connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
+    history.clear();
 }
 
 void PipelineLoader::loadFile(const QString& filename)
@@ -94,6 +125,7 @@ void PipelineLoader::loadFile(const QString& filename)
     //disconnect(m_timer);
     cycle = 0;
     time->start();
+    history.clear();
     qDebug() << "written";
 }
 
@@ -118,21 +150,52 @@ void PipelineLoader::refreshDisplay()
     setStageStatus("execute",m_pipeline->executeI);
     setStageStatus("memory",m_pipeline->memoryI);
     setStageStatus("writeback",m_pipeline->writeBackI);
+    setRegisterStatus();
+    setMemoryStatus();
 }
 
 void PipelineLoader::step()
 {
     int cur = time->elapsed();
     static int last = time->elapsed();
-    cycle ++;
     if (m_pipeline==NULL || !m_pipeline->loaded())
         return ;
+    history.push(*m_pipeline);
     m_pipeline->setProgToThis();
     m_pipeline->execute();
     //clearInsTable();
     //addAllElement();
     readAllStage();
     refreshDisplay();
+    if (!m_pipeline->running()){
+        showStopDialog();
+        m_timer->stop();
+        return ;
+    }
+    qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
+    last = cur;
+    cycle ++;
+}
+
+void PipelineLoader::back()
+{
+    m_timer->stop();
+    int cur = time->elapsed();
+    static int last = time->elapsed();
+    cycle ++;
+
+    if (history.isEmpty()){
+        showStopDialog();
+        return ;
+    }
+    if (m_pipeline!=NULL)
+        delete m_pipeline;
+    m_pipeline = new Y86Pipeline(history.pop());
+    m_pipeline->setProgToThis();
+    
+    readAllStage();
+    refreshDisplay();
+    
     qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
     last = cur;
 }

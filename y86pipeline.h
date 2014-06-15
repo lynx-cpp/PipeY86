@@ -61,6 +61,7 @@ public:
     friend class PipelineLoader;
     Y86Pipeline(const std::string& filename);
     Y86Pipeline(const Y86Pipeline& org);
+    explicit Y86Pipeline();
     ~Y86Pipeline();
     void setProgToThis();
     bool running();

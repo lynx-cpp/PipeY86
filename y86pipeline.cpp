@@ -114,6 +114,17 @@ void Y86Pipeline::execute()
     #endif
 }
 
+Y86Pipeline::Y86Pipeline()
+{
+    m_loaded = false;
+    writeBackI = new Instruction();
+    memoryI = new Instruction();
+    executeI = new Instruction();
+    decodeI = new Instruction();
+    fetchI = new Instruction();
+    std::cerr << "Warning : empty PIPELINE created." << std::endl;
+}
+
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
     m_loaded = false;

@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.1
 import "module"
 import "container"
 
@@ -27,8 +27,11 @@ Item {
     signal step()
     signal pause()
     signal reset()
+    signal back()
     signal startWithoutLatency()
     signal setLatency(int latency)
+    signal setBreakPoint(int row)
+    signal unsetBreakPoint(int row)
     
     Rectangle {
         id: background
@@ -68,6 +71,19 @@ Item {
         insModel.append({"Address":addr,"Data":data,"Stage":stage,"Code":code});
     }
     
+    function clearMemTable(){
+        memoryModel.clear();
+    }
+    
+    function addMemoryElement(addr,data){
+        memoryModel.append({"Address":addr,"Data":data});
+        //console.log(addr,data)
+    }
+    
+    function showStopDialog() {
+        stopDialog.visible = true;
+    }
+    
     /*function printList(list) {
         console.log(list[0]);
         console.log(list[1]);
@@ -80,6 +96,7 @@ Item {
             case "execute": return execute_container;
             case "memory": return memory_container;
             case "writeback": return writeback_container;
+            case "register": return register_container;
         }
         return undefined;
     }
@@ -87,14 +104,27 @@ Item {
     function writeContainer(containerName,list) {
         var object = getStageObj(containerName);
         //console.log(list[0]);
-        object.icode    = list[0]; object.ifun      = list[1];
-        object.rA       = list[2]; object.rB        = list[3];
-        object.dstE     = list[4]; object.dstM      = list[5];
-        object.srcA     = list[6]; object.srcB      = list[7];
+        if (containerName=="register"){
+            object.eax = list[0]; object.ecx = list[1];
+            object.edx = list[2]; object.ebx = list[3];
+            object.esp = list[4]; object.ebp = list[5];
+            object.esi = list[6]; object.edi = list[7];
+        } else {
+            object.icode    = list[0]; object.ifun      = list[1];
+            object.rA       = list[2]; object.rB        = list[3];
+            object.dstE     = list[4]; object.dstM      = list[5];
+            object.srcA     = list[6]; object.srcB      = list[7];
+            
+            object.valA     = list[8]; object.valB     = list[9];
+            object.valC     = list[10]; object.valP   = list[11];
+            object.valE     = list[12]; object.valM  = list[13];
+        }
         
-        object.valA     = list[8]; object.valB     = list[9];
-        object.valC     = list[10]; object.valP   = list[11];
-        object.valE     = list[12]; object.valM  = list[13];
+        if (containerName=="execute"){
+            register_container.srcA = object.srcA;
+            register_container.srcB = object.srcB;
+            //console.log(object.srcA,object.srcB);
+        }
     }
     
     Item {
@@ -113,9 +143,15 @@ Item {
             TableViewColumn{ role: "Code" ; title: "Code" ; width: 220}
             width: 469; height: 520
             headerVisible: true
+            onDoubleClicked: {
+                if (insModel.get(row).break==true)
+                    insModel.get(row).break = false;
+                else
+                    insModel.get(row).break = true;
+            }
             style: TableViewStyle {
                 backgroundColor: "white"
-                highlightedTextColor: "grey"
+                //highlightedTextColor: "grey"
                 rowDelegate: Component {
                     id: rowCom
                     Rectangle {
@@ -123,6 +159,8 @@ Item {
                         property string type: (insModel.get(styleData.row)==undefined) ? "" : insModel.get(styleData.row).Stage
                         color: if (styleData.row==undefined)
                             backgroundColor
+                        else if (insModel.get(styleData.row).break==true)
+                            "#7f7f7f"
                         else if (type=="F") 
                             fetchColor
                         else if (type=="D")
@@ -146,7 +184,11 @@ Item {
                         font.family: defaultFont.name
                         font.pointSize: 10
                         anchors.verticalCenter: parent.verticalCenter
-                        color: styleData.textColor
+                        color: if (styleData.selected){
+                            if (insModel.get(styleData.row).break==true) "white"
+                                else "grey"
+                        } else
+                            styleData.textColor
                         elide: styleData.elideMode
                         text: styleData.value
                         //anchors.centerIn: parent
@@ -212,18 +254,30 @@ Item {
             //anchors.left: parent.left; anchors.top: parent.top;
             anchors.centerIn: parent
             TableViewColumn{ role: "Address"  ; title: "Address" ; width: 150}
-            TableViewColumn{ role: "Value"  ; title: "Value" ; width: 310}
-            width: 469; height: 180;
+            TableViewColumn{ role: "Data"  ; title: "Value" ; width: 310}
+            model: memoryModel;
+            width: 469; height: 190;
             style: TableViewStyle {
                 itemDelegate: Item {
                     anchors.leftMargin: 1
                     Text {
                         font.family: defaultFont.name
                         anchors.verticalCenter: parent.verticalCenter
-                        color: styleData.textColor
+                        color: if (styleData.selected) "grey"
+                        else styleData.textColor
                         elide: styleData.elideMode
                         text: styleData.value
                         //anchors.centerIn: parent
+                    }
+                }
+                rowDelegate: Component {
+                    id: memRow;
+                    Rectangle {
+                        width: parent.width;
+                        color: if (styleData.alternate)
+                            "#e5fff8"
+                        else
+                            "#fdffe5"
                     }
                 }
                 headerDelegate : Component {
@@ -258,6 +312,16 @@ Item {
         smooth: true;
         source: memItem;
     }
+    
+    MessageDialog {
+        id: stopDialog 
+        title: "Pipeline stopped."
+        text: "Y86 Pipeline Simulator stopped."
+        onAccepted: {
+            Qt.quit()
+        }
+        //Component.onCompleted: visible = true
+    } 
     
     FileDialog {
         id: fileDialog
@@ -438,6 +502,7 @@ Item {
         //onClicked: 
         font.family: defaultFont.name
         font.pointSize:18
+        onClicked: back()
         text: "Back"
     }
     
@@ -568,6 +633,13 @@ Item {
         inner_width: container_width
     }
     
+    RegisterContainer {
+        id: register_container;
+        anchors.left: writeBackIndicator.left
+        anchors.top: writeBackIndicator.bottom
+        inner_height: 148
+        inner_width: container_width + decodeIndicator.inner_width
+    }
     
     Rectangle {
         x: 475; y: 8
