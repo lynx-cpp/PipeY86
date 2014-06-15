@@ -8,7 +8,7 @@ void Instruction::constructPrivate()
 {
     instructionP = NULL;
     if (m_instructionCode.length()<2){
-        std::cerr << "instruction code length too short" << std::endl;
+        std::cerr << "instruction code \'"<< m_instructionCode <<"\' length too short" << std::endl;
         instructionP = new InstructionNop(m_address);
         instructionP->m_instructionCode = m_instructionCode;
         return ;
@@ -47,6 +47,8 @@ void Instruction::constructPrivate()
 Instruction::Instruction(const Instruction& ip)
 {
     m_instructionCode = ip.m_instructionCode;
+    if (m_instructionCode=="")
+        m_instructionCode = "00";
     m_address = ip.m_address;
     m_comment = ip.m_comment;
     constructPrivate();
