@@ -107,6 +107,7 @@ PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
     cycle = 0;
     time = new QTime();
     connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
+    history.clear();
 }
 
 void PipelineLoader::loadFile(const QString& filename)
@@ -124,6 +125,7 @@ void PipelineLoader::loadFile(const QString& filename)
     //disconnect(m_timer);
     cycle = 0;
     time->start();
+    history.clear();
     qDebug() << "written";
 }
 
@@ -159,9 +161,10 @@ void PipelineLoader::step()
     cycle ++;
     if (m_pipeline==NULL || !m_pipeline->loaded())
         return ;
+    history.push_back(*m_pipeline);
     m_pipeline->setProgToThis();
-   m_pipeline->execute();
-   if (!m_pipeline->running()){
+    m_pipeline->execute();
+    if (!m_pipeline->running()){
         showStopDialog();
         m_timer->stop();
         return ;
@@ -170,6 +173,29 @@ void PipelineLoader::step()
     //addAllElement();
     readAllStage();
     refreshDisplay();
+    qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
+    last = cur;
+}
+
+void PipelineLoader::back()
+{
+    m_timer->stop();
+    int cur = time->elapsed();
+    static int last = time->elapsed();
+    cycle ++;
+
+    if (m_pipeline!=NULL)
+        delete m_pipeline;
+    /*if (history.isEmpty()){
+        showStopDialog();
+        return ;
+    }
+    m_pipeline = new Y86Pipeline(history.pop());*/
+    m_pipeline->setProgToThis();
+    
+    readAllStage();
+    refreshDisplay();
+    
     qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
     last = cur;
 }
