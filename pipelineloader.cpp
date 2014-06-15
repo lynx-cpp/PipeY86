@@ -161,7 +161,7 @@ void PipelineLoader::step()
     cycle ++;
     if (m_pipeline==NULL || !m_pipeline->loaded())
         return ;
-    history.push_back(*m_pipeline);
+    history.push(*m_pipeline);
     m_pipeline->setProgToThis();
     m_pipeline->execute();
     if (!m_pipeline->running()){
@@ -184,13 +184,13 @@ void PipelineLoader::back()
     static int last = time->elapsed();
     cycle ++;
 
-    if (m_pipeline!=NULL)
-        delete m_pipeline;
-    /*if (history.isEmpty()){
+    if (history.isEmpty()){
         showStopDialog();
         return ;
     }
-    m_pipeline = new Y86Pipeline(history.pop());*/
+    if (m_pipeline!=NULL)
+        delete m_pipeline;
+    m_pipeline = new Y86Pipeline(history.pop());
     m_pipeline->setProgToThis();
     
     readAllStage();

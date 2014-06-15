@@ -27,6 +27,7 @@ Item {
     signal step()
     signal pause()
     signal reset()
+    signal back()
     signal startWithoutLatency()
     signal setLatency(int latency)
     
@@ -487,6 +488,7 @@ Item {
         //onClicked: 
         font.family: defaultFont.name
         font.pointSize:18
+        onClicked: back()
         text: "Back"
     }
     

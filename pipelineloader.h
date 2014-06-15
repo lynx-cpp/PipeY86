@@ -34,7 +34,7 @@ private:
     QTime* time;
     QTimer* m_timer;
     Y86Pipeline* m_pipeline;
-    QVector < Y86Pipeline > history;
+    QStack < Y86Pipeline > history;
     QString m_filename;
 };
 

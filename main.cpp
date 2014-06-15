@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
     QObject::connect(root,SIGNAL(start(int)),pipeline,SLOT(start(int)));
     QObject::connect(root,SIGNAL(pause()),pipeline,SLOT(pause()));
     QObject::connect(root,SIGNAL(setLatency(int)),pipeline,SLOT(setLatency(int)));
+    QObject::connect(root,SIGNAL(back()),pipeline,SLOT(back()));
     pipeline->moveToThread(pipelineThread);
     pipelineThread->start();
     return app.exec();
