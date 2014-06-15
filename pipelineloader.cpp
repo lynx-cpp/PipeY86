@@ -158,23 +158,23 @@ void PipelineLoader::step()
 {
     int cur = time->elapsed();
     static int last = time->elapsed();
-    cycle ++;
     if (m_pipeline==NULL || !m_pipeline->loaded())
         return ;
     history.push(*m_pipeline);
     m_pipeline->setProgToThis();
     m_pipeline->execute();
+    //clearInsTable();
+    //addAllElement();
+    readAllStage();
+    refreshDisplay();
     if (!m_pipeline->running()){
         showStopDialog();
         m_timer->stop();
         return ;
     }
-    //clearInsTable();
-    //addAllElement();
-    readAllStage();
-    refreshDisplay();
     qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
     last = cur;
+    cycle ++;
 }
 
 void PipelineLoader::back()
