@@ -74,6 +74,7 @@ Item {
     
     function addMemoryElement(addr,data){
         memoryModel.append({"Address":addr,"Data":data});
+        //console.log(addr,data)
     }
     
     function showStopDialog() {
@@ -237,7 +238,8 @@ Item {
             //anchors.left: parent.left; anchors.top: parent.top;
             anchors.centerIn: parent
             TableViewColumn{ role: "Address"  ; title: "Address" ; width: 150}
-            TableViewColumn{ role: "Value"  ; title: "Value" ; width: 310}
+            TableViewColumn{ role: "Data"  ; title: "Value" ; width: 310}
+            model: memoryModel;
             width: 469; height: 190;
             style: TableViewStyle {
                 itemDelegate: Item {
