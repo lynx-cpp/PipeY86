@@ -18,6 +18,9 @@ void InstructionCall :: fetchStage()
 		//invalid instruction ...
 	}
 	valC = readHexSmallEndian(m_instructionCode,2,9);
+	icode = 8; ifun = 0;
+	srcB = 4;
+	dstE = 4;
 }
 
 bool InstructionCall :: decodeStage()

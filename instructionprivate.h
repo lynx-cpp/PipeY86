@@ -157,4 +157,16 @@ public:
 	virtual void writeBackStage();
 };
 
+class InstructionPush : public InstructionPrivate
+{
+public:
+	InstructionPush(const std::string& m_instructionCode,int address);
+	virtual ~InstructionPush();
+	virtual void fetchStage();
+	virtual bool decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
+
 #endif

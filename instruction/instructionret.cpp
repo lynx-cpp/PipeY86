@@ -12,6 +12,10 @@ InstructionRet :: ~InstructionRet()
 void InstructionRet :: fetchStage()
 {
 	InstructionPrivate :: fetchStage();
+	icode = 9; ifun = 0;
+	srcA = 4;
+	srcB = 4;
+	dstM = 4;
 }
 
 bool InstructionRet :: decodeStage()

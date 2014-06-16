@@ -46,7 +46,6 @@ rSum:	pushl %ebp
 	jmp L39
 L38:	xorl %eax,%eax
 L39:	mrmovl -24(%ebp),%ebx
-	leave
 	ret
 
 	.pos 0x400

@@ -37,6 +37,23 @@ void Instruction::constructPrivate()
 			instructionP = new InstructionMrmovl(m_instructionCode,m_address);
 			break;
 		}
+        if (icode==0x7){
+            instructionP = new InstructionJump(m_instructionCode,m_address);
+            break;
+        }
+        if (code==0x80){
+            instructionP = new InstructionCall(m_instructionCode,m_address);
+            break;
+        }
+        if (code==0x90){
+            instructionP = new InstructionRet(m_instructionCode,m_address);
+            break;
+        }
+        /*
+        if (code==0xa0){
+            instructionP = new InstructionPush(m_instructionCode,m_address);
+        }
+        */
         //add new instruction constructing function here
         
         instructionP = new InstructionNop(m_address);

@@ -1,8 +1,9 @@
 #include "instructionprivate.h"
 #include "y86pipeline.h"
 
-InstructionJump :: InstructionJump(const std::string& m_instructionCode, int address): InstructionPrivate(address)
+InstructionJump :: InstructionJump(const std::string& instructionCode, int address): InstructionPrivate(address)
 {
+	icode = 7; ifun = hex2num(instructionCode[1]);
 	switch (ifun)
 	{
 		case 0:
@@ -78,6 +79,13 @@ void InstructionJump :: executeStage()
 		default: break;
 	}
 	currentOperation = "Bch <- Cond(CC,ifun);";
+    if (BCH)
+    {
+        //std::cerr<<"jump to " << valC << std::endl;
+        valP = findInstructionFromAddr(valC);
+        std::cerr<<"jump to " << valP << std::endl;
+        currentOperation +=" valP <- valC;";
+    }
 }
 
 void InstructionJump :: memoryStage()
@@ -88,9 +96,5 @@ void InstructionJump :: memoryStage()
 void InstructionJump :: writeBackStage()
 {
 	InstructionPrivate :: writeBackStage();
-	if (BCH)
-	{
-		valP = findInstructionFromAddr(valC);
-		currentOperation ="valP <- valC;";
-	}
+
 }
