@@ -68,7 +68,7 @@ Item {
     }
     
     function addElement(addr,data,stage,code){
-        insModel.append({"Address":addr,"Data":data,"Stage":stage,"Code":code});
+        insModel.append({"Address":addr,"Data":data,"Stage":stage,"Code":code,"break":false});
     }
     
     function clearMemTable(){
