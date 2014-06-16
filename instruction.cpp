@@ -49,11 +49,14 @@ void Instruction::constructPrivate()
             instructionP = new InstructionRet(m_instructionCode,m_address);
             break;
         }
-        /*
         if (code==0xa0){
             instructionP = new InstructionPush(m_instructionCode,m_address);
+			break;
         }
-        */
+        if (code==0xb0){
+			instructionP = new InstructionPop(m_instructionCode,m_address);
+			break;
+		}
         //add new instruction constructing function here
         
         instructionP = new InstructionNop(m_address);

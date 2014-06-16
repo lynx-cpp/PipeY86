@@ -169,4 +169,16 @@ public:
 	virtual void writeBackStage();
 };
 
+class InstructionPop : public InstructionPrivate
+{
+public:
+	InstructionPop(const std::string &m_instructionCode, int address);
+	virtual ~InstructionPop();
+	virtual void fetchStage();
+	virtual bool decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
+
 #endif
