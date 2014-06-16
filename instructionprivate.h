@@ -3,6 +3,7 @@
 #include "instruction.h"
 
 int findInstructionFromAddr(int address);
+int findAddrFromInstruction(int address);
 
 class InstructionPrivate
 {
