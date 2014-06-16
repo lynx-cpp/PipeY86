@@ -39,15 +39,15 @@ int main(int argc, char* argv[])
                               Q_ARG(QVariant,"addl %edx,%eax"));
     PipelineLoader* pipeline = new PipelineLoader;
     QThread* pipelineThread = new QThread;
-    QObject::connect(pipelineThread,SIGNAL(finished()),pipeline,SLOT(deleteLater()));
-    QObject::connect(root,SIGNAL(reset()),pipeline,SLOT(load()));
-    QObject::connect(root,SIGNAL(load(QString)),pipeline,SLOT(loadFile(QString)));
-    QObject::connect(root,SIGNAL(step()),pipeline,SLOT(step()));
-    QObject::connect(root,SIGNAL(start(int)),pipeline,SLOT(start(int)));
-    QObject::connect(root,SIGNAL(pause()),pipeline,SLOT(pause()));
-    QObject::connect(root,SIGNAL(setLatency(int)),pipeline,SLOT(setLatency(int)));
-    QObject::connect(root,SIGNAL(back()),pipeline,SLOT(back()));
     pipeline->moveToThread(pipelineThread);
+    QObject::connect(pipelineThread,SIGNAL(finished()),pipeline,SLOT(deleteLater()),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(reset()),pipeline,SLOT(load()),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(load(QString)),pipeline,SLOT(loadFile(QString)),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(step()),pipeline,SLOT(step()),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(start(int)),pipeline,SLOT(start(int)),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(pause()),pipeline,SLOT(pause()),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(setLatency(int)),pipeline,SLOT(setLatency(int)),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(back()),pipeline,SLOT(back()),Qt::QueuedConnection);
     pipelineThread->start();
     return app.exec();
 }
