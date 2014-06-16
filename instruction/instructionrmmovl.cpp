@@ -24,6 +24,8 @@ void InstructionRmmovl :: fetchStage()
     icode = 4; ifun = 0;
     srcA = rA;
 	srcB = rB;
+	dstE = 8;
+	dstM = 8;
 }
 
 bool InstructionRmmovl :: decodeStage()

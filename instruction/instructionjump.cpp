@@ -55,6 +55,10 @@ void InstructionJump :: fetchStage()
 	}
 	valC = readHexSmallEndian(m_instructionCode,2,9);
 	currentOperation = "valC <- M_4[PC];";
+	srcA = 8;
+	srcB = 8;
+	dstE = 8;
+	dstM = 8;
 }
 
 bool InstructionJump :: decodeStage()

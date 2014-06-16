@@ -15,6 +15,7 @@ void InstructionRet :: fetchStage()
 	icode = 9; ifun = 0;
 	srcA = 4;
 	srcB = 4;
+	dstE = 8;
 	dstM = 4;
 }
 

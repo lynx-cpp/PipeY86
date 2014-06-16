@@ -21,7 +21,9 @@ void InstructionMrmovl::fetchStage()
     rB = hex2num(m_instructionCode[3]);
     valC = readHexSmallEndian(m_instructionCode,4,11);
     icode = 5; ifun = 0;
+	srcA = 8;
 	srcB = rB;
+	dstE = 8;
     dstM = rA;
 }
 
