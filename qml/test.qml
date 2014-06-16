@@ -259,7 +259,7 @@ Item {
             width: 469; height: 190;
             style: TableViewStyle {
                 itemDelegate: Item {
-                    anchors.leftMargin: 1
+                    anchors.leftMargin: 3
                     Text {
                         font.family: defaultFont.name
                         anchors.verticalCenter: parent.verticalCenter
@@ -292,7 +292,7 @@ Item {
                             font.family: defaultFont.name
                             font.pointSize: 10
                             anchors.left: parent.left
-                            anchors.leftMargin: 1
+                            anchors.leftMargin: 3
                         }
                     }
                 }

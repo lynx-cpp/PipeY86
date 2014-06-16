@@ -70,7 +70,7 @@ void PipelineLoader::setMemoryStatus()
     printMemory(m_pipeline->m_memory,seq);
     for (int i=0;i<seq.size();i++){
         std::string addr = int2Hex(seq[i].first,8);
-        std::string data = int2Hex(seq[i].second,8);
+        std::string data = seq[i].second;
         //qDebug() << "Memory : " << addr.c_str() << " " << data.c_str();
         QMetaObject::invokeMethod(root,"addMemoryElement",
                                   Qt::QueuedConnection,
