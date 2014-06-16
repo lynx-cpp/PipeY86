@@ -70,20 +70,20 @@ void InstructionJump :: executeStage()
 	switch (type)
 	{
 		case jmp:BCH = true; break;
-		case jl:BCH = m_pipeline->jl();
-		case jle:BCH = m_pipeline->jle();
-		case je:BCH = m_pipeline->je();
-		case jne:BCH = m_pipeline->jne();
-		case jge:BCH = m_pipeline->jge();
-		case jg:BCH = m_pipeline->jg();
-		default: break;
+        case jl:BCH = m_pipeline->jl(); break;
+        case jle:BCH = m_pipeline->jle(); break;
+        case je:BCH = m_pipeline->je(); break;
+        case jne:BCH = m_pipeline->jne(); break;
+        case jge:BCH = m_pipeline->jge(); break;
+        case jg:BCH = m_pipeline->jg(); break;
+        default:
+            std :: cerr << jumpString << std::endl;
+        break;
 	}
 	currentOperation = "Bch <- Cond(CC,ifun);";
     if (BCH)
     {
-        //std::cerr<<"jump to " << valC << std::endl;
         valP = findInstructionFromAddr(valC);
-        std::cerr<<"jump to " << valP << std::endl;
         currentOperation +=" valP <- valC;";
     }
 }

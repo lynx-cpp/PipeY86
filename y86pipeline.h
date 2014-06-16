@@ -74,12 +74,12 @@ public:
     int read32BitMemory(int address) ;
     void write32BitMemory(int address,int value);
     void setConditionCode(int a,int b,int val);
-    bool jle() { return (SignFlag ^ OverflowFlag) | ZeroFlag; }
+    bool jle() { return (SignFlag ^ OverflowFlag) || ZeroFlag; }
     bool jl() { return SignFlag ^ OverflowFlag; }
     bool je() { return ZeroFlag; }
-    bool jne() { return ~ZeroFlag; }
-    bool jge() { return ~(SignFlag ^ OverflowFlag); }
-    bool jg() { return ~(SignFlag ^ OverflowFlag) & (~ZeroFlag); }
+    bool jne() { return !ZeroFlag; }
+    bool jge() { return !(SignFlag ^ OverflowFlag); }
+    bool jg() { return !(SignFlag ^ OverflowFlag) && (!ZeroFlag); }
     //int nextInstruction(int current,int step = 1) {  }
 };
 
