@@ -16,7 +16,7 @@ typedef std::vector<Instruction> Program;
 extern Program prog;
 
 typedef std::map<int,int> Memory;
-typedef std::vector< std::pair<int,int> > MemorySeq;
+typedef std::vector< std::pair<int, std::string > > MemorySeq;
 
 static inline int hex2num(char ch)
 {
@@ -67,13 +67,16 @@ static inline int readHexSmallEndian(const std::string& str,int l,int r)
     return ret;
 }
 
-static inline std::string int2Hex(int hex,int minWidth = 3)
+static inline std::string int2Hex(int hex,int minWidth = 3,bool withx = true)
 {
     std::stringstream ss;
     ss.clear(); ss.str("");
     //ss.setf ( std::ios::hex, std::ios::basefield );  // set hex as the basefield
     //ss.setf ( std::ios::showbase ); 
-    ss << "0x" << std::setfill('0') << std::setw(minWidth) << std::hex << hex;
+    if (withx)
+        ss << "0x" << std::setfill('0') << std::setw(minWidth) << std::hex << std::uppercase << hex;
+    else
+        ss << std::setfill('0') << std::setw(minWidth) << std::hex << std::uppercase << hex;
     return ss.str();
 }
 
@@ -93,10 +96,10 @@ static inline void printMemory(Memory& memory,MemorySeq& seq)
     Memory::iterator current = memory.begin();
     while (current!=memory.end()){
         int curAddr = current->first;
-        int curVal = memory[curAddr];
-        curVal = curVal*0xff + memory[curAddr + 1];
-        curVal = curVal*0xff + memory[curAddr + 2];
-        curVal = curVal*0xff + memory[curAddr + 3];
+        std::string curVal = int2Hex(memory[curAddr],2,false); curVal += "    ";
+        curVal += int2Hex(memory[curAddr + 1],2,false); curVal += "    ";
+        curVal += int2Hex(memory[curAddr + 2],2,false); curVal += "    ";
+        curVal += int2Hex(memory[curAddr + 3],2,false); 
         seq.push_back(std::make_pair(curAddr,curVal));
         
         current = memory.find(curAddr + 3);
