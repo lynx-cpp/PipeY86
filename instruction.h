@@ -73,9 +73,11 @@ public:
 
     bool operator!=(const Instruction& B);
     bool eq(Instruction* decodeI);
+    
+    status stat() const;
 
 #ifdef QT_VERSION
-    QVariantList status() const;
+    QVariantList stageRegStatus() const;
 #endif
 };
 

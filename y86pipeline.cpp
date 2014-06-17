@@ -237,6 +237,8 @@ void Y86Pipeline::run()
 
 bool Y86Pipeline::running()
 {
+    if (writeBackI->stat()==HLT)
+        return false;
     if (fetchI->normal() || decodeI->normal() || executeI->normal() 
         || memoryI->normal() || writeBackI->normal())
         return true;
@@ -305,3 +307,6 @@ m_loaded(org.m_loaded)
     memcpy(forwardReg,org.forwardReg,sizeof(forwardReg));
     memcpy(forwardStat,org.forwardStat,sizeof(forwardStat));
 }
+
+
+

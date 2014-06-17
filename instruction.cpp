@@ -40,6 +40,10 @@ void Instruction::constructPrivate()
             instructionP = new InstructionOP(m_instructionCode,m_address);
             break;
         }
+        if (code==0x10) {
+            instructionP = new InstructionHalt(m_instructionCode,m_address);
+            break;
+        }
         if (code==0x20) {
             instructionP = new InstructionRrmovl(m_instructionCode,m_address);
             break;
@@ -227,8 +231,13 @@ std::string Instruction::currentOperation()
     return instructionP->currentOperation;
 }
 
+status Instruction::stat() const
+{
+    return instructionP->stat;
+}
+
 #ifdef QT_VERSION
-QVariantList Instruction::status() const
+QVariantList Instruction::stageRegStatus() const
 {
     int addr = instructionP->addr();
     if (addr==-1) addr = 0;

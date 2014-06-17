@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} $
 include_directories(${Qt5Gui_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS} ${Qt5Quick_INCLUDE_DIRS})
 add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Qml_DEFINITIONS})
 
-set(INSTRUCTION_SRCS instruction/instructionirmovl.cpp instruction/instructionmrmovl.cpp instruction/instructionop.cpp instruction/instructionrmmovl.cpp instruction/instructionrrmovl.cpp instruction/instructioncall.cpp instruction/instructionjump.cpp instruction/instructionret.cpp instruction/instructionpush.cpp instruction/instructionpop.cpp)
+set(INSTRUCTION_SRCS instruction/instructionirmovl.cpp instruction/instructionmrmovl.cpp instruction/instructionop.cpp instruction/instructionrmmovl.cpp instruction/instructionrrmovl.cpp instruction/instructioncall.cpp instruction/instructionjump.cpp instruction/instructionret.cpp instruction/instructionpush.cpp instruction/instructionpop.cpp instruction/instructionhalt.cpp)
 set(PIPELINE_SRCS y86pipeline.cpp instruction.cpp instructionprivate.cpp ${INSTRUCTION_SRCS})
 set(S2O_SRCS s2o/assembler.cpp)
 

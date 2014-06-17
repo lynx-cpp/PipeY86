@@ -32,7 +32,7 @@ QVariant returnValue;
 
 static inline void setStageStatus(const QString& status,Instruction* ins)
 {
-    QVariantList list = ins->status();
+    QVariantList list = ins->stageRegStatus();
     /*Q_FOREACH(QVariant i,list) {
         qDebug() << i;
     }*/
