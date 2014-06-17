@@ -212,10 +212,12 @@ void PipelineLoader::step()
     //addAllElement();
     readAllStage();
     refreshDisplay();
-    if (!m_pipeline->running()) {
-        showStopDialog();
+    if (breakPoints.contains(m_pipeline->fetchI->addr()) || !m_pipeline->running()) {
         m_timer->stop();
-        return ;
+        if (!m_pipeline->running()){
+            showStopDialog();
+            return ;
+        }
     }
     qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
     last = cur;
