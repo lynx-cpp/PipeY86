@@ -55,6 +55,11 @@ static inline void addAllElement()
     }
 }
 
+static inline void setStartButtonToPaused(bool flag = true)
+{
+    QMetaObject::invokeMethod(root,"setStartButtonToPaused",Qt::QueuedConnection,Q_ARG(QVariant,flag));
+}
+
 void PipelineLoader::setRegisterStatus()
 {
     QVariantList list; list.clear();
@@ -104,14 +109,20 @@ PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
     m_timer = new QTimer(this);
     interval = 200;
     m_timer->setSingleShot(false);
+    fastTimer = new QTimer(this);
+    fastTimer->setInterval(0); fastTimer->setSingleShot(false);
     cycle = 0;
     time = new QTime();
     connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
+    connect(fastTimer,SIGNAL(timeout()),this,SLOT(fastStep()));
     history.clear();
 }
 
 void PipelineLoader::loadFile(const QString& filename)
 {
+    m_timer->stop();
+    fastTimer->stop();
+    breakPoints.clear();
     m_filename = filename;
     if (m_pipeline!=NULL) 
         delete m_pipeline;
@@ -177,6 +188,28 @@ void PipelineLoader::step()
     cycle ++;
 }
 
+void PipelineLoader::fastStep()
+{
+    if (m_pipeline==NULL || !m_pipeline->loaded())
+        return ;
+    history.push(*m_pipeline);
+    m_pipeline->setProgToThis();
+    m_pipeline->execute();
+    if (breakPoints.contains(m_pipeline->fetchI->addr()) || !m_pipeline->running()){
+        fastTimer->stop();
+        setStartButtonToPaused(false);
+        readAllStage();
+        refreshDisplay();
+        showStopDialog();
+        return ;
+    }
+    int cur = time->elapsed();
+    static int last = time->elapsed();
+    qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
+    last = cur;
+    cycle ++;
+}
+
 void PipelineLoader::back()
 {
     m_timer->stop();
@@ -203,6 +236,7 @@ void PipelineLoader::back()
 void PipelineLoader::pause()
 {
     m_timer->stop();
+    fastTimer->stop();
     //m_timer->setInterval(interval);
 }
 
@@ -223,4 +257,24 @@ void PipelineLoader::setLatency(int latency)
     m_timer->setSingleShot(false);
     qDebug() << "set latency to " << m_timer->interval();
 }
+
+void PipelineLoader::setBreakPoint(int row)
+{
+    int addr = prog[row].addr();
+    breakPoints.insert(addr);
+    qDebug() << "set breakpoint " << row << " : " << addr;
+}
+
+void PipelineLoader::unsetBreakPoint(int row)
+{
+    int addr = prog[row].addr();
+    breakPoints.remove(addr);
+    qDebug() << "unset breakpoint " << row << " : " << addr;
+}
+
+void PipelineLoader::fastStart()
+{
+    fastTimer->start();
+}
+
 

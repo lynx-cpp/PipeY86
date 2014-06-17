@@ -4,6 +4,7 @@
 #include <QStack>
 #include <QTimer>
 #include <QTime>
+#include <QSet>
 
 #include "y86pipeline.h"
 
@@ -22,17 +23,28 @@ public slots:
     void step();
     void back();
     void start(int latency);
+    void fastStart();
     void pause();
     void setLatency(int latency);
+    void setBreakPoint(int row);
+    void unsetBreakPoint(int row);
 
+private slots:
+    void fastStep();
+    
 private:
     void setRegisterStatus();
     void setMemoryStatus();
     void showStopDialog();
+    
     int interval;
     int cycle;
     QTime* time;
     QTimer* m_timer;
+    QTimer* fastTimer;
+    
+    QSet < int > breakPoints;
+    
     Y86Pipeline* m_pipeline;
     QStack < Y86Pipeline > history;
     QString m_filename;
