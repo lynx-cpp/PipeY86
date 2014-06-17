@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import QtQuick.Window 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.1
@@ -40,6 +41,34 @@ Item {
     property string memoryColor: "#a6d864"
     property string writeBackColor: "#77bbdb"
     property string indicatorFontColor: "grey"
+    
+    /*MessageDialog {
+        id: about_dialog
+        title: "About"
+        text: "
+Infrastructure & Graphics:            \tYuquan Fang
+Instruction Implementation:\tKaiqiang Song 
+Art Direction:\t\t\tQi Liu"
+        visible: false
+    }*/
+    Window {
+        width: 400
+        height: 300
+        x:500; y:200
+        id: about_dialog
+        visible: false
+        flags: Qt.FramelessWindowHint | Qt.Window
+        Text {
+            text: "
+Infrastructure & Graphics:            \tYuquan Fang
+Instruction Implementation:\tKaiqiang Song 
+Art Direction:\t\t\tQi Liu"
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: about_dialog.visible = false
+        }
+    }
     
     signal load(string str)
     signal start(int latency)
@@ -545,6 +574,19 @@ Item {
         font.pointSize:13
         text: "Continue"
     }
+    
+     Button {
+        id: aboutButton
+        anchors.left: continueButton.left; //anchors.leftMargin: -5
+        anchors.top: continueButton.bottom
+        button_width: 80
+        button_height: 40
+        onClicked: about_dialog.visible = true
+        font.family: defaultFont.name
+        font.pointSize:18
+        text: "About"
+    }
+    
         
     Button {
         id: stepButton
