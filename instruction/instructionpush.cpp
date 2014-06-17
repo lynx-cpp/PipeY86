@@ -21,16 +21,15 @@ void InstructionPush :: fetchStage()
 	}
 	rA = hex2num(m_instructionCode[2]);
 	srcA = rA;
-	srcB = 4;
-	dstE = 4;
-	dstM = 8;
+    srcB = ESP;
+    dstE = ESP;
 }
 
 bool InstructionPush :: decodeStage()
 {
 	InstructionPrivate :: decodeStage();
 	currentOperation = "valA <- R[rA]; valB <- R[%esp];";
-	return (readReg(rA,valA) && readReg(4,valB));
+    return (readReg(rA,valA) && readReg(ESP,valB));
 }
 
 void InstructionPush :: executeStage()
@@ -38,19 +37,19 @@ void InstructionPush :: executeStage()
 	InstructionPrivate :: executeStage();
 	valE = valB + (-4);
 	currentOperation = "valE <- valB + (-4);";
-	writeForwardReg(4,valE,true);
+    writeForwardReg(ESP,valE,true);
 }
 
 void InstructionPush :: memoryStage()
 {
 	InstructionPrivate :: memoryStage();
-	m_pipeline->write32BitMemory(valE,findAddrFromInstruction(valP));
+    m_pipeline->write32BitMemory(valE,valA);
 }
 
 void InstructionPush :: writeBackStage()
 {
 	InstructionPrivate :: writeBackStage();
-	writeRealReg(4,valE);
+    writeRealReg(ESP,valE);
 	currentOperation = "R[%esp] <- valE;";
 }
 

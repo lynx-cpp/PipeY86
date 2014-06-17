@@ -19,9 +19,9 @@ void InstructionPop :: fetchStage()
 		//invalid instruc ...
 	}
 	rA = hex2num(m_instructionCode[2]);
-	srcA = 4;
-	srcB = 4;
-	dstE = 4;
+    srcA = ESP;
+    srcB = ESP;
+    dstE = ESP;
 	dstM = rA;
 }
 
@@ -29,7 +29,7 @@ bool InstructionPop :: decodeStage()
 {
 	InstructionPrivate :: decodeStage();
 	currentOperation = "valA <- R[%esp]; valB <- R[%esp];";
-	return (readReg(4,valA) && readReg(4,valB));
+    return (readReg(ESP,valA) && readReg(ESP,valB));
 }
 
 void InstructionPop :: executeStage()
@@ -37,11 +37,9 @@ void InstructionPop :: executeStage()
 	InstructionPrivate :: executeStage();
 	valE = valB + 4;
 	currentOperation = "valE <- valB + 4";
-	writeForwardReg(4,valE,true);
-	// the command below
-	valM = m_pipeline->read32BitMemory(valA);
-	writeForwardReg(rA,valM,true);
-	//should be done in memoryStage()
+    writeForwardReg(rA,valM,false);
+    writeForwardReg(ESP,valE,true);
+    //valM = m_pipeline->read32BitMemory(valA);
 }
 
 void InstructionPop :: memoryStage()
@@ -49,12 +47,13 @@ void InstructionPop :: memoryStage()
 	InstructionPrivate :: memoryStage();
 	valM = m_pipeline->read32BitMemory(valA);
 	currentOperation = "valM <- M_4[valA];";
+    writeForwardReg(rA,valM,true);
 }
 
 void InstructionPop :: writeBackStage()
 {
 	InstructionPrivate :: writeBackStage();
-	writeRealReg(4,valE);
+    writeRealReg(ESP,valE);
 	writeRealReg(rA,valM);
 	currentOperation = "R[%esp] <- valE; R[rA] <- valM";
 }
