@@ -3,4 +3,4 @@
 0x008: a048             |	pushl %esp          # Push the stack pointer (old or new?)
 0x00a: b028             |	popl  %edx          # Get it back
 0x00c: 6120             |	subl  %edx,%eax     # Compute difference.  Either 0 (old) or 4 (new).
-0x00e: 10               |	halt
+0x00e:                  |	halt
