@@ -182,4 +182,16 @@ public:
 	virtual void writeBackStage();
 };
 
+class InstructionHalt : public InstructionPrivate
+{
+public:
+	InstructionHalt(const std::string& m_instructionCode, int address);
+	virtual ~InstructionHalt();
+	virtual void fetchStage();
+	virtual bool decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
+
 #endif
