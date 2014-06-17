@@ -69,40 +69,42 @@ void Y86Pipeline::execute()
     bool success = decodeI->decodeStage();
     fetchI->fetchStage();
     //std :: cerr << " Done 2" << std :: endl;
+    if (!success)
+        decodeI->setBubble();
+    
     InstructionPtr nextPrediction = getPrediction(fetchI);
     
-    InstructionPtr curPrediction = getPrediction(executeI);
+    InstructionPtr executePrediction = getPrediction(executeI);
     if (executeI->isOk())
-        if (!curPrediction->eq(decodeI)){
+        if (!executePrediction->eq(decodeI)){
             decodeI->setBubble();
             fetchI->setBubble();
             delete nextPrediction;
-            nextPrediction = curPrediction;
+            nextPrediction = executePrediction;
         }
     //std :: cerr << " Done 3" << std :: endl;
-    curPrediction  = getPrediction(memoryI);
+    InstructionPtr memoryPrediction = getPrediction(memoryI);
     if (memoryI->isOk())
-        if (!curPrediction->eq(executeI)){
+        if (!memoryPrediction->eq(executeI)){
             fetchI->setBubble();
             decodeI->setBubble();
             executeI->setBubble();
             delete nextPrediction;
-            nextPrediction = curPrediction;
+            nextPrediction = memoryPrediction;
         }
         //prediction may change.
     //std :: cerr << " Done 4" << std :: endl;
-    if (!success)
-        decodeI->setBubble();//forwarding failed , stall
-    //std :: cerr << " Done 5" << std :: endl;
         
     delete writeBackI;
     nextStage(writeBackI,memoryI);
     nextStage(memoryI,executeI);
-    nextStage(executeI,decodeI);
-    nextStage(decodeI,fetchI);
-    //nextStage(fetchI,nextPrediction);
-    if (success)
+    if (success){
+        nextStage(executeI,decodeI);
+        nextStage(decodeI,fetchI);
         fetchI = nextPrediction;
+    }
+    else 
+        executeI = new Instruction(decodeI->addr());
     /*
     writeBackI = memoryI;
     memoryI = executeI;
