@@ -136,6 +136,8 @@ public:
 
 class InstructionCall :public InstructionPrivate
 {
+private:
+    int returnAddr;
 public:
 	InstructionCall(const std::string& m_instructionCode,int address);
 	virtual ~InstructionCall();

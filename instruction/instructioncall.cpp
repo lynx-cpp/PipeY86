@@ -38,6 +38,7 @@ void InstructionCall :: executeStage()
     currentOperation = "valE <- valB + (-4);";
 	valE = valB + (-4);
     writeForwardReg(ESP,valE,true);
+    returnAddr = valP;
     valP = findInstructionFromAddr(valC);
     std :: cerr << "call :  PC <- " << valP << std::endl;
     std :: cerr << "call :  PC <- " << int2Hex(valC) << std::endl;
@@ -47,7 +48,7 @@ void InstructionCall :: memoryStage()
 {
 	InstructionPrivate :: memoryStage();
 	currentOperation = "valE <- valP";
-    m_pipeline->write32BitMemory(valE,findAddrFromInstruction(valP));
+    m_pipeline->write32BitMemory(valE,findAddrFromInstruction(returnAddr));
 }
 
 void InstructionCall :: writeBackStage()

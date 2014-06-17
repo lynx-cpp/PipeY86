@@ -30,7 +30,7 @@ void InstructionRet :: executeStage()
 {
 	InstructionPrivate :: executeStage();
 	currentOperation = "valE <- valB + 4;";
-	valE = valB + 4;
+    valE = valB + 4;
 }
 
 void InstructionRet :: memoryStage()
@@ -39,6 +39,8 @@ void InstructionRet :: memoryStage()
 	currentOperation = "valM <- M_4[valA]";
 	valM = m_pipeline->read32BitMemory(valA);
 	writeForwardReg(4,valE,true);
+    valP = findInstructionFromAddr(valM);
+    std :: cerr << "Return : valP <- " << valM << std::endl;
 }
 
 void InstructionRet :: writeBackStage()
@@ -46,5 +48,4 @@ void InstructionRet :: writeBackStage()
 	InstructionPrivate :: writeBackStage();
 	writeRealReg(4,valE);
 	currentOperation = "R[%esp] <- valE;";
-	valP = findInstructionFromAddr(valM);
 }

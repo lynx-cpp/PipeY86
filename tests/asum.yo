@@ -4,10 +4,10 @@
   0x00C: 8024000000   | 	call Main	
   0x011: 10           | 	halt
   0x014:              | 	.align 4 	
-  0x014:0D000000      | array:	.long 0xd
-  0x018:C0000000      | 	.long 0xc0
-  0x01C:000B0000      | 	.long 0xb00
-  0x020:00A00000      | 	.long 0xa000	
+  0x014: 0D000000     | array:	.long 0xd
+  0x018: C0000000     | 	.long 0xc0
+  0x01C: 000B0000     | 	.long 0xb00
+  0x020: 00A00000     | 	.long 0xa000	
   0x024: A058         | Main:	pushl %ebp 
   0x026: 2045         | 	rrmovl %esp,%ebp
   0x028: 308004000000 | 	irmovl $4,%eax	
