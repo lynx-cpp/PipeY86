@@ -149,6 +149,7 @@ Y86Pipeline::Y86Pipeline()
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
+    stat = AOK;
     m_loaded = false;
     writeBackI = new Instruction();
     memoryI = new Instruction();
@@ -239,6 +240,11 @@ bool Y86Pipeline::running()
 {
     if (writeBackI->stat()==HLT)
         return false;
+    if (stat==ADR)
+        return false;
+    if (executeI->stat()==ADR || executeI->stat()==INS)
+        return false;
+    
     if (fetchI->normal() || decodeI->normal() || executeI->normal() 
         || memoryI->normal() || writeBackI->normal())
         return true;
@@ -257,8 +263,11 @@ void Y86Pipeline::recoverForwarding()
 int Y86Pipeline::read32BitMemory(int address)
 {
     int ans = 0;
-    for (int i=address + 3;i>=address;i--)
+    for (int i=address + 3;i>=address;i--){
+        if (m_memory.find(i)==m_memory.end())
+            stat = ADR;
         ans = ans*0x100 + m_memory[i];
+    }
 	std :: cerr << "reading " << ans << " from M[" << address << "]" << std::endl;
 	return ans;
 }
@@ -295,7 +304,8 @@ orgStackAddr(org.orgStackAddr),
 ZeroFlag(org.ZeroFlag),
 OverflowFlag(org.OverflowFlag),
 SignFlag(org.SignFlag),
-m_loaded(org.m_loaded)
+m_loaded(org.m_loaded),
+stat(org.stat)
 {
     fetchI = new Instruction(*org.fetchI);
     decodeI = new Instruction(*org.decodeI);

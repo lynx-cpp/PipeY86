@@ -407,6 +407,12 @@ Art Direction:\t\t\tQi Liu"
         text: "Open"
     }
     
+    Action {
+        id: open_action
+        onTriggered: fileDialog.open()
+        shortcut: "Ctrl+o"
+    }
+    
     Button {
         id: resetButton
         anchors.left: openButton.left; //anchors.leftMargin: 5
@@ -418,6 +424,12 @@ Art Direction:\t\t\tQi Liu"
         font.pointSize:18
         text: "Reset"
     }    
+    
+    Action {
+        id: reset_action
+        onTriggered: reset()
+        shortcut: "Ctrl+r"
+    }
     
     Item {
         id: freqSelector
@@ -538,6 +550,18 @@ Art Direction:\t\t\tQi Liu"
         
         property var paused: true;
     }
+    
+    Action {
+        id: pause_action
+        onTriggered: pause()
+        shortcut: "Ctrl+c"
+    }
+    
+    Action {
+        id: start_action
+        onTriggered: start(freqSelector.freq)
+        shortcut: "Shift+F9"
+    }
    
     function startButtonClicked() {
         if (startButton.paused){
@@ -563,6 +587,12 @@ Art Direction:\t\t\tQi Liu"
         text: "Back"
     }
     
+    Action {
+        id: back_action
+        onTriggered: back()
+        shortcut: "F6"
+    }
+    
     Button {
         id: continueButton
         anchors.left: backButton.right; //anchors.leftMargin: -5
@@ -573,6 +603,12 @@ Art Direction:\t\t\tQi Liu"
         font.family: defaultFont.name
         font.pointSize:13
         text: "Continue"
+    }
+    
+    Action {
+        id: continue_action
+        onTriggered: fastStart()
+        shortcut: "F9"
     }
     
      Button {

@@ -45,6 +45,10 @@ InstructionPrivate::InstructionPrivate(int address):
 
 bool InstructionPrivate::readReg(int num, int& dest)
 {
+    if (num>=MAX_REG_NUM){
+        stat = ADR;
+        return true;
+    }
     return m_pipeline->readForwarding(num,dest);
 }
 

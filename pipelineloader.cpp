@@ -251,7 +251,6 @@ void PipelineLoader::back()
     m_timer->stop();
     int cur = time->elapsed();
     static int last = time->elapsed();
-    cycle ++;
 
     if (history.isEmpty()) {
         showStopDialog();
@@ -266,6 +265,7 @@ void PipelineLoader::back()
     refreshDisplay();
 
     qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
+    cycle --;
     last = cur;
 }
 

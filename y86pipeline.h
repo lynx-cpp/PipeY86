@@ -37,6 +37,8 @@ typedef std::map<int,int> Memory;
 class Y86Pipeline
 {
 private:
+    status stat;
+    
     bool m_loaded;
     
     InstructionPtr fetchI,decodeI,executeI,memoryI,writeBackI;
@@ -52,6 +54,8 @@ private:
     
     void writeForwarding(int num,int value,bool stat)
     {
+        if (num>=MAX_REG_NUM)
+            stat = ADR;
         forwardReg[num] = value;
         forwardStat[num] = stat;
     }
