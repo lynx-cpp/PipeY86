@@ -1,3 +1,22 @@
+/*
+ *   Copyright (C) 2014 by Yuquan Fang<lynx.cpp@gmail.com>
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 3, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details
+ *
+ *   You should have received a copy of the GNU General Public
+ *   License along with this program; if not, write to the
+ *   Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 #include <iostream>
 #include "instruction.h"
 #include "y86pipeline.h"
@@ -7,7 +26,7 @@
 void Instruction::constructPrivate()
 {
     instructionP = NULL;
-    if (m_instructionCode.length()<2){
+    if (m_instructionCode.length()<2) {
         std::cerr << "instruction code \'"<< m_instructionCode <<"\' length too short" << std::endl;
         instructionP = new InstructionNop(m_address);
         instructionP->m_instructionCode = m_instructionCode;
@@ -16,49 +35,49 @@ void Instruction::constructPrivate()
     int code = byte2int(m_instructionCode[0],m_instructionCode[1]);
     int icode = hex2num(m_instructionCode[0]);
     int ifun = hex2num(m_instructionCode[1]);
-    do{
-        if (icode==6){
+    do {
+        if (icode==6) {
             instructionP = new InstructionOP(m_instructionCode,m_address);
             break;
         }
-        if (code==0x20){
+        if (code==0x20) {
             instructionP = new InstructionRrmovl(m_instructionCode,m_address);
             break;
         }
-        if (code==0x30){
+        if (code==0x30) {
             instructionP = new InstructionIrmovl(m_instructionCode,m_address);
             break;
         }
-        if (code==0x40){
-			instructionP = new InstructionRmmovl(m_instructionCode,m_address);
-			break;
-		}
-		if (code==0x50){
-			instructionP = new InstructionMrmovl(m_instructionCode,m_address);
-			break;
-		}
-        if (icode==0x7){
+        if (code==0x40) {
+            instructionP = new InstructionRmmovl(m_instructionCode,m_address);
+            break;
+        }
+        if (code==0x50) {
+            instructionP = new InstructionMrmovl(m_instructionCode,m_address);
+            break;
+        }
+        if (icode==0x7) {
             instructionP = new InstructionJump(m_instructionCode,m_address);
             break;
         }
-        if (code==0x80){
+        if (code==0x80) {
             instructionP = new InstructionCall(m_instructionCode,m_address);
             break;
         }
-        if (code==0x90){
+        if (code==0x90) {
             instructionP = new InstructionRet(m_instructionCode,m_address);
             break;
         }
-        if (code==0xa0){
+        if (code==0xa0) {
             instructionP = new InstructionPush(m_instructionCode,m_address);
-			break;
+            break;
         }
-        if (code==0xb0){
-			instructionP = new InstructionPop(m_instructionCode,m_address);
-			break;
-		}
+        if (code==0xb0) {
+            instructionP = new InstructionPop(m_instructionCode,m_address);
+            break;
+        }
         //add new instruction constructing function here
-        
+
         instructionP = new InstructionNop(m_address);
     } while (false);
     instructionP->m_instructionCode = m_instructionCode;
@@ -92,7 +111,7 @@ Instruction::Instruction(const std::string& instructionCode, const std::string& 
 }
 
 Instruction::Instruction(int address)
-{ 
+{
     m_instructionCode = "00";
     m_address = address;
     constructPrivate();
@@ -100,36 +119,36 @@ Instruction::Instruction(int address)
 }
 
 Instruction::~Instruction()
-{ 
-    if (instructionP!=NULL) 
-        delete instructionP; 
+{
+    if (instructionP!=NULL)
+        delete instructionP;
     else
         std::cerr << "InstructionPrivate Error.." << std::endl;
 }
 
 void Instruction::setPipeline(Y86Pipeline* pipeline)
 {
-    instructionP->setPipeline(pipeline); 
+    instructionP->setPipeline(pipeline);
 }
 
 int Instruction::prediction() const
 {
-    return instructionP->prediction(); 
+    return instructionP->prediction();
 }
 
 void Instruction::printCode()
 {
-    std::cerr << "code : " << m_instructionCode << std::endl; 
+    std::cerr << "code : " << m_instructionCode << std::endl;
 }
 
 void Instruction::setBubble()
 {
-    instructionP->stat = BUB; 
+    instructionP->stat = BUB;
 }
 
 bool Instruction::isBubble()
 {
-    return (instructionP->stat == BUB); 
+    return (instructionP->stat == BUB);
 }
 
 void Instruction::setOk()
@@ -144,41 +163,41 @@ bool Instruction::isOk()
 
 bool Instruction::normal()
 {
-   return isOk() && (m_address!=-1); 
+    return isOk() && (m_address!=-1);
 }
 
 void Instruction::fetchStage()
-{ 
-    if (instructionP->stat==BUB) { 
+{
+    if (instructionP->stat==BUB) {
         instructionP->stat = AOK;
-        instructionP->fetchStage(); 
+        instructionP->fetchStage();
     }
 }
 
 bool Instruction::decodeStage()
 {
-    if (instructionP->stat==AOK) return instructionP->decodeStage(); 
+    if (instructionP->stat==AOK) return instructionP->decodeStage();
     return true;
 }
 
 void Instruction::executeStage()
 {
-    if (instructionP->stat==AOK) instructionP->executeStage(); 
+    if (instructionP->stat==AOK) instructionP->executeStage();
 }
 
 void Instruction::memoryStage()
 {
-    if (instructionP->stat==AOK) instructionP->memoryStage(); 
+    if (instructionP->stat==AOK) instructionP->memoryStage();
 }
 
 void Instruction::writeBackStage()
 {
-    if (instructionP->stat==AOK) instructionP->writeBackStage(); 
+    if (instructionP->stat==AOK) instructionP->writeBackStage();
 }
 
 int Instruction::addr()
 {
-    return instructionP->addr(); 
+    return instructionP->addr();
 }
 
 bool Instruction::operator!=(const Instruction& B)
@@ -211,7 +230,7 @@ std::string Instruction::currentOperation()
 #ifdef QT_VERSION
 QVariantList Instruction::status() const
 {
-    int addr = instructionP->addr(); 
+    int addr = instructionP->addr();
     if (addr==-1) addr = 0;
     QVariantList ret;
     ret.clear();

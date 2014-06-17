@@ -1,3 +1,22 @@
+/*
+ *   Copyright (C) 2014 by Yuquan Fang<lynx.cpp@gmail.com>
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 3, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details
+ *
+ *   You should have received a copy of the GNU General Public
+ *   License along with this program; if not, write to the
+ *   Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 #include <QQuickItem>
 #include <QMetaObject>
 #include <QDebug>
@@ -47,7 +66,7 @@ static inline void addElement(const std::string& addr,const std::string& data,co
 
 static inline void addAllElement()
 {
-     for (int i=0;i<prog.size();i++){
+    for (int i=0; i<prog.size(); i++) {
         addElement(int2Hex(prog[i].addr()),
                    hex2Data(prog[i].instructionCode()),
                    "",
@@ -62,8 +81,9 @@ static inline void setStartButtonToPaused(bool flag = true)
 
 void PipelineLoader::setRegisterStatus()
 {
-    QVariantList list; list.clear();
-    for (int i=0;i<8;i++)
+    QVariantList list;
+    list.clear();
+    for (int i=0; i<8; i++)
         list.append(QString::fromStdString(int2Hex(m_pipeline->m_register[i],8)));
     QMetaObject::invokeMethod(root,"writeContainer",Q_ARG(QVariant,"register"),Q_ARG(QVariant,QVariant(list)));
 }
@@ -73,7 +93,7 @@ void PipelineLoader::setMemoryStatus()
     QMetaObject::invokeMethod(root,"clearMemTable",Qt::QueuedConnection);
     MemorySeq seq;
     printMemory(m_pipeline->m_memory,seq);
-    for (int i=0;i<seq.size();i++){
+    for (int i=0; i<seq.size(); i++) {
         std::string addr = int2Hex(seq[i].first,8);
         std::string data = seq[i].second;
         //qDebug() << "Memory : " << addr.c_str() << " " << data.c_str();
@@ -92,7 +112,7 @@ void PipelineLoader::showStopDialog()
 void PipelineLoader::readAllStage()
 {
     if (m_pipeline==NULL) return ;
-    for (int i=0;i<prog.size();i++){
+    for (int i=0; i<prog.size(); i++) {
         QString label = "";
         if (prog[i].addr()==m_pipeline->fetchI->addr()) label = "F";
         if (prog[i].addr()==m_pipeline->decodeI->addr()) label = "D";
@@ -110,7 +130,8 @@ PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
     interval = 200;
     m_timer->setSingleShot(false);
     fastTimer = new QTimer(this);
-    fastTimer->setInterval(0); fastTimer->setSingleShot(false);
+    fastTimer->setInterval(0);
+    fastTimer->setSingleShot(false);
     cycle = 0;
     time = new QTime();
     connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
@@ -124,7 +145,7 @@ void PipelineLoader::loadFile(const QString& filename)
     fastTimer->stop();
     breakPoints.clear();
     m_filename = filename;
-    if (m_pipeline!=NULL) 
+    if (m_pipeline!=NULL)
         delete m_pipeline;
     qDebug() << "entered" << " " << filename;
     clearInsTable();
@@ -178,7 +199,7 @@ void PipelineLoader::step()
     //addAllElement();
     readAllStage();
     refreshDisplay();
-    if (!m_pipeline->running()){
+    if (!m_pipeline->running()) {
         showStopDialog();
         m_timer->stop();
         return ;
@@ -195,7 +216,7 @@ void PipelineLoader::fastStep()
     history.push(*m_pipeline);
     m_pipeline->setProgToThis();
     m_pipeline->execute();
-    if (breakPoints.contains(m_pipeline->fetchI->addr()) || !m_pipeline->running()){
+    if (breakPoints.contains(m_pipeline->fetchI->addr()) || !m_pipeline->running()) {
         fastTimer->stop();
         setStartButtonToPaused(false);
         readAllStage();
@@ -217,7 +238,7 @@ void PipelineLoader::back()
     static int last = time->elapsed();
     cycle ++;
 
-    if (history.isEmpty()){
+    if (history.isEmpty()) {
         showStopDialog();
         return ;
     }
@@ -225,10 +246,10 @@ void PipelineLoader::back()
         delete m_pipeline;
     m_pipeline = new Y86Pipeline(history.pop());
     m_pipeline->setProgToThis();
-    
+
     readAllStage();
     refreshDisplay();
-    
+
     qDebug() << "Cycle " << cycle << "elapsed time: "<< cur;
     last = cur;
 }
@@ -244,7 +265,7 @@ void PipelineLoader::start(int latency)
 {
     interval = latency;
     m_timer->setInterval(latency);
-    if (!m_timer->isActive()){
+    if (!m_timer->isActive()) {
         m_timer->start();
     }
     qDebug() << "start with latency" << m_timer->interval();
