@@ -28,6 +28,7 @@
 #include <QMetaObject>
 #include <QThread>
 #include <QObject>
+#include <QIcon>
 #include <QList>
 #include <QVariant>
 
@@ -43,8 +44,10 @@ QQuickItem* root;
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
+    //app.setWindowIcon(QIcon("qrc:///icon.png"));
     QQuickWindow::setDefaultAlphaBuffer(true);
     QQuickView view(QUrl("qrc:///qml/test.qml"));
+    view.setIcon(QIcon(":/icon.png"));
     view.show();
     root = view.rootObject();
     QVariant returnValue;
