@@ -24,8 +24,10 @@
 #include <QTimer>
 #include <QTime>
 #include <QSet>
+#include <QTemporaryFile>
 
 #include "y86pipeline.h"
+#include "s2o/assembler.h"
 
 class PipelineLoader : public QObject
 {
@@ -61,6 +63,9 @@ private:
     QTime* time;
     QTimer* m_timer;
     QTimer* fastTimer;
+    
+    AssemblerY86* assembler;
+    QTemporaryFile* tmpFile;
 
     QSet < int > breakPoints;
 

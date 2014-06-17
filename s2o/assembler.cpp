@@ -46,6 +46,9 @@ void AssemblerY86::buildFile(std::string file_name)
 
 bool AssemblerY86::compile(std::string input_file, std::string output_file)
 {
+    dict.erase(dict.begin(),dict.end());
+    check.erase(check.begin(),check.end());
+    InstructionRegister.erase(InstructionRegister.begin(),InstructionRegister.end());
     readFile(input_file);
     bool result = checkBool();
     if (result) return false;

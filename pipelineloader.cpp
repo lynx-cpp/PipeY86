@@ -20,6 +20,7 @@
 #include <QQuickItem>
 #include <QMetaObject>
 #include <QDebug>
+#include <QFileInfo>
 #include <string>
 #include <cstdlib>
 #include "pipelineloader.h"
@@ -128,6 +129,8 @@ PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
     m_pipeline = NULL;
     m_timer = new QTimer(this);
     interval = 200;
+    tmpFile = new QTemporaryFile();
+    assembler = new AssemblerY86();
     m_timer->setSingleShot(false);
     fastTimer = new QTimer(this);
     fastTimer->setInterval(0);
@@ -149,7 +152,17 @@ void PipelineLoader::loadFile(const QString& filename)
         delete m_pipeline;
     qDebug() << "entered" << " " << filename;
     clearInsTable();
-    m_pipeline = new Y86Pipeline(m_filename.section('/',2).toStdString());
+    QFileInfo info(m_filename);
+    if (info.suffix()=="yo")
+        m_pipeline = new Y86Pipeline(m_filename.section('/',2).toStdString());
+    else {
+        delete tmpFile;
+        tmpFile = new QTemporaryFile();
+        qDebug() << tmpFile->fileName();
+        tmpFile->open(); tmpFile->close();
+        assembler->compile(m_filename.section('/',2).toStdString(),tmpFile->fileName().section('/',2).toStdString());
+        m_pipeline = new Y86Pipeline(tmpFile->fileName().section('/',2).toStdString());
+    }
     qDebug() << "loaded";
     addAllElement();
     readAllStage();
