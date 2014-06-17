@@ -48,6 +48,9 @@ int main(int argc, char* argv[])
     QObject::connect(root,SIGNAL(pause()),pipeline,SLOT(pause()),Qt::QueuedConnection);
     QObject::connect(root,SIGNAL(setLatency(int)),pipeline,SLOT(setLatency(int)),Qt::QueuedConnection);
     QObject::connect(root,SIGNAL(back()),pipeline,SLOT(back()),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(setBreakPoint(int)),pipeline,SLOT(setBreakPoint(int)),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(unsetBreakPoint(int)),pipeline,SLOT(unsetBreakPoint(int)),Qt::QueuedConnection);
+    QObject::connect(root,SIGNAL(fastStart()),pipeline,SLOT(fastStart()),Qt::QueuedConnection);
     pipelineThread->start();
     return app.exec();
 }

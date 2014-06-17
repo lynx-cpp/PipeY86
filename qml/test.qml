@@ -32,6 +32,7 @@ Item {
     signal setLatency(int latency)
     signal setBreakPoint(int row)
     signal unsetBreakPoint(int row)
+    signal fastStart()
     
     Rectangle {
         id: background
@@ -82,6 +83,10 @@ Item {
     
     function showStopDialog() {
         stopDialog.visible = true;
+    }
+    
+    function setStartButtonToPaused(flag) {
+        startButton.paused = flag;
     }
     
     /*function printList(list) {
@@ -144,10 +149,14 @@ Item {
             width: 469; height: 520
             headerVisible: true
             onDoubleClicked: {
-                if (insModel.get(row).break==true)
+                if (insModel.get(row).break==true){
                     insModel.get(row).break = false;
-                else
+                    unsetBreakPoint(row);
+                }
+                else{
                     insModel.get(row).break = true;
+                    setBreakPoint(row);
+                }
             }
             style: TableViewStyle {
                 backgroundColor: "white"
@@ -512,7 +521,7 @@ Item {
         anchors.top: backButton.top
         button_width: 80
         button_height: 40
-        //onClicked: 
+        onClicked: fastStart()
         font.family: defaultFont.name
         font.pointSize:13
         text: "Continue"
