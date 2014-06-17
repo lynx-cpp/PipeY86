@@ -19,38 +19,41 @@ void InstructionCall :: fetchStage()
 	}
 	valC = readHexSmallEndian(m_instructionCode,2,9);
 	icode = 8; ifun = 0;
-	srcA = 8;
-	srcB = 4;
-	dstE = 4;
-	dstM = 8;
+    srcA = NO_REG;
+    srcB = ESP;
+    dstE = ESP;
+    dstM = NO_REG;
 }
 
 bool InstructionCall :: decodeStage()
 {
 	InstructionPrivate :: decodeStage();
 	currentOperation =  "R[%esp] <- valB;";
-	return readReg(4,valB);
+    return readReg(ESP,valB);
 }
 
 void InstructionCall :: executeStage()
 {
 	InstructionPrivate :: executeStage();
-	currentOperation = "valE <- valE + (-4);";
+    currentOperation = "valE <- valB + (-4);";
 	valE = valB + (-4);
+    writeForwardReg(ESP,valE,true);
+    valP = findInstructionFromAddr(valC);
+    std :: cerr << "call :  PC <- " << valP << std::endl;
+    std :: cerr << "call :  PC <- " << int2Hex(valC) << std::endl;
 }
 
 void InstructionCall :: memoryStage()
 {
 	InstructionPrivate :: memoryStage();
 	currentOperation = "valE <- valP";
-	m_pipeline->write32BitMemory(valE,valP);
-	writeForwardReg(4,valE,true);
+    m_pipeline->write32BitMemory(valE,findAddrFromInstruction(valP));
 }
 
 void InstructionCall :: writeBackStage()
 {
 	InstructionPrivate :: writeBackStage();
 	currentOperation = "R[%esp] <- valE;";
-	writeRealReg(4,valE);
-	valP = findInstructionFromAddr(valC);
+    writeRealReg(ESP,valE);
+
 }

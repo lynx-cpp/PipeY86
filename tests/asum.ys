@@ -6,6 +6,11 @@ init:	irmovl Stack, %esp  	# Set up stack pointer
 	irmovl Stack, %ebp  	# Set up base pointer   
 	call Main		# Execute main program
 	halt			# Terminate program 
+	nop
+	nop
+	nop
+	nop
+	nop
 
 # Array of 4 elements
 	.align 4 	
@@ -13,6 +18,11 @@ array:	.long 0xd
 	.long 0xc0
 	.long 0xb00
 	.long 0xa000	
+	nop
+	nop
+	nop
+	nop
+	nop
 
 Main:	pushl %ebp 
 	rrmovl %esp,%ebp
@@ -24,6 +34,11 @@ Main:	pushl %ebp
 	rrmovl %ebp,%esp
 	popl %ebp
 	ret 
+	nop
+	nop
+	nop
+	nop
+	nop
 
 /* $begin sum-ys 0 */
 	# int Sum(int *Start, int Count)
