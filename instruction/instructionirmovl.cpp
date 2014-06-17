@@ -21,7 +21,10 @@ void InstructionIrmovl::fetchStage()
     rB = hex2num(m_instructionCode[3]);
     valC = readHexSmallEndian(m_instructionCode,4,11);
     icode = 3; ifun = 0;
+	srcA = 8;
+	srcB = 8;
     dstE = rB;
+	dstM = 8;
 }
 
 bool InstructionIrmovl::decodeStage()

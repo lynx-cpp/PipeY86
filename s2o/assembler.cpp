@@ -23,6 +23,7 @@ char AssemblerY86::checkChar(int &row)
 {
 	int error_row = 0;
 	int error_code = check_compile(InstructionRegister,error_row,dict,check);
+    std::cerr << error_code << std::endl;
 	return error_code;
 }
 

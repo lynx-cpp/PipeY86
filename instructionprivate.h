@@ -3,6 +3,7 @@
 #include "instruction.h"
 
 int findInstructionFromAddr(int address);
+int findAddrFromInstruction(int address);
 
 class InstructionPrivate
 {
@@ -150,6 +151,30 @@ class InstructionRet : public InstructionPrivate
 public:
 	InstructionRet(const std::string& m_instructionCode,int address);
 	virtual ~InstructionRet();
+	virtual void fetchStage();
+	virtual bool decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
+
+class InstructionPush : public InstructionPrivate
+{
+public:
+	InstructionPush(const std::string& m_instructionCode,int address);
+	virtual ~InstructionPush();
+	virtual void fetchStage();
+	virtual bool decodeStage();
+	virtual void executeStage();
+	virtual void memoryStage();
+	virtual void writeBackStage();
+};
+
+class InstructionPop : public InstructionPrivate
+{
+public:
+	InstructionPop(const std::string &m_instructionCode, int address);
+	virtual ~InstructionPop();
 	virtual void fetchStage();
 	virtual bool decodeStage();
 	virtual void executeStage();

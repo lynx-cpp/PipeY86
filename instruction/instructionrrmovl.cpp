@@ -21,7 +21,9 @@ void InstructionRrmovl :: fetchStage()
     rB = hex2num(m_instructionCode[3]);
     icode = 2; ifun = 0;
     srcA = rA;
+	srcB = 8;
     dstE = rB;
+	dstM = 8;
 }
 
 bool InstructionRrmovl :: decodeStage()

@@ -23,7 +23,9 @@ void InstructionRmmovl :: fetchStage()
     valC = readHexSmallEndian(m_instructionCode,4,11);
     icode = 4; ifun = 0;
     srcA = rA;
-    dstM = rB;
+	srcB = rB;
+	dstE = 8;
+	dstM = 8;
 }
 
 bool InstructionRmmovl :: decodeStage()

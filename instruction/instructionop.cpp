@@ -40,7 +40,7 @@ void InstructionOP::fetchStage()
     rA = hex2num(m_instructionCode[2]);
     rB = hex2num(m_instructionCode[3]);
     srcA = rA; srcB = rB;
-    dstE = rB;
+    dstE = rB; dstM = 8;
 }
 
 bool InstructionOP::decodeStage()

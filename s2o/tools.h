@@ -292,7 +292,7 @@ static inline std :: string format(int val, int len, bool pre)
 static inline void format_output(std :: ostringstream &output, std :: string str, std :: string val, int w = 24)
 {
 	output << std :: setw(w) << std :: setiosflags(std :: ios :: left) << std :: setfill(' ') << str;
-	output << "|" << val << std :: endl;
+    output << "| " << val << std :: endl;
 }
 
 static inline std::string remove_note(std::string str,bool &flag)

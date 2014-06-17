@@ -1,8 +1,9 @@
 #include "instructionprivate.h"
 #include "y86pipeline.h"
 
-InstructionJump :: InstructionJump(const std::string& m_instructionCode, int address): InstructionPrivate(address)
+InstructionJump :: InstructionJump(const std::string& instructionCode, int address): InstructionPrivate(address)
 {
+	icode = 7; ifun = hex2num(instructionCode[1]);
 	switch (ifun)
 	{
 		case 0:
@@ -54,6 +55,10 @@ void InstructionJump :: fetchStage()
 	}
 	valC = readHexSmallEndian(m_instructionCode,2,9);
 	currentOperation = "valC <- M_4[PC];";
+	srcA = 8;
+	srcB = 8;
+	dstE = 8;
+	dstM = 8;
 }
 
 bool InstructionJump :: decodeStage()
@@ -69,15 +74,22 @@ void InstructionJump :: executeStage()
 	switch (type)
 	{
 		case jmp:BCH = true; break;
-		case jl:BCH = m_pipeline->jl();
-		case jle:BCH = m_pipeline->jle();
-		case je:BCH = m_pipeline->je();
-		case jne:BCH = m_pipeline->jne();
-		case jge:BCH = m_pipeline->jge();
-		case jg:BCH = m_pipeline->jg();
-		default: break;
+        case jl:BCH = m_pipeline->jl(); break;
+        case jle:BCH = m_pipeline->jle(); break;
+        case je:BCH = m_pipeline->je(); break;
+        case jne:BCH = m_pipeline->jne(); break;
+        case jge:BCH = m_pipeline->jge(); break;
+        case jg:BCH = m_pipeline->jg(); break;
+        default:
+            std :: cerr << jumpString << std::endl;
+        break;
 	}
 	currentOperation = "Bch <- Cond(CC,ifun);";
+    if (BCH)
+    {
+        valP = findInstructionFromAddr(valC);
+        currentOperation +=" valP <- valC;";
+    }
 }
 
 void InstructionJump :: memoryStage()
@@ -88,9 +100,5 @@ void InstructionJump :: memoryStage()
 void InstructionJump :: writeBackStage()
 {
 	InstructionPrivate :: writeBackStage();
-	if (BCH)
-	{
-		valP = findInstructionFromAddr(valC);
-		currentOperation ="valP <- valC;";
-	}
+
 }
