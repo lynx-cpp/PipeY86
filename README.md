@@ -12,14 +12,16 @@ Qt Offical downloads can solve all things about Qt
 * CMake version >= 2.8.0
 
 ## Compile
-> mkdir build
-> cd build
-> cmake ../
-> make
+
+    mkdir build
+    cd build
+    cmake ../
+    make
 
 ## Run
-> cd build
-> ./pipey86
+
+    cd build
+    ./pipey86
 
 ## Other tools
 s2o is a simple y86 assembler.
