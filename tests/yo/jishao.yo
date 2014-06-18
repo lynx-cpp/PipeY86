@@ -1,0 +1,143 @@
+                        | /* $begin code-yso */
+                        | /* $begin code-ysa */
+                        | # Execution begins at address 0
+0x000:                  | .pos 0
+0x000:                  | init:
+0x000: 308400010000     | irmovl Stack, %esp  	# Set up stack pointer
+0x006: 00               | nop
+0x007: 00               | nop
+0x008: 00               | nop
+0x009: 308500010000     | irmovl Stack, %ebp  	# Set up base pointer
+0x00f: 00               | nop
+0x010: 00               | nop
+0x011: 00               | nop
+0x012: 8030000000       | call Main		# Execute main program
+0x017: 00               | nop
+0x018: 00               | nop
+0x019: 00               | nop
+0x01a: 10               | halt			# Terminate program
+0x01b: 00               | nop
+0x01c: 00               | nop
+0x01d: 00               | nop
+                        | 
+                        | # Array of 4 elements
+0x020:                  | .align 4
+0x020:                  | array:
+0x020: 0d000000         | .long 0xd
+0x024: c0000000         | .long 0xc0
+0x028: 000b0000         | .long 0xb00
+0x02c: 00a00000         | .long 0xa000
+                        | 
+0x030:                  | Main:
+0x030: a058             | pushl %ebp
+0x032: 2045             | rrmovl %esp,%ebp
+0x034: 00               | nop
+0x035: 00               | nop
+0x036: 00               | nop
+0x037: 308004000000     | irmovl $4,%eax
+0x03d: 00               | nop
+0x03e: 00               | nop
+0x03f: 00               | nop
+0x040: a008             | pushl %eax		# Push 4
+0x042: 00               | nop
+0x043: 00               | nop
+0x044: 00               | nop
+0x045: 308220000000     | irmovl array,%edx
+0x04b: 00               | nop
+0x04c: 00               | nop
+0x04d: 00               | nop
+0x04e: a028             | pushl %edx      	# Push array
+0x050: 00               | nop
+0x051: 00               | nop
+0x052: 00               | nop
+0x053: 8069000000       | call Sum		# Sum(array, 4)
+0x058: 00               | nop
+0x059: 00               | nop
+0x05a: 00               | nop
+0x05b: 2054             | rrmovl %ebp,%esp
+0x05d: 00               | nop
+0x05e: 00               | nop
+0x05f: 00               | nop
+0x060: b058             | popl %ebp
+0x062: 00               | nop
+0x063: 00               | nop
+0x064: 00               | nop
+0x065: 90               | ret
+0x066: 00               | nop
+0x067: 00               | nop
+0x068: 00               | nop
+                        | 
+                        | /* $begin sum-ys 0 */
+                        | # int Sum(int *Start, int Count)
+0x069:                  | Sum:
+0x069: a058             | pushl %ebp
+0x06b: 00               | nop
+0x06c: 00               | nop
+0x06d: 00               | nop
+0x06e: 2045             | rrmovl %esp,%ebp
+0x070: 00               | nop
+0x071: 00               | nop
+0x072: 00               | nop
+0x073: 501508000000     | mrmovl 8(%ebp),%ecx 	# ecx = Start
+0x079: 00               |                                 nop
+0x07a: 00               |                                 nop
+0x07b: 00               |                                 nop
+0x07c: 50250c000000     |                                 mrmovl 12(%ebp),%edx	# edx = Count
+0x082: 00               |                                         nop
+0x083: 00               |                                         nop
+0x084: 00               |                                         nop
+0x085: 6300             |                                         xorl %eax,%eax		# sum = 0
+0x087: 00               |                                                 nop
+0x088: 00               |                                                 nop
+0x089: 00               |                                                 nop
+0x08a: 6222             |                                                 andl   %edx,%edx	# Set condition codes
+0x08c: 00               |                                                 nop
+0x08d: 00               |                                                 nop
+0x08e: 00               |                                                 nop
+0x08f: 73c6000000       |                                                 je     End
+0x094: 00               |                                                 nop
+0x095: 00               |                                                 nop
+0x096: 00               |                                                 nop
+0x097:                  |                                                 Loop:
+0x097: 506100000000     |                                                 mrmovl (%ecx),%esi	# get *Start
+0x09d: 6060             |                                                 addl %esi,%eax          # add to sum
+0x09f: 00               |                                                 nop
+0x0a0: 00               |                                                 nop
+0x0a1: 00               |                                                 nop
+0x0a2: 308304000000     |                                                 irmovl $4,%ebx          #
+0x0a8: 00               |                                                 nop
+0x0a9: 00               |                                                 nop
+0x0aa: 00               |                                                 nop
+0x0ab: 6031             |                                                 addl %ebx,%ecx          # Start++
+0x0ad: 00               |                                                 nop
+0x0ae: 00               |                                                 nop
+0x0af: 00               |                                                 nop
+0x0b0: 3083ffffffff     |                                                 irmovl $-1,%ebx	        #
+0x0b6: 00               |                                                 nop
+0x0b7: 00               |                                                 nop
+0x0b8: 00               |                                                 nop
+0x0b9: 6032             |                                                 addl %ebx,%edx          # Count--
+0x0bb: 00               |                                                 nop
+0x0bc: 00               |                                                 nop
+0x0bd: 00               |                                                 nop
+0x0be: 7497000000       |                                                 jne    Loop             # Stop when 0
+0x0c3: 00               |                                                 nop
+0x0c4: 00               |                                                 nop
+0x0c5: 00               |                                                 nop
+0x0c6:                  |                                                 End:
+0x0c6: 2054             |                                                 rrmovl %ebp,%esp
+0x0c8: b058             |                                                 popl %ebp
+0x0ca: 00               |                                                 nop
+0x0cb: 00               |                                                 nop
+0x0cc: 00               |                                                 nop
+0x0cd: 90               |                                                 ret
+0x0ce: 00               |                                                 nop
+0x0cf: 00               |                                                 nop
+0x0d0: 00               |                                                 nop
+                        |                                                 /* $end sum-ys 0 */
+                        | 
+                        | # The stack starts here and grows to lower addresses
+0x100:                  |                                                 .pos 0x100
+0x100:                  |                                                 Stack:
+                        |                                                 /* $end code-ysa */
+                        |                                                 /* $end code-yso */

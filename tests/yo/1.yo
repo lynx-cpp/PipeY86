@@ -1,0 +1,4 @@
+0x000: 308001000000     | irmovl $1,%eax
+0x006: 308202000000     | irmovl $2,%edx
+0x00c: 6020             | addl %edx,%eax
+0x00e: 2001             | rrmovl %eax,%ecx

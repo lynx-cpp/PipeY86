@@ -1,0 +1,4 @@
+irmovl $-13, %esi
+subl %esi, %edi
+rrmovl %edi, %esi
+addl %esi, %eax
