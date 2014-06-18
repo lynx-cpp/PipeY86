@@ -434,7 +434,7 @@ Art Direction:\t\t\tQi Liu"
     Action {
         id: reset_action
         onTriggered: reset()
-        shortcut: "Ctrl+r"
+        shortcut: "Ctrl+c"
     }
     
     Item {
@@ -560,13 +560,13 @@ Art Direction:\t\t\tQi Liu"
     Action {
         id: pause_action
         onTriggered: pause()
-        shortcut: "Ctrl+c"
+        shortcut: "Ctrl+d"
     }
     
     Action {
         id: start_action
         onTriggered: start(freqSelector.freq)
-        shortcut: "Shift+F9"
+        shortcut: "Ctrl+s"
     }
    
     function startButtonClicked() {
