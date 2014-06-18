@@ -101,6 +101,7 @@ void InstructionJump :: executeStage()
         break;
     case jle:
         BCH = m_pipeline->jle();
+		std::cerr << "JLE = " << BCH << std::endl;
         break;
     case je:
         BCH = m_pipeline->je();
@@ -122,6 +123,7 @@ void InstructionJump :: executeStage()
     if (BCH)
     {
         valP = findInstructionFromAddr(valC);
+		std  :: cerr << " Jump to : " << int2Hex(valC) << std::endl;
         currentOperation +=" valP <- valC;";
     }
 }
