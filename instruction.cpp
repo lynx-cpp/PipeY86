@@ -169,7 +169,7 @@ bool Instruction::isOk()
 
 bool Instruction::normal()
 {
-    return isOk() && (m_address!=-1);
+    return (isOk() || instructionP->stat==HLT) && (m_address!=-1);
 }
 
 void Instruction::fetchStage()

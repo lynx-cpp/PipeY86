@@ -238,12 +238,21 @@ void Y86Pipeline::run()
 
 bool Y86Pipeline::running()
 {
-    if (writeBackI->stat()==HLT)
+    if (writeBackI->stat()==HLT){
+        std::cerr << "halted" << std::endl;
         return false;
-    if (stat==ADR)
+    }
+    if (stat==ADR){
+        std::cerr << "address exception detected, halt" << std::endl;
         return false;
-    if (memoryI->stat()==ADR || memoryI->stat()==INS)
+    }
+    if (memoryI->stat()==ADR || memoryI->stat()==INS){
+        if (memoryI->stat()==ADR)
+            std::cerr << "address exception detected, halt" << std::endl;
+        else
+            std::cerr << "instruction exception detected, halt" << std::endl;
         return false;
+    }
     
     if (fetchI->normal() || decodeI->normal() || executeI->normal() 
         || memoryI->normal() || writeBackI->normal())
