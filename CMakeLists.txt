@@ -20,7 +20,7 @@ add_executable(pipecmd ${PIPELINE_SRCS} pipecmd.cpp)
 add_executable(s2o ${S2O_SRCS} s2o/main.cpp)
 
 QT5_ADD_RESOURCES (RESOURCES resources.qrc)
-add_executable(pipey86 ${PIPELINE_SRCS} main.cpp ${RESOURCES} pipelineloader.cpp ${S2O_SRCS})
+add_executable(pipey86 ${PIPELINE_SRCS} main.cpp ${RESOURCES} pipelineloader.cpp ${S2O_SRCS} icon.rc)
 qt5_use_modules(pipey86 Widgets Qml Gui Quick)
 qt5_use_modules(pipecmd Core)
 #target_link_libraries(pipey86 ${Qt5Declarative_LIBRARIES} ${Qt5Widgets_LIBRARIES})
