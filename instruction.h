@@ -75,6 +75,12 @@ public:
     bool eq(Instruction* decodeI);
     
     status stat() const;
+    
+    void printFetchStatus(std::fstream& stream);
+    void printDecodeStatus(std::fstream& stream);
+    void printExecuteStatus(std::fstream& stream);
+    void printMemoryStatus(std::fstream& stream);
+    void printWritebackStatus(std::fstream& stream);
 
 #ifdef QT_VERSION
     QVariantList stageRegStatus() const;

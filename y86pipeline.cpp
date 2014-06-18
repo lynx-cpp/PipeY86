@@ -327,5 +327,13 @@ stat(org.stat)
     memcpy(forwardStat,org.forwardStat,sizeof(forwardStat));
 }
 
+void Y86Pipeline::printStageStatus(std::fstream& stream)
+{
+    fetchI->printFetchStatus(stream);
+    decodeI->printDecodeStatus(stream);
+    executeI->printExecuteStatus(stream);
+    memoryI->printMemoryStatus(stream);
+    writeBackI->printWritebackStatus(stream);
+}
 
 

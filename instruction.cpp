@@ -238,6 +238,66 @@ status Instruction::stat() const
     return instructionP->stat;
 }
 
+void Instruction::printDecodeStatus(std::fstream& stream)
+{
+    stream << "DECODE:" << std::endl;
+    stream << "\tD_icode  \t= " << int2Hex(instructionP->icode,1) << std::endl;
+    stream << "\tD_ifun   \t= "  << int2Hex(instructionP->ifun,1) << std::endl;
+    stream << "\tD_rA     \t= "  << int2Hex(instructionP->rA,1) << std::endl;
+    stream << "\tD_rB     \t= " << int2Hex(instructionP->rB,1) << std::endl;
+    stream << "\tD_valC   \t= " << int2Hex(instructionP->valC,8) << std::endl;
+    stream << "\tD_valP   \t= " << int2Hex(instructionP->valP,8) << std::endl;
+    stream << std::endl;
+}
+
+void Instruction::printExecuteStatus(std::fstream& stream)
+{
+    stream << "EXECUTE:" << std::endl;
+    stream << "\tE_icode  \t= " << int2Hex(instructionP->icode,1) << std::endl;
+    stream << "\tE_ifun    \t= "  << int2Hex(instructionP->ifun,1) << std::endl;
+    stream << "\tE_valC    \t= " << int2Hex(instructionP->valC,8) << std::endl;
+    stream << "\tE_valA    \t= " << int2Hex(instructionP->valA,8) << std::endl;
+    stream << "\tE_valB    \t= " << int2Hex(instructionP->valB,8) << std::endl;
+    stream << "\tE_dstE    \t= "  << int2Hex(instructionP->dstE,1) << std::endl;
+    stream << "\tE_dstM   \t= "  << int2Hex(instructionP->dstM,1) << std::endl;
+    stream << "\tE_srcA    \t= "  << int2Hex(instructionP->srcA,1) << std::endl;
+    stream << "\tE_srcB    \t= " << int2Hex(instructionP->srcB,1) << std::endl;
+    stream << std::endl;
+}
+
+void Instruction::printFetchStatus(std::fstream& stream)
+{
+    stream << "FETCH:" << std::endl;
+    stream << "\tF_predPC \t= " << int2Hex(addr(),8) << std::endl << std::endl;
+}
+
+void Instruction::printMemoryStatus(std::fstream& stream)
+{
+    std::string bch = "true";
+    if (!instructionP->BCH)
+        bch = "false";
+    stream << "MEMORY:" << std::endl;
+    stream << "\tM_icode  \t= " << int2Hex(instructionP->icode,1) << std::endl;
+    stream << "\tM_Bch    \t= "  << bch << std::endl;
+    stream << "\tM_valE   \t= " << int2Hex(instructionP->valE,8) << std::endl;
+    stream << "\tM_valA   \t= " << int2Hex(instructionP->valA,8) << std::endl;
+    stream << "\tM_dstE   \t= "  << int2Hex(instructionP->dstE,1) << std::endl;
+    stream << "\tM_dstM   \t= "  << int2Hex(instructionP->dstM,1) << std::endl;
+    stream << std::endl;
+}
+
+void Instruction::printWritebackStatus(std::fstream& stream)
+{
+    stream << "WRITE BACK:" << std::endl;
+    stream << "\tW_icode  \t= " << int2Hex(instructionP->icode,1) << std::endl;
+    stream << "\tW_valE   \t= " << int2Hex(instructionP->valE,8) << std::endl;
+    stream << "\tW_valM   \t= " << int2Hex(instructionP->valM,8) << std::endl;
+    stream << "\tW_dstE   \t= "  << int2Hex(instructionP->dstE,1) << std::endl;
+    stream << "\tW_dstM   \t= "  << int2Hex(instructionP->dstM,1) << std::endl;
+    stream << std::endl;
+}
+
+
 #ifdef QT_VERSION
 QVariantList Instruction::stageRegStatus() const
 {

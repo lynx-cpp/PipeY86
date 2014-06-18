@@ -103,6 +103,8 @@ public:
     bool jne() { return !ZeroFlag; }
     bool jge() { return !(SignFlag ^ OverflowFlag); }
     bool jg() { return !(SignFlag ^ OverflowFlag) && (!ZeroFlag); }
+    
+    void printStageStatus(std::fstream& stream);
     //int nextInstruction(int current,int step = 1) {  }
 };
 

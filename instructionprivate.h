@@ -36,6 +36,7 @@ protected:
     status stat;
     int rA,rB,valC,valA,valB,valE,valM;
     int valP;
+    bool BCH;
 
     int srcA,srcB,dstE,dstM;
 
@@ -148,7 +149,6 @@ private:
         jmp,jle,jl,je,jne,jge,jg,other
     } type;
     std::string jumpString;
-    bool BCH;
 public:
     InstructionJump(const std::string& m_instructionCode,int address);
     virtual ~InstructionJump();

@@ -25,6 +25,7 @@
 #include <QTime>
 #include <QSet>
 #include <QTemporaryFile>
+#include <fstream>
 
 #include "y86pipeline.h"
 #include "s2o/assembler.h"
@@ -57,6 +58,7 @@ private:
     void setRegisterStatus();
     void setMemoryStatus();
     void showStopDialog();
+    void printStageStatus();
 
     int interval;
     int cycle;
@@ -72,6 +74,9 @@ private:
     Y86Pipeline* m_pipeline;
     QStack < Y86Pipeline > history;
     QString m_filename;
+    
+    
+    std::fstream stream;
 };
 
 #endif // PIPELINELOADER_H

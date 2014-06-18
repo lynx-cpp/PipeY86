@@ -135,15 +135,18 @@ PipelineLoader::PipelineLoader(QObject* parent): QObject(parent)
     fastTimer = new QTimer(this);
     fastTimer->setInterval(0);
     fastTimer->setSingleShot(false);
-    cycle = 0;
+    cycle = 1;
     time = new QTime();
     connect(m_timer,SIGNAL(timeout()),this,SLOT(step()));
     connect(fastTimer,SIGNAL(timeout()),this,SLOT(fastStep()));
     history.clear();
+    stream.open("./output.txt",std::fstream::out);
 }
 
 void PipelineLoader::loadFile(const QString& filename)
 {
+    stream.close();
+    stream.open("./output.txt",std::fstream::out);
     m_timer->stop();
     fastTimer->stop();
     breakPoints.clear();
@@ -168,7 +171,7 @@ void PipelineLoader::loadFile(const QString& filename)
     readAllStage();
     refreshDisplay();
     //disconnect(m_timer);
-    cycle = 0;
+    cycle = 1;
     time->start();
     history.clear();
     qDebug() << "written";
@@ -183,6 +186,7 @@ void PipelineLoader::load()
 
 PipelineLoader::~PipelineLoader()
 {
+    stream.close();
     delete m_pipeline;
 }
 
@@ -212,6 +216,7 @@ void PipelineLoader::step()
     //addAllElement();
     readAllStage();
     refreshDisplay();
+    printStageStatus();
     if (breakPoints.contains(m_pipeline->fetchI->addr()) || !m_pipeline->running()) {
         m_timer->stop();
         if (!m_pipeline->running()){
@@ -231,6 +236,7 @@ void PipelineLoader::fastStep()
     history.push(*m_pipeline);
     m_pipeline->setProgToThis();
     m_pipeline->execute();
+    printStageStatus();
     if (breakPoints.contains(m_pipeline->fetchI->addr()) || !m_pipeline->running()) {
         fastTimer->stop();
         setStartButtonToPaused(false);
@@ -311,6 +317,13 @@ void PipelineLoader::unsetBreakPoint(int row)
 void PipelineLoader::fastStart()
 {
     fastTimer->start();
+}
+
+void PipelineLoader::printStageStatus()
+{
+    stream << "Cycle_" << cycle << std::endl;
+    stream << "--------------------" << std::endl;
+    m_pipeline->printStageStatus(stream);
 }
 
 
