@@ -244,8 +244,17 @@ static inline bool is_not_number(std :: string s) {
 static inline int string2int(std :: string str) {
     std :: istringstream stin(str);
     int result;
-    if (str.size() > 1 && str[1]=='x') stin >> std::hex >> result;
-    else stin >> result;
+	unsigned uresult;
+    if (str.size() > 1 && str[1]=='x')
+	{
+		stin >> std::hex >> uresult;
+		if (uresult & 0x80000000)
+		{
+			uresult = (~uresult) + 1;
+			return -uresult;
+		} else return uresult;
+	}
+	stin >> result;
     return result;
 }
 

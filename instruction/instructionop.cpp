@@ -94,7 +94,8 @@ void InstructionOP::executeStage()
     default:
         ;
     }
-    m_pipeline->setConditionCode(valB,valA,valE);
+    if (type == subl) m_pipeline->setConditionCode(valB,-valA,valE);
+	else m_pipeline->setConditionCode(valB,valA,valE);
     writeForwardReg(rB,valE,true);
     currentOperation = "valE <- valA " + opString + " valB;";
 }
