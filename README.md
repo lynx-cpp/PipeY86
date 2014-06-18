@@ -25,5 +25,6 @@ https://download.qt-project.org/archive/qt/5.2/5.2.1/
     ./pipey86
 
 ## Other tools
-s2o is a simple y86 assembler.
-pipecmd is a simple commandline version of y86 simulator.
+* s2o is a simple y86 assembler.
+
+* pipecmd is a simple commandline version of y86 simulator.
