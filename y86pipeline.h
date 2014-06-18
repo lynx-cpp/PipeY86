@@ -54,8 +54,6 @@ private:
     
     void writeForwarding(int num,int value,bool stat)
     {
-        if (num>=MAX_REG_NUM)
-            stat = ADR;
         forwardReg[num] = value;
         forwardStat[num] = stat;
     }
@@ -68,6 +66,8 @@ private:
     }
     void writeRegister(int num,int value) 
     { 
+        if (num>=MAX_REG_NUM)
+            stat = ADR;
         m_register[num] = value; 
         std::cerr << "writing value " << value << " to R[" << num << "]" << std::endl;
     }

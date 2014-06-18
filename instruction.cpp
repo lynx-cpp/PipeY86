@@ -83,7 +83,8 @@ void Instruction::constructPrivate()
         //add new instruction constructing function here
 
         instructionP = new InstructionNop(m_address);
-        instructionP->stat = INS;
+        if (m_instructionCode!="00" && m_instructionCode!="")
+            instructionP->stat = INS;
     } while (false);
     instructionP->m_instructionCode = m_instructionCode;
 }

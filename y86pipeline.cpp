@@ -242,7 +242,7 @@ bool Y86Pipeline::running()
         return false;
     if (stat==ADR)
         return false;
-    if (executeI->stat()==ADR || executeI->stat()==INS)
+    if (memoryI->stat()==ADR || memoryI->stat()==INS)
         return false;
     
     if (fetchI->normal() || decodeI->normal() || executeI->normal() 
