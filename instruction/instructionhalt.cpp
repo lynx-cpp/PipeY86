@@ -20,6 +20,7 @@ void InstructionHalt::fetchStage()
     InstructionPrivate::fetchStage();
     stat = HLT;
     valP = -1;
+    icode = 1; ifun = 0;
     std::cerr << "now begin to halt..." << std::endl;
 }
 
