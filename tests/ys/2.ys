@@ -1,0 +1,10 @@
+       irmovl $5, %ecx
+       irmovl $1, %eax
+       irmovl $1, %edx
+label: addl %eax, %eax
+       subl %edx, %ecx
+       jne label
+       nop
+       nop
+       nop
+       halt
