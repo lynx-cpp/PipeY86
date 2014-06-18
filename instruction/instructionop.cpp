@@ -103,6 +103,7 @@ void InstructionOP::executeStage()
 void InstructionOP::memoryStage()
 {
     InstructionPrivate::memoryStage();
+    writeForwardReg(rB,valE,true);
 }
 
 void InstructionOP::writeBackStage()
