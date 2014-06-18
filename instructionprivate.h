@@ -149,6 +149,7 @@ private:
         jmp,jle,jl,je,jne,jge,jg,other
     } type;
     std::string jumpString;
+	int nextPC;
 public:
     InstructionJump(const std::string& m_instructionCode,int address);
     virtual ~InstructionJump();

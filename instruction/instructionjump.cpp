@@ -22,7 +22,7 @@
 
 InstructionJump :: InstructionJump(const std::string& instructionCode, int address): InstructionPrivate(address)
 {
-    icode = 7;
+	icode = 7;
     ifun = hex2num(instructionCode[1]);
     switch (ifun)
     {
@@ -74,6 +74,8 @@ void InstructionJump :: fetchStage()
         //invalid instruction ...
     }
     valC = readHexSmallEndian(m_instructionCode,2,9);
+	nextPC = valP;
+	valP = findInstructionFromAddr(valC);
     currentOperation = "valC <- M_4[PC];";
     srcA = 8;
     srcB = 8;
@@ -120,12 +122,21 @@ void InstructionJump :: executeStage()
         break;
     }
     currentOperation = "Bch <- Cond(CC,ifun);";
-    if (BCH)
+    /*
+	if (BCH)
     {
         valP = findInstructionFromAddr(valC);
 		std  :: cerr << " Jump to : " << int2Hex(valC) << std::endl;
         currentOperation +=" valP <- valC;";
     }
+    */
+	std :: cerr << " BCH = " << BCH  << std::endl;
+	if (!BCH)
+	{
+		valP = nextPC;
+		std :: cerr << " Didn't Jump" << std::endl;
+		currentOperation += "valP <- nextPC";
+	}
 }
 
 void InstructionJump :: memoryStage()
