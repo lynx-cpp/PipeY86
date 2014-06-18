@@ -1,0 +1,9 @@
+	# divide-by-zero exception test
+
+	irmovl	$10, %eax
+	irmovl	$0, %ebx
+
+l1:	irmovl	$1000, %eax
+	mrmovl	(%eax), %ecx
+	halt
+

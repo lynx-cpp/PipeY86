@@ -52,17 +52,22 @@ Art Direction:\t\t\tQi Liu"
         visible: false
     }*/
     Window {
-        width: 400
-        height: 300
-        x:500; y:200
+        width: 760
+        height: 632
+        //x:280; y:50
+        x: main.x + 250
+        y: main.y + 68
         id: about_dialog
         visible: false
         flags: Qt.FramelessWindowHint | Qt.Window
-        Text {
+        /*Text {
             text: "
 Infrastructure & Graphics:            \tYuquan Fang
 Instruction Implementation:\tKaiqiang Song 
 Art Direction:\t\t\tQi Liu"
+        }*/
+        Image {
+            source: "/about.png"
         }
         MouseArea {
             anchors.fill: parent
