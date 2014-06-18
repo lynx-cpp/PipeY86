@@ -64,6 +64,7 @@ void InstructionIrmovl::executeStage()
 void InstructionIrmovl::memoryStage()
 {
     InstructionPrivate::memoryStage();
+	writeForwardReg(rB,valE,true);
 }
 
 void InstructionIrmovl::writeBackStage()

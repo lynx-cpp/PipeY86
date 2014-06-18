@@ -66,6 +66,7 @@ void InstructionPop :: memoryStage()
     InstructionPrivate :: memoryStage();
     valM = m_pipeline->read32BitMemory(valA);
     currentOperation = "valM <- M_4[valA];";
+	writeForwardReg(ESP,valE,true);
     writeForwardReg(rA,valM,true);
 }
 

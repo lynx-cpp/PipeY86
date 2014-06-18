@@ -69,6 +69,7 @@ void InstructionCall :: memoryStage()
     InstructionPrivate :: memoryStage();
     currentOperation = "valE <- valP";
     m_pipeline->write32BitMemory(valE,findAddrFromInstruction(returnAddr));
+	writeForwardReg(ESP,valE,true);
 }
 
 void InstructionCall :: writeBackStage()

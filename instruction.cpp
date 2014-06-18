@@ -246,7 +246,7 @@ void Instruction::printDecodeStatus(std::fstream& stream)
     stream << "\tD_rA     \t= "  << int2Hex(instructionP->rA,1) << std::endl;
     stream << "\tD_rB     \t= " << int2Hex(instructionP->rB,1) << std::endl;
     stream << "\tD_valC   \t= " << int2Hex(instructionP->valC,8) << std::endl;
-    stream << "\tD_valP   \t= " << int2Hex(instructionP->valP,8) << std::endl;
+    stream << "\tD_valP   \t= " << int2Hex(instructionP->addr(),8) << std::endl;
     stream << std::endl;
 }
 

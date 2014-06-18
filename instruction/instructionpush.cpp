@@ -63,6 +63,7 @@ void InstructionPush :: memoryStage()
 {
     InstructionPrivate :: memoryStage();
     m_pipeline->write32BitMemory(valE,valA);
+	writeForwardReg(ESP,valE,true);
 }
 
 void InstructionPush :: writeBackStage()

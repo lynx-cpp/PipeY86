@@ -51,6 +51,7 @@ void InstructionRet :: executeStage()
     InstructionPrivate :: executeStage();
     currentOperation = "valE <- valB + 4;";
     valE = valB + 4;
+	writeForwardReg(4,valE,true);
 }
 
 void InstructionRet :: memoryStage()

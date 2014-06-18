@@ -65,6 +65,7 @@ void InstructionRrmovl :: executeStage()
 void InstructionRrmovl :: memoryStage()
 {
     InstructionPrivate :: memoryStage();
+	writeForwardReg(rB,valE,true);
 }
 
 void InstructionRrmovl :: writeBackStage()
