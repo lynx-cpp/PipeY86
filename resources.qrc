@@ -19,6 +19,7 @@
         <file alias="memory.png">images/memory.png</file>
         <file alias="writeback.png">images/writeback.png</file>
         <file alias="circle.png">images/circle.png</file>
+        <file alias="icon.png">images/icon.png</file>
     </qresource>
 </RCC>
 

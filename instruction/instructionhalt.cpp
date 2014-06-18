@@ -1,36 +1,40 @@
 #include "instructionprivate.h"
 #include "y86pipeline.h"
 
-InstructionHalt :: InstructionHalt(const std::string& m_instructionCode, int address):InstructionPrivate(address)
+InstructionHalt::InstructionHalt(const std::string& m_instructionCode,int address):InstructionPrivate(address)
 {
 }
 
-InstructionHalt :: ~InstructionHalt()
+bool InstructionHalt::decodeStage()
 {
+    return InstructionPrivate::decodeStage();
+}
+
+void InstructionHalt::executeStage()
+{
+    InstructionPrivate::executeStage();
 }
 
 void InstructionHalt::fetchStage()
 {
-	InstructionPrivate :: fetchStage();
+    InstructionPrivate::fetchStage();
+    stat = HLT;
+    valP = -1;
+    std::cerr << "now begin to halt..." << std::endl;
 }
 
-bool InstructionHalt :: decodeStage()
+void InstructionHalt::memoryStage()
 {
-	InstructionPrivate :: decodeStage();
+    InstructionPrivate::memoryStage();
 }
 
-void InstructionHalt :: executeStage()
+void InstructionHalt::writeBackStage()
 {
-	InstructionPrivate :: executeStage();
+    InstructionPrivate::writeBackStage();
+    std::cerr << "halt now! right now!" << std::endl;
 }
 
-void InstructionHalt :: memoryStage()
+InstructionHalt::~InstructionHalt()
 {
-	InstructionPrivate :: memoryStage();
-}
 
-void InstructionHalt :: writeBackStage()
-{
-	InstructionPrivate :: writeBackStage();
-	status = HLT;
 }

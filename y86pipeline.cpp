@@ -1,3 +1,22 @@
+/*
+ *   Copyright (C) 2014 by Yuquan Fang<lynx.cpp@gmail.com>
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 3, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details
+ *
+ *   You should have received a copy of the GNU General Public
+ *   License along with this program; if not, write to the
+ *   Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -130,6 +149,7 @@ Y86Pipeline::Y86Pipeline()
 
 Y86Pipeline::Y86Pipeline(const std::string& filename)
 {
+    stat = AOK;
     m_loaded = false;
     writeBackI = new Instruction();
     memoryI = new Instruction();
@@ -218,6 +238,13 @@ void Y86Pipeline::run()
 
 bool Y86Pipeline::running()
 {
+    if (writeBackI->stat()==HLT)
+        return false;
+    if (stat==ADR)
+        return false;
+    if (executeI->stat()==ADR || executeI->stat()==INS)
+        return false;
+    
     if (fetchI->normal() || decodeI->normal() || executeI->normal() 
         || memoryI->normal() || writeBackI->normal())
         return true;
@@ -236,8 +263,11 @@ void Y86Pipeline::recoverForwarding()
 int Y86Pipeline::read32BitMemory(int address)
 {
     int ans = 0;
-    for (int i=address + 3;i>=address;i--)
+    for (int i=address + 3;i>=address;i--){
+        if (m_memory.find(i)==m_memory.end())
+            stat = ADR;
         ans = ans*0x100 + m_memory[i];
+    }
 	std :: cerr << "reading " << ans << " from M[" << address << "]" << std::endl;
 	return ans;
 }
@@ -274,7 +304,8 @@ orgStackAddr(org.orgStackAddr),
 ZeroFlag(org.ZeroFlag),
 OverflowFlag(org.OverflowFlag),
 SignFlag(org.SignFlag),
-m_loaded(org.m_loaded)
+m_loaded(org.m_loaded),
+stat(org.stat)
 {
     fetchI = new Instruction(*org.fetchI);
     decodeI = new Instruction(*org.decodeI);
@@ -286,3 +317,6 @@ m_loaded(org.m_loaded)
     memcpy(forwardReg,org.forwardReg,sizeof(forwardReg));
     memcpy(forwardStat,org.forwardStat,sizeof(forwardStat));
 }
+
+
+

@@ -1,3 +1,22 @@
+/*
+ *   Copyright (C) 2014 by Yuquan Fang<lynx.cpp@gmail.com>
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 3, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details
+ *
+ *   You should have received a copy of the GNU General Public
+ *   License along with this program; if not, write to the
+ *   Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 #ifndef UTILITY_H
 #define UTILITY_H
 #include <iostream>
@@ -33,7 +52,7 @@ static inline int byte2int(char a,char b)
 static inline int readHexBigEndian(const std::string& str,int l,int r)
 {
     int ret = 0;
-    for (int i=l;i<=r;i++){
+    for (int i=l; i<=r; i++) {
         ret *= 16;
         ret += hex2num(str[i]);
     }
@@ -45,10 +64,11 @@ static inline void readTripleStr(std::fstream& stream,std::string& s1,std::strin
     std::string line;
     std::getline(stream,line);
     std::stringstream ss;
-    ss.clear(); ss.str(line);
+    ss.clear();
+    ss.str(line);
     ss >> s1 >> s2;
     int pos = line.find("|");
-    if (pos==std::string::npos) 
+    if (pos==std::string::npos)
         s3 = "";
     else
         s3 = line.substr(pos + 2,line.length() - pos - 1);
@@ -59,7 +79,7 @@ static inline void readTripleStr(std::fstream& stream,std::string& s1,std::strin
 static inline int readHexSmallEndian(const std::string& str,int l,int r)
 {
     int ret = 0;
-    for (int i=r;i-1>=l;i-=2){
+    for (int i=r; i-1>=l; i-=2) {
         ret *= 256;
         ret += byte2int(str[i - 1],str[i]);
     }
@@ -70,9 +90,10 @@ static inline int readHexSmallEndian(const std::string& str,int l,int r)
 static inline std::string int2Hex(int hex,int minWidth = 3,bool withx = true)
 {
     std::stringstream ss;
-    ss.clear(); ss.str("");
+    ss.clear();
+    ss.str("");
     //ss.setf ( std::ios::hex, std::ios::basefield );  // set hex as the basefield
-    //ss.setf ( std::ios::showbase ); 
+    //ss.setf ( std::ios::showbase );
     if (withx)
         ss << "0x" << std::setfill('0') << std::setw(minWidth) << std::hex << std::uppercase << hex;
     else
@@ -83,8 +104,9 @@ static inline std::string int2Hex(int hex,int minWidth = 3,bool withx = true)
 static inline std::string hex2Data(const std::string& hex)
 {
     std::stringstream ss;
-    ss.clear(); ss.str("");
-    for (int i=0;i + 1<hex.length();i+=2){
+    ss.clear();
+    ss.str("");
+    for (int i=0; i + 1<hex.length(); i+=2) {
         ss << hex[i] << hex[i + 1] << " ";
     }
     return ss.str();
@@ -94,14 +116,17 @@ static inline void printMemory(Memory& memory,MemorySeq& seq)
 {
     seq.clear();
     Memory::iterator current = memory.begin();
-    while (current!=memory.end()){
+    while (current!=memory.end()) {
         int curAddr = current->first;
-        std::string curVal = int2Hex(memory[curAddr],2,false); curVal += "    ";
-        curVal += int2Hex(memory[curAddr + 1],2,false); curVal += "    ";
-        curVal += int2Hex(memory[curAddr + 2],2,false); curVal += "    ";
-        curVal += int2Hex(memory[curAddr + 3],2,false); 
+        std::string curVal = int2Hex(memory[curAddr],2,false);
+        curVal += "    ";
+        curVal += int2Hex(memory[curAddr + 1],2,false);
+        curVal += "    ";
+        curVal += int2Hex(memory[curAddr + 2],2,false);
+        curVal += "    ";
+        curVal += int2Hex(memory[curAddr + 3],2,false);
         seq.push_back(std::make_pair(curAddr,curVal));
-        
+
         current = memory.find(curAddr + 3);
         current ++;
     }

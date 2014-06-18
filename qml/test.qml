@@ -1,5 +1,25 @@
+/*
+ *   Copyright (C) 2014 by Yuquan Fang<lynx.cpp@gmail.com>
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 3, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details
+ *
+ *   You should have received a copy of the GNU General Public
+ *   License along with this program; if not, write to the
+ *   Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import QtQuick.Window 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.1
@@ -21,6 +41,34 @@ Item {
     property string memoryColor: "#a6d864"
     property string writeBackColor: "#77bbdb"
     property string indicatorFontColor: "grey"
+    
+    /*MessageDialog {
+        id: about_dialog
+        title: "About"
+        text: "
+Infrastructure & Graphics:            \tYuquan Fang
+Instruction Implementation:\tKaiqiang Song 
+Art Direction:\t\t\tQi Liu"
+        visible: false
+    }*/
+    Window {
+        width: 400
+        height: 300
+        x:500; y:200
+        id: about_dialog
+        visible: false
+        flags: Qt.FramelessWindowHint | Qt.Window
+        Text {
+            text: "
+Infrastructure & Graphics:            \tYuquan Fang
+Instruction Implementation:\tKaiqiang Song 
+Art Direction:\t\t\tQi Liu"
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: about_dialog.visible = false
+        }
+    }
     
     signal load(string str)
     signal start(int latency)
@@ -359,6 +407,12 @@ Item {
         text: "Open"
     }
     
+    Action {
+        id: open_action
+        onTriggered: fileDialog.open()
+        shortcut: "Ctrl+o"
+    }
+    
     Button {
         id: resetButton
         anchors.left: openButton.left; //anchors.leftMargin: 5
@@ -370,6 +424,12 @@ Item {
         font.pointSize:18
         text: "Reset"
     }    
+    
+    Action {
+        id: reset_action
+        onTriggered: reset()
+        shortcut: "Ctrl+r"
+    }
     
     Item {
         id: freqSelector
@@ -490,6 +550,18 @@ Item {
         
         property var paused: true;
     }
+    
+    Action {
+        id: pause_action
+        onTriggered: pause()
+        shortcut: "Ctrl+c"
+    }
+    
+    Action {
+        id: start_action
+        onTriggered: start(freqSelector.freq)
+        shortcut: "Shift+F9"
+    }
    
     function startButtonClicked() {
         if (startButton.paused){
@@ -515,6 +587,12 @@ Item {
         text: "Back"
     }
     
+    Action {
+        id: back_action
+        onTriggered: back()
+        shortcut: "F6"
+    }
+    
     Button {
         id: continueButton
         anchors.left: backButton.right; //anchors.leftMargin: -5
@@ -526,6 +604,25 @@ Item {
         font.pointSize:13
         text: "Continue"
     }
+    
+    Action {
+        id: continue_action
+        onTriggered: fastStart()
+        shortcut: "F9"
+    }
+    
+     Button {
+        id: aboutButton
+        anchors.left: continueButton.left; //anchors.leftMargin: -5
+        anchors.top: continueButton.bottom
+        button_width: 80
+        button_height: 40
+        onClicked: about_dialog.visible = true
+        font.family: defaultFont.name
+        font.pointSize:18
+        text: "About"
+    }
+    
         
     Button {
         id: stepButton
