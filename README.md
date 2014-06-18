@@ -6,10 +6,11 @@ Just A Pipeline Simulator of Y86 Instruction Set
 
 * Qt 5.2 with QML
 * QGrahpicalEffects
-
-Qt Offical downloads can solve all things about Qt
-
 * CMake version >= 2.8.0
+
+Qt Offical downloads can solve all things about Qt:
+
+https://download.qt-project.org/archive/qt/5.2/5.2.1/
 
 ## Compile
 
