@@ -130,11 +130,12 @@ Art Direction:\t\t\tQi Liu"
     }
     
     function showStopDialog() {
+        setStartButtonToPaused(false);
         stopDialog.visible = true;
     }
     
     function setStartButtonToPaused(flag) {
-        startButton.paused = flag;
+        startButton.paused = (!flag);
     }
     
     /*function printList(list) {
