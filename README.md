@@ -13,19 +13,14 @@ Qt Offical downloads can solve all things about Qt
 
 ## Compile
 mkdir build
-
 cd build
-
 cmake ../
-
 make
 
 ## Run
 cd build
-
 ./pipey86
 
 ## Other tools
 s2o is a simple y86 assembler.
-
 pipecmd is a simple commandline version of y86 simulator.
