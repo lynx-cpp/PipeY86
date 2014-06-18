@@ -23,7 +23,7 @@ make
 ## Run
 cd build
 
-./pipey96
+./pipey86
 
 ## Other tools
 s2o is a simple y86 assembler.
