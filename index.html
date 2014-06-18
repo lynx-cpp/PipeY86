@@ -1,36 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Pipey86 : A Pipeline Simulator of Y86 Instruction Set" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pipey86 by lynx-cpp</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Pipey86</title>
   </head>
-
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/lynx-cpp/PipeY86">View on GitHub</a>
+      <header>
+        <h1>Pipey86</h1>
+        <p>A Pipeline Simulator of Y86 Instruction Set</p>
+      </header>
 
-          <h1 id="project_title">Pipey86</h1>
-          <h2 id="project_tagline">A Pipeline Simulator of Y86 Instruction Set</h2>
+      <div id="banner">
+        <span id="logo"></span>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/lynx-cpp/PipeY86/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/lynx-cpp/PipeY86/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+        <a href="https://github.com/lynx-cpp/PipeY86" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/lynx-cpp/PipeY86/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/lynx-cpp/PipeY86/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
         <h1>
 <a name="pipey86" class="anchor" href="#pipey86"><span class="octicon octicon-link"></span></a>PipeY86</h1>
 
@@ -42,46 +50,41 @@
 <ul>
 <li>Qt 5.2 with QML</li>
 <li>QGrahpicalEffects</li>
-</ul><p>Qt Offical downloads can solve all things about Qt</p>
-
-<ul>
 <li>CMake version &gt;= 2.8.0</li>
-</ul><h2>
+</ul><p>Qt Offical downloads can solve all things about Qt:</p>
+
+<p><a href="https://download.qt-project.org/archive/qt/5.2/5.2.1/">https://download.qt-project.org/archive/qt/5.2/5.2.1/</a></p>
+
+<h2>
 <a name="compile" class="anchor" href="#compile"><span class="octicon octicon-link"></span></a>Compile</h2>
 
-<p>mkdir build</p>
-
-<p>cd build</p>
-
-<p>cmake ../</p>
-
-<p>make</p>
+<pre><code>mkdir build
+cd build
+cmake ../
+make
+</code></pre>
 
 <h2>
 <a name="run" class="anchor" href="#run"><span class="octicon octicon-link"></span></a>Run</h2>
 
-<p>cd build</p>
-
-<p>./pipey86</p>
+<pre><code>cd build
+./pipey86
+</code></pre>
 
 <h2>
 <a name="other-tools" class="anchor" href="#other-tools"><span class="octicon octicon-link"></span></a>Other tools</h2>
 
-<p>s2o is a simple y86 assembler.</p>
-
-<p>pipecmd is a simple commandline version of y86 simulator.</p>
+<ul>
+<li><p>s2o is a simple y86 assembler.</p></li>
+<li><p>pipecmd is a simple commandline version of y86 simulator.</p></li>
+</ul>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Pipey86 maintained by <a href="https://github.com/lynx-cpp">lynx-cpp</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/lynx-cpp">lynx-cpp</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>
-
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
-
   </body>
 </html>
