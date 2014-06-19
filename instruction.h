@@ -76,7 +76,7 @@ public:
     
     status stat() const;
     
-    int d_valP(); // here is the real valP in the CSAPP book
+    int d_valP() const; // here is the real valP in the CSAPP book
     
     void printFetchStatus(std::fstream& stream);
     void printDecodeStatus(std::fstream& stream);

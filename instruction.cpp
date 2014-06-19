@@ -298,7 +298,7 @@ void Instruction::printWritebackStatus(std::fstream& stream)
     stream << std::endl;
 }
 
-int Instruction::d_valP()
+int Instruction::d_valP() const
 {
     if (instructionP->addr()==-1) return -1;
     return instructionP->addr() + instructionP->codeLength;
