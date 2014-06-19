@@ -31,6 +31,7 @@ InstructionRet :: ~InstructionRet()
 void InstructionRet :: fetchStage()
 {
     InstructionPrivate :: fetchStage();
+    valP = -1;
     icode = 9;
     ifun = 0;
     srcA = 4;

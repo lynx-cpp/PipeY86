@@ -36,6 +36,7 @@ void InstructionCall :: fetchStage()
         std::cerr << "invalid instruction." << std::endl;
         //invalid instruction ...
     }
+    valP = -1;
     valC = readHexSmallEndian(m_instructionCode,2,9);
     icode = 8;
     ifun = 0;
