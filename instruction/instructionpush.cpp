@@ -22,6 +22,7 @@
 
 InstructionPush :: InstructionPush(const std::string& instructionCode, int address):InstructionPrivate(address)
 {
+    codeLength = 2;
     icode = 0xa;
     ifun = 0;
 }

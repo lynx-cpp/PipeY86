@@ -3,6 +3,7 @@
 
 InstructionHalt::InstructionHalt(const std::string& m_instructionCode,int address):InstructionPrivate(address)
 {
+    codeLength = 1;
 }
 
 bool InstructionHalt::decodeStage()

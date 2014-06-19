@@ -246,7 +246,8 @@ void Instruction::printDecodeStatus(std::fstream& stream)
     stream << "\tD_rA     \t= "  << int2Hex(instructionP->rA,1) << std::endl;
     stream << "\tD_rB     \t= " << int2Hex(instructionP->rB,1) << std::endl;
     stream << "\tD_valC   \t= " << int2Hex(instructionP->valC,8) << std::endl;
-    stream << "\tD_valP   \t= " << int2Hex(instructionP->addr(),8) << std::endl;
+    //int d_valp = findAddrFromInstruction(instructionP->prediction());
+    stream << "\tD_valP   \t= " << int2Hex(d_valP(),8) << std::endl;
     stream << std::endl;
 }
 
@@ -297,6 +298,11 @@ void Instruction::printWritebackStatus(std::fstream& stream)
     stream << std::endl;
 }
 
+int Instruction::d_valP()
+{
+    if (instructionP->addr()==-1) return -1;
+    return instructionP->addr() + instructionP->codeLength;
+}
 
 #ifdef QT_VERSION
 QVariantList Instruction::stageRegStatus() const

@@ -22,6 +22,7 @@
 
 InstructionRrmovl :: InstructionRrmovl(const std::string& m_instructionCode, int address):InstructionPrivate(address)
 {
+    codeLength = 2;
 }
 
 InstructionRrmovl :: ~ InstructionRrmovl()

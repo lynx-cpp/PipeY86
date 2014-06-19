@@ -22,7 +22,7 @@
 #include "instruction.h"
 
 int findInstructionFromAddr(int address);
-int findAddrFromInstruction(int address);
+int findAddrFromInstruction(int idx);
 
 class InstructionPrivate
 {
@@ -37,6 +37,7 @@ protected:
     int rA,rB,valC,valA,valB,valE,valM;
     int valP;
     bool BCH;
+    int codeLength;
 
     int srcA,srcB,dstE,dstM;
 

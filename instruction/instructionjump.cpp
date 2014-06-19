@@ -22,6 +22,7 @@
 
 InstructionJump :: InstructionJump(const std::string& instructionCode, int address): InstructionPrivate(address)
 {
+    codeLength = 5;
 	icode = 7;
     ifun = hex2num(instructionCode[1]);
     switch (ifun)

@@ -22,6 +22,7 @@
 
 InstructionPop :: InstructionPop(const std::string& m_instructionCode, int address):InstructionPrivate(address)
 {
+    codeLength = 2;
     icode = 0xb;
     ifun = 0;
 }

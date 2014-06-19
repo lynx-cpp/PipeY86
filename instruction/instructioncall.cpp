@@ -22,6 +22,7 @@
 
 InstructionCall :: InstructionCall(const std::string& m_instructionCode,int address):InstructionPrivate(address)
 {
+    codeLength = 5;
 }
 
 InstructionCall :: ~InstructionCall()
@@ -59,7 +60,9 @@ void InstructionCall :: executeStage()
     currentOperation = "valE <- valB + (-4);";
     valE = valB + (-4);
     writeForwardReg(ESP,valE,true);
-    returnAddr = valP;
+    //returnAddr = valP;
+    returnAddr = addr() + codeLength;
+    std::cerr << "prepare saving returnaddr: " << returnAddr ;
     valP = findInstructionFromAddr(valC);
     std :: cerr << "call :  PC <- " << valP << std::endl;
     std :: cerr << "call :  PC <- " << int2Hex(valC) << std::endl;
@@ -69,7 +72,10 @@ void InstructionCall :: memoryStage()
 {
     InstructionPrivate :: memoryStage();
     currentOperation = "valE <- valP";
-    m_pipeline->write32BitMemory(valE,findAddrFromInstruction(returnAddr));
+    //m_pipeline->write32BitMemory(valE,findAddrFromInstruction(returnAddr));
+    m_pipeline->write32BitMemory(valE,returnAddr);
+    std::cerr << "saving returnaddr: " << returnAddr ;
+    //m_pipeline->write32BitMemory(valE,prog[returnAddr].addr());
 	writeForwardReg(ESP,valE,true);
 }
 

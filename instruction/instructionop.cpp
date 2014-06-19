@@ -24,6 +24,7 @@ InstructionOP::InstructionOP(const std::string& instructionCode, int address):In
 {
     icode = 6;
     ifun = hex2num(instructionCode[1]);
+    codeLength = 2;
     //std::cerr << instructionCode << std::endl;
     type = other;
     opString = "other";

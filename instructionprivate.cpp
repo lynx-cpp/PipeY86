@@ -29,14 +29,16 @@ int findInstructionFromAddr(int address)
     return -1;
 }
 
-int findAddrFromInstruction(int address)
+int findAddrFromInstruction(int idx)
 {
-    return prog[address].addr();
+    if (idx<0 || idx>=prog.size()) 
+        return -1;
+    return prog[idx].addr();
 }
 
 
 InstructionPrivate::InstructionPrivate(int address):
-    icode(0),ifun(0),rA(NO_REG),rB(NO_REG),valC(0),valA(0),valB(0),valE(0),valM(0),srcA(NO_REG),srcB(NO_REG),dstE(NO_REG),dstM(NO_REG),BCH(false)
+    icode(0),ifun(0),rA(NO_REG),rB(NO_REG),valC(0),valA(0),valB(0),valE(0),valM(0),srcA(NO_REG),srcB(NO_REG),dstE(NO_REG),dstM(NO_REG),BCH(false),codeLength(1)
 {
     m_address = address;
     stat = BUB;
