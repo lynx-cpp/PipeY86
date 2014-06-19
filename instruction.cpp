@@ -307,8 +307,8 @@ int Instruction::d_valP()
 #ifdef QT_VERSION
 QVariantList Instruction::stageRegStatus() const
 {
-    int addr = instructionP->addr();
-    if (addr==-1) addr = 0;
+    //int addr = instructionP->addr();
+    int addr = d_valP();
     QVariantList ret;
     ret.clear();
     ret.append(instructionP->icode);
