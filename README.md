@@ -12,6 +12,8 @@ Qt Offical downloads can solve all things about Qt:
 
 https://download.qt-project.org/archive/qt/5.2/5.2.1/
 
+Currently it is tested only on Linux, you can also try it on Windows and send bug report.
+
 ## Compile
 
     mkdir build
