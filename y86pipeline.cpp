@@ -88,11 +88,20 @@ void Y86Pipeline::execute()
     bool success = decodeI->decodeStage();
     fetchI->fetchStage();
     //std :: cerr << " Done 2" << std :: endl;
-    if (!success)
-        decodeI->setBubble();
     
     InstructionPtr nextPrediction = getPrediction(fetchI);
     
+     /*InstructionPtr decodePrediction = getPrediction(decodeI);
+    if (decodeI->isOk())
+        if (!decodePrediction->eq(fetchI)){
+            fetchI->setBubble();
+            delete nextPrediction;
+            nextPrediction = decodePrediction;
+            std::cerr << "decode stage prediction changed." << std::endl;
+        }*/
+ 
+    
+     bool controlHazard = false;
     InstructionPtr executePrediction = getPrediction(executeI);
     if (executeI->isOk())
         if (!executePrediction->eq(decodeI)){
@@ -100,6 +109,8 @@ void Y86Pipeline::execute()
             fetchI->setBubble();
             delete nextPrediction;
             nextPrediction = executePrediction;
+            std::cerr << "Control hazard from execute stage detected." << std::endl;
+            controlHazard = true;
         }
     //std :: cerr << " Done 3" << std :: endl;
     InstructionPtr memoryPrediction = getPrediction(memoryI);
@@ -110,10 +121,23 @@ void Y86Pipeline::execute()
             executeI->setBubble();
             delete nextPrediction;
             nextPrediction = memoryPrediction;
+            std::cerr << "Control hazard from memory stage detected." << std::endl;
+            controlHazard = true;
         }
         //prediction may change.
     //std :: cerr << " Done 4" << std :: endl;
-        
+    
+    //if (controlHazard){
+        recoverForwarding();
+        writeBackI->writeBackStage();
+        memoryI->memoryStage();
+        executeI->executeStage();
+        success = decodeI->decodeStage();
+    //}
+    
+    if (!success)
+        decodeI->setBubble();
+    
     delete writeBackI;
     nextStage(writeBackI,memoryI);
     nextStage(memoryI,executeI);
@@ -122,14 +146,16 @@ void Y86Pipeline::execute()
         nextStage(decodeI,fetchI);
         fetchI = nextPrediction;
     }
-    else 
+    else {
         executeI = new Instruction(decodeI->addr());
+        std::cerr << "decode failed, stalling..." << std::endl;
+    }
     /*
-    writeBackI = memoryI;
-    memoryI = executeI;
-    executeI = decodeI;
-    decodeI = fetchI;
-    fetchI = nextPrediction;*/
+     w riteBa*ckI = memoryI;
+     memoryI = executeI;
+     executeI = decodeI;
+     decodeI = fetchI;
+     fetchI = nextPrediction;*/
     
     //recoverForwarding();
     //std::cerr << executeI->prediction() << std::endl;
@@ -221,8 +247,10 @@ void Y86Pipeline::setConditionCode(int a, int b, int val)
 void Y86Pipeline::run()
 {
     setProgToThis();
+    int cycle = 0;
    std::cerr<< "starting Y86Pipeline.." << std::endl;
     do{
+        cycle ++;
         std :: cerr << "line start" << std::endl;
         execute();
 		for (std::map<int,int>::iterator it=m_memory.begin(); it!=m_memory.end(); ++it)
@@ -234,6 +262,7 @@ void Y86Pipeline::run()
         if (m_register[i]!=0)
             std::cout << "Value of Register " << i << " changed from 0 to " << m_register[i] << std::endl;
     }
+    std::cout << "Cycles : " << cycle << std::endl;
 }
 
 bool Y86Pipeline::running()

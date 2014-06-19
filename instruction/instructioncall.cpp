@@ -45,12 +45,22 @@ void InstructionCall :: fetchStage()
     srcB = ESP;
     dstE = ESP;
     dstM = NO_REG;
+    
+        //returnAddr = valP;
+    returnAddr = addr() + codeLength;
+    std::cerr << "prepare saving returnaddr: " << returnAddr ;
+    valP = findInstructionFromAddr(valC);
+    std :: cerr << "call :  PC <- " << valP << std::endl;
+    std :: cerr << "call :  PC <- " << int2Hex(valC) << std::endl;
+ 
 }
 
 bool InstructionCall :: decodeStage()
 {
     InstructionPrivate :: decodeStage();
     currentOperation =  "R[%esp] <- valB;";
+    
+   
     return readReg(ESP,valB);
 }
 
@@ -60,12 +70,6 @@ void InstructionCall :: executeStage()
     currentOperation = "valE <- valB + (-4);";
     valE = valB + (-4);
     writeForwardReg(ESP,valE,true);
-    //returnAddr = valP;
-    returnAddr = addr() + codeLength;
-    std::cerr << "prepare saving returnaddr: " << returnAddr ;
-    valP = findInstructionFromAddr(valC);
-    std :: cerr << "call :  PC <- " << valP << std::endl;
-    std :: cerr << "call :  PC <- " << int2Hex(valC) << std::endl;
 }
 
 void InstructionCall :: memoryStage()

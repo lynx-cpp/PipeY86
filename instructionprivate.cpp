@@ -67,11 +67,13 @@ void InstructionPrivate::writeRealReg(int num, int value)
 
 void InstructionPrivate::fetchStage()
 {
-    if (m_address==-1) {
+    /*if (m_address==-1) {
         valP = -1;
         return ;
-    }
+    }*/
     valP = findInstructionFromAddr(m_address);
+    if (valP==-1)
+        return ;
     valP ++;
     currentOperation = "NOP;";
 }
@@ -79,6 +81,7 @@ void InstructionPrivate::fetchStage()
 
 bool InstructionPrivate::decodeStage()
 {
+    //std::cerr << "next decode: " << valP << " " << int2Hex(findAddrFromInstruction(valP)) << std::endl;
     currentOperation = "NOP;";
     return true;
 }
